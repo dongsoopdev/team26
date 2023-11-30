@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <title>EduTech::회원 가입</title>
+</head>
+<body>
+
+<!-- content 영역 시작 -->
+<section class="vh-100 bg-primary">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+                        <form th:action="@{/join}" autocomplete="off" th:object="${member}" method="post">
+                            <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
+                            <div class="form-outline mb-4 text-center">
+                                <a th:href="@{/}">EduTech</a>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label th:if="${#fields.hasErrors('email')}" th:errors="*{email}">이메일</label>
+                                <input type="text" th:field="*{email}" minlength="5" placeholder="사용하실 이메일을 입력하세요." class="form-control" />
+                            </div>
+
+                            <div class="form-outline mb-1">
+                                <label th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호</label>
+                                <!--<input type="password" th:field="*{password}" placeholder="8자리 ~ 16자리와 대소문자와 특수문자" class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$" maxlength="16" minlength="8" required />-->
+                                <input type="password" th:field="*{password}" placeholder="4자리 ~ 16자리" class="form-control"  maxlength="16" minlength="4" required />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label th:if="${#fields.hasErrors('passwordConfirm')}" th:errors="*{passwordConfirm}">비밀번호 확인</label>
+                                <!--<input type="password" th:field="*{passwordConfirm}" placeholder="비밀번호 확인을 입력하세요." class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$" maxlength="16" minlength="8" required />-->
+                                <input type="password" th:field="*{passwordConfirm}" placeholder="비밀번호 확인을 입력하세요." class="form-control" maxlength="16" minlength="4" required />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">이름</label>
+                                <input type="text" th:field="*{userName}" placeholder="이름을 입력하세요." class="form-control" required />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <label th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">전화번호</label>
+                                <input type="text" th:field="*{phone}" placeholder="010-XXXX-XXXX" class="form-control" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required />
+                            </div>
+
+                            <div class="form-outline mb-1">
+                                <label th:if="${#fields.hasErrors('addr')}" th:errors="*{addr}">기본주소</label>
+                                <input type="text" th:field="*{addr}" placeholder="기본주소" id="address1" class="form-control" required readonly/>
+                            </div>
+
+                            <div class="form-outline mb-1">
+                                <input type="text" th:field="*{addrDetail}" placeholder="상세주소를 입력해주세요." id="address2" class="form-control" />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="text" th:field="*{zipcode}" placeholder="우편번호" id="postcode" class="form-control" style="width:65%;display:inline-block;" required readonly/>
+                                <button type="button" id="post_btn" onclick="findAddr()" class="btn btn-outline-primary" style="width:calc(35% - 17px);margin-left:10px;display:inline-block;">우편번호 검색</button>
+                            </div>
+
+                            <!-- Submit button -->
+                            <button type="submit" class="btn btn-primary btn-block mb-4">회원가입</button>
+                            <button type="reset" class="btn btn-outline-primary btn-block mb-4">취소</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- content 영역 종료 -->
+
+<script th:src="@{/js/common.js}"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</body>
+</html>

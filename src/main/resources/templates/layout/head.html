@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <th:block th:fragment="head">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=dege"> <!-- 인터넷익스프로러로 접근시 엣지로 연결되게 함 -->
+        <meta http-equiv="Author" content="EduTech 콘텐츠 제작팀">
+        <meta http-equiv="Publisher" content="EduTech 제작자">
+        <meta http-equiv="Copyright" content="Copyright@EduTech.com">
+        <!--<meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+        <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+
+        <!-- 검색엔진 최적화(SEO:Search Engeen) -->
+        <meta name="Subject" content="EduTech">
+        <meta name="Keyword" content="EduTech, 커뮤니티, lms">
+        <meta name="Description" content="EduTech의 커뮤니티, lms">
+        <meta name="Robots" content="index, follow">
+
+        <!-- 오픈그래프 -->
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="EduTech">
+        <meta property="og:description" content="앞선 생각으로 더 큰 미래의 교육을 준비하는 기업">
+        <meta property="og:image" content="*">
+        <meta property="og:url" content="*">
+
+        <!-- 기타설정 -->
+        <!-- 트위터 -->
+        <meta name="twitter:card" content="picture">
+        <meta name="twitter:title" content="EduTech">
+        <meta name="twitter:description" content="앞선 생각으로 더 큰 미래의 교육을 준비하는 기업">
+        <meta name="twitter:image" content="*">
+
+        <!-- 파비콘 설정 :32X32 자주 사용 -->
+        <!-- 표준 파비콘 -->
+        <link rel="shortcut icon" th:href="@{/assets/favicon.ico}">
+        <!-- 애플 계열 모바일 -->
+        <link rel="apple-touch-ico-precomposed" th:href="@{/image/common/logo_64.png}">
+
+        <!-- 파이어폭스, 오페라 또는 구형 크롬/사파리 -->
+        <!--
+        <link rel="icon" th:href="@{/image/common/logo_32.png}" sizes="32x32">
+        <link rel="icon" th:href="@{/image/common/logo_48.png}" sizes="48x48">
+        <link rel="icon" th:href="@{/image/common/logo_64.png}" sizes="64x64">
+        -->
+
+        <link rel="stylesheet" th:href="@{/css/all.css}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <!--<link rel="stylesheet" th:href="@{/css/styles.css}">-->
+        <link rel="stylesheet" th:href="@{/css/common.css}">
+
+        <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+        <!--<script th:src="@{/js/scripts.js}"></script>-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    </th:block>
+</html>

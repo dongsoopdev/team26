@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Simple Sidebar - Login</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" th:href="@{/assets/favicon.ico}" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
+    <script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script>
+        $(function() {
+            $(".container").contextmenu(function(){
+                alert('마우스 우측버튼 클릭이 금지되어 있습니다.');
+                return false;
+            });
+
+            var cookie_user_id = getLogin();
+            /*로딩시, 쿠키에 값이 있다면  넣어준다. */
+            if (cookie_user_id != "") {
+                $("#inputId").val(cookie_user_id);
+                $("#idSave").attr("checked", true);
+            }
+
+            $("#idSave").on("click", function() {
+                var _this = this;
+                var isRemember;
+                if ($(_this).is(":checked")) {
+                    var inputId = $("#inputId").val();
+                    if (inputId == '') {
+                        alert('아이디를 입력해주세요');
+                        $(_this).attr("checked", false);
+                    } else {
+                        isRemember = confirm("이 PC에 로그인 정보를 저장하시겠습니까?");
+                        if (!isRemember) {
+                            $(_this).attr("checked", false);
+                        } else {
+                            /*쿠키 하루 저장*/
+                            setSave("inputId", $("#inputId").val(), 1);
+                        }
+                    }
+                }
+            });
+
+            //아이디 인풋 박스 엔터 누를시
+            $('#inputId').on('keyup', function(k) {
+                if (k.keyCode == 13) {
+                    doLogin();
+                }
+            });
+            //비밀번호 인풋 박스 엔터 누를시
+            $('#inputPassword').on('keyup', function(k) {
+                if (k.keyCode == 13) {
+                    doLogin();
+                }
+            });
+        });//end init
+
+        function setSave(name, value, expiredays) {
+            var today = new Date();
+            today.setDate(today.getDate() + expiredays);
+            document.cookie = name + "=" + escape(value) + "; path=/; expires="
+                + today.toGMTString() + ";"
+        }
+
+        function getLogin() {
+            var cook = document.cookie + ";";
+            var idx = cook.indexOf("inputId", 0);
+            var val = "";
+            if (idx != -1) {
+                cook = cook.substring(idx, cook.length);
+                begin = cook.indexOf("=", 0) + 1;
+                end = cook.indexOf(";", begin);
+                val = unescape(cook.substring(begin, end));
+            }
+            return val;
+        }
+
+        function doLogin(){
+            var id = $("#inputId");
+            var password = $("#inputPassword");
+
+            if(id.val() == ''){
+                alert('아이디를 입력하세요.');
+                id.focus();
+                return false;
+            }
+
+            if(password.val() == '') {
+                alert('비밀번호를 입력하세요.');
+                password.focus();
+                return false;
+            }
+            if(!isRecaptchaChecked){
+                alert('리캡차 인증 체크를 해주세요.');
+                $("#recaptcha").focus();
+                return false;
+            }
+
+            doValidRecaptcha();
+        }
+
+        var isRecaptchaChecked=false;
+
+        function recaptchaCallback(){// 리캡챠 체크 박스 클릭시 isRecaptchaChecked 값이 true로 변경
+
+            isRecaptchaChecked = true;
+
+        }
+
+        function doValidRecaptcha(){
+            var formData= $("#loginForm").serialize();
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded",
+                url:'/valid-recaptcha',
+                data: formData,
+                dataType: 'text',
+                cache : false,
+                success: function(data){
+                    if(data == 'success'){
+                        console.log('리캡챠 성공!');
+                        $('#registerForm').submit(); //리캡쳐 성공후 로그인 id,pw 체킹 (security 사용)
+                    }
+                    else{
+                        alert('인증되지 않은 주소입니다.');
+                    }
+                },
+                error:function(xhr,status,error){
+                    console.log(error);
+                }
+            });
+        }
+    </script>
+</head>
+<body class="align-middle" >
+<div class="container-fluid d-flex justify-content-center" style="height: 100vh">
+
+    <div class="card align-self-center">
+        <div class="card-header">
+            LOGIN Page
+        </div>
+        <div class="card-body">
+            <th:block th:if="${param.logout != null}">
+                <h1>Logout........</h1>
+            </th:block>
+
+            <form id="registerForm" action="/login" method="post">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">아이디</span>
+                    <input type="text" name="username" class="form-control" placeholder="USER ID" required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">패스워드</span>
+                    <input type="password" name="password" class="form-control" placeholder="PASSWORD" required>
+                </div>
+                <div class="input-group mb-3">
+                    <input class="form-check-input" type="checkbox" value="remember-me" id="idSave">
+                    <label class="form-check-label">
+                        아이디 저장
+                    </label>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="form-group">
+                        <form enctype="utf8">
+                            <div id="recaptcha" class="g-recaptcha" th:attr="data-sitekey=${@captchaSetting.getSite()}"
+                                 data-callback="recaptchaCallback">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="my-4">
+                    <div class="float-end">
+                        <button type="button" class="btn btn-primary submitBtn" onclick="doLogin()">LOGIN</button>
+                    </div>
+                </div>
+            </form>
+            <a href="/oauth2/authorization/kakao">KAKAO</a>
+        </div><!--end card body-->
+    </div><!--end card-->
+</div>
+</body>
+</html>

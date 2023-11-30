@@ -1,0 +1,52 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: local
+  thymeleaf:
+    check-template-location: true
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+  mvc:
+    servlet:
+      path: /
+    static-path-pattern: /static/**
+    hidden-method:
+        filter:
+          enabled: true
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://team26.c1oby0nabaqs.ap-northeast-2.rds.amazonaws.com:3306/edutech
+    username: admin
+    password: 12345678
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 1000
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 100MB
+      location: C://upload
+  messages:
+    basename: messages
+    encoding: UTF-8
+
+logging:
+  level:
+    org:
+      springframework: info
+
+google:
+  recaptcha:
+    key:
+      site: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
+      secret: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
+      url: https://www.google.com/recaptcha/api/siteverify
