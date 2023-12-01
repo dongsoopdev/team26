@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
+    <title>LMS</title>
+</head>
+<body class="sb-nav-fixed">
+    <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
+    <div id="layoutSidenav">
+        <th:block th:insert="~{layout/lmsMenu :: lmsMenu}"></th:block>
+        <div id="layoutSidenav_content">
+            <main>
+                <th:block layout:fragment="content"></th:block>
+            </main>
+            <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
+        </div>
+    </div>
+</body>
+</html>
