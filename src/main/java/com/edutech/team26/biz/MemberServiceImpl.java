@@ -60,15 +60,28 @@ public class MemberServiceImpl implements MemberService{
         String uuid = UUID.randomUUID().toString();
 
         Member member = modelMapper.map(memberJoinDTO, Member.class);
-        member.setPassword(passwordEncoder.encode(memberJoinDTO.getPassword()));
-        member.setMno(mno + 1L);
-        member.setEmailAuthYn(false);
-        member.setEmailAuthKey(uuid);
-        //member.setEmailAuthYn(true);
+        member.changePassword(passwordEncoder.encode(memberJoinDTO.getPassword()));
+        member.changeMno(mno + 1L);
+        // 사용자 등록시 아래 사용
+        member.changeEmailAuthYn(false);
+        member.changeEmailAuthKey(uuid);
         member.addRole(MemberRole.USER);
-        //member.setUserStatus(MemberCode.MEMBER_STATUS_ING);
-        member.setUserStatus(MemberCode.MEMBER_STATUS_REQ);
+        member.changeUserStatus(MemberCode.MEMBER_STATUS_REQ);
+        // 관리자 등록시 아래 사용
+        /*
+        member.changeEmailAuthYn(true);
+        member.changeEmailAuthKey("");
+        member.addRole(MemberRole.ADMIN);
+        member.changeUserStatus(MemberCode.MEMBER_STATUS_ING);
+        */
         memberRepository.save(member);
+
+        // 회원가입 후 키 인증 메일 보내기
+        String subject = "[LMS] 회원이 되신 것을 환영합니다.";
+        String text = "<h2>LMS 회원가입을 축하드립니다.</h2><br /><hr /><br />";
+        text += "<p>" + memberJoinDTO.getUserName() + "님의 아래 링크를 클릭하셔서 가입을 완료 하세요.</p>";
+        text += "<div><a target='_blank' href='http://localhost:8080/member/email-auth/" + uuid + "'>가입 완료</a></div>";
+        mailComponent.sendMail(email, subject, text);
 
         return true;
 
@@ -87,10 +100,10 @@ public class MemberServiceImpl implements MemberService{
             return false;
         }
 
-        member.setUserStatus(MemberCode.MEMBER_STATUS_ING);
-        member.setEmailAuthYn(true);
-        member.setEmailAuthKey("");
-        member.setEmailAuthTime(LocalDateTime.now());
+        member.changeUserStatus(MemberCode.MEMBER_STATUS_ING);
+        member.changeEmailAuthYn(true);
+        member.changeEmailAuthKey("");
+        member.changeEmailAuthTime(LocalDateTime.now());
         memberRepository.save(member);
 
         return true;
