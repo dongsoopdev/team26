@@ -43,7 +43,7 @@ public class SecurityConfig {
             .authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                     .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                    .requestMatchers("/", "/**","/login","/join").permitAll()
+                    .requestMatchers("/", "/**","/login","/join_frm", "join_frm_u", "join_frm_t").permitAll()
                     .anyRequest().authenticated());
 
         http
