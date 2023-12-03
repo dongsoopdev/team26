@@ -63,6 +63,10 @@ public class Member extends BaseEntity {
     @Column
     private String userStatus;
 
+    @Column
+    @Builder.Default
+    private Boolean active = false;
+
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
     private Set<MemberRole> roleSet = new HashSet<>();
@@ -89,6 +93,10 @@ public class Member extends BaseEntity {
 
     public void changeUserStatus(String userStatus){
         this.userStatus = userStatus;
+    }
+
+    public void changeActive(boolean active){
+        this.active = active;
     }
 
     public void addRole(MemberRole memberRole){
