@@ -6,10 +6,12 @@ import com.edutech.team26.constant.MemberCode;
 import com.edutech.team26.constant.MemberRole;
 import com.edutech.team26.domain.Member;
 import com.edutech.team26.dto.MemberJoinDTO;
+import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +24,12 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
+import java.security.Principal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -65,15 +70,19 @@ public class MemberServiceImpl implements MemberService{
         // 사용자 등록시 아래 사용
         member.changeEmailAuthYn(false);
         member.changeEmailAuthKey(uuid);
-        member.addRole(MemberRole.USER);
+        if(userType.equals("teacher")) {
+            member.addRole(MemberRole.TEACHER);
+        } else {
+            member.addRole(MemberRole.USER);
+        }
         member.changeUserStatus(MemberCode.MEMBER_STATUS_REQ);
         // 관리자 등록시 아래 사용
-        /*
-        member.changeEmailAuthYn(true);
+        /*member.changeEmailAuthYn(true);
         member.changeEmailAuthKey("");
         member.addRole(MemberRole.ADMIN);
         member.changeUserStatus(MemberCode.MEMBER_STATUS_ING);
-        */
+        member.changeActive(true);*/
+
         memberRepository.save(member);
 
         // 회원가입 후 키 인증 메일 보내기
@@ -98,6 +107,10 @@ public class MemberServiceImpl implements MemberService{
 
         if (member.isEmailAuthYn()) {
             return false;
+        }
+
+        if(Arrays.toString(optionalMember.get().getRoleSet().toArray()).equals("[USER]")) {
+            member.changeActive(true);
         }
 
         member.changeUserStatus(MemberCode.MEMBER_STATUS_ING);
