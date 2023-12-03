@@ -1,18 +1,14 @@
 package com.edutech.team26.controller;
 
 import com.edutech.team26.biz.MemberService;
-import com.edutech.team26.domain.Member;
 import com.edutech.team26.dto.MemberJoinDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -24,21 +20,37 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/join")
-    public String joinGET(Model model){
-        log.info("-------------------- join get --------------------");
+    @GetMapping("/join_frm")
+    public String joinTerm(Model model){
+        log.info("-------------------- joinTerm --------------------");
+        return "member/joinTerm";
+    }
+
+    @GetMapping("/join_frm_u")
+    public String joinUser(Model model){
+        log.info("-------------------- joinUser --------------------");
         MemberJoinDTO member = new MemberJoinDTO();
         model.addAttribute("member", member);
+        model.addAttribute("userType", "user");
         return "member/join";
     }
 
-    @PostMapping("/join")
-    public String joinPOST(MemberJoinDTO memberJoinDTO, RedirectAttributes redirectAttributes){
+    @GetMapping("/join_frm_t")
+    public String joinTeacher(Model model){
+        log.info("-------------------- joinTeacher --------------------");
+        MemberJoinDTO member = new MemberJoinDTO();
+        model.addAttribute("member", member);
+        model.addAttribute("userType", "teacher");
+        return "member/join";
+    }
+
+    @PostMapping("/join_frm")
+    public String joinPOST(MemberJoinDTO memberJoinDTO, @RequestParam("userType") String userType, RedirectAttributes redirectAttributes){
         log.info("-------------------- join post --------------------");
         log.info(memberJoinDTO);
         boolean result = false;
         try {
-            result = memberService.join(memberJoinDTO);
+            result = memberService.join(memberJoinDTO, userType);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "email");
         }

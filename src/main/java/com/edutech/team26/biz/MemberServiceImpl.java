@@ -42,7 +42,7 @@ public class MemberServiceImpl implements MemberService{
     private final CaptchaSetting captchaSetting;
 
     @Override
-    public boolean join(MemberJoinDTO memberJoinDTO) throws Exception {
+    public boolean join(MemberJoinDTO memberJoinDTO, String userType) throws Exception {
         String email = memberJoinDTO.getEmail();
         //boolean exist = memberRepository.existsById(email);
 
