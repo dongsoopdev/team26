@@ -33,8 +33,8 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("username not found...");
         }
 
-        if(!(result.get().getUserStatus().equals(MemberCode.MEMBER_STATUS_ING) && result.get().getActive().equals(true))) {
-            throw new UsernameNotFoundException("로그인 안됨");
+        if(!result.get().getUserStatus().equals(MemberCode.MEMBER_STATUS_ING)) {
+            throw new UsernameNotFoundException("활성화 안된 아이디");
         }
 
         Member member = result.get();
