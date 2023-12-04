@@ -47,7 +47,7 @@ public class MemberServiceImpl implements MemberService{
     private final CaptchaSetting captchaSetting;
 
     @Override
-    public boolean join(MemberJoinDTO memberJoinDTO, String userType) throws Exception {
+    public boolean join(MemberJoinDTO memberJoinDTO) throws Exception {
         String email = memberJoinDTO.getEmail();
         //boolean exist = memberRepository.existsById(email);
 
@@ -70,11 +70,7 @@ public class MemberServiceImpl implements MemberService{
         // 사용자 등록시 아래 사용
         member.changeEmailAuthYn(false);
         member.changeEmailAuthKey(uuid);
-        if(userType.equals("teacher")) {
-            member.addRole(MemberRole.TEACHER);
-        } else {
-            member.addRole(MemberRole.USER);
-        }
+        member.addRole(MemberRole.USER);
         member.changeUserStatus(MemberCode.MEMBER_STATUS_REQ);
         // 관리자 등록시 아래 사용
         /*member.changeEmailAuthYn(true);
@@ -107,10 +103,6 @@ public class MemberServiceImpl implements MemberService{
 
         if (member.isEmailAuthYn()) {
             return false;
-        }
-
-        if(Arrays.toString(optionalMember.get().getRoleSet().toArray()).equals("[USER]")) {
-            member.changeActive(true);
         }
 
         member.changeUserStatus(MemberCode.MEMBER_STATUS_ING);

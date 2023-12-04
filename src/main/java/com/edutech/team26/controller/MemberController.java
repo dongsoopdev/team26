@@ -20,37 +20,26 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/join_frm")
+    @GetMapping("/join_term")
     public String joinTerm(Model model){
         log.info("-------------------- joinTerm --------------------");
         return "member/joinTerm";
     }
 
-    @GetMapping("/join_frm_u")
+    @GetMapping("/join")
     public String joinUser(Model model){
-        log.info("-------------------- joinUser --------------------");
         MemberJoinDTO member = new MemberJoinDTO();
         model.addAttribute("member", member);
-        model.addAttribute("userType", "user");
         return "member/join";
     }
 
-    @GetMapping("/join_frm_t")
-    public String joinTeacher(Model model){
-        log.info("-------------------- joinTeacher --------------------");
-        MemberJoinDTO member = new MemberJoinDTO();
-        model.addAttribute("member", member);
-        model.addAttribute("userType", "teacher");
-        return "member/join";
-    }
-
-    @PostMapping("/join_frm")
-    public String joinPOST(MemberJoinDTO memberJoinDTO, @RequestParam("userType") String userType, RedirectAttributes redirectAttributes){
+    @PostMapping("/join")
+    public String joinPOST(MemberJoinDTO memberJoinDTO, RedirectAttributes redirectAttributes){
         log.info("-------------------- join post --------------------");
         log.info(memberJoinDTO);
         boolean result = false;
         try {
-            result = memberService.join(memberJoinDTO, userType);
+            result = memberService.join(memberJoinDTO);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "email");
         }
