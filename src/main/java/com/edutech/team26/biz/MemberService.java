@@ -11,6 +11,6 @@ public interface MemberService {
 
     boolean verifyRecaptcha(String recaptcha);
 
-    MemberJoinDTO myinfo(String email);
+    /*MemberJoinDTO myinfo(String email);*/
 
 }

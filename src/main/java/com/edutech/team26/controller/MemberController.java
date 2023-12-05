@@ -1,16 +1,20 @@
 package com.edutech.team26.controller;
 
+import com.edutech.team26.biz.CustomUserDetailsService;
 import com.edutech.team26.biz.MemberService;
 import com.edutech.team26.dto.MemberJoinDTO;
+import com.edutech.team26.dto.MemberSecurityDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.lang.reflect.Field;
 import java.security.Principal;
 
 @Log4j2
@@ -65,14 +69,21 @@ public class MemberController {
         return "member/joinEmailComplete";
     }
 
-    @PreAuthorize("hasRole('USER')") //로그인하여 USER 롤이 있는 경우만
+    //@PreAuthorize("hasRole('USER')") // 권한 한개
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')") // 권한 여러개
     @GetMapping("/mypage")
-    public String myPage(Principal principal, Model model){
-        String email = principal.getName();
-        MemberJoinDTO memberDto = memberService.myinfo(email);
+    public String myPage(Model model) throws NoSuchFieldException {
+
+        // member 토큰 정보 가져오기
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         log.info("-------------------- MyInfo --------------------");
-        log.info(memberDto);
-        model.addAttribute("memberDto",memberDto);
+        log.info(">>>>> " + member.getMno());
+
+        //String email = principal.getName();
+        //MemberJoinDTO memberDto = memberService.myinfo(email);
+        //log.info(memberDto);
+        //model.addAttribute("memberDto",memberDto);
         return "member/mypage";
     }
 

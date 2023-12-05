@@ -18,9 +18,9 @@ spring:
           enabled: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://team26.c1oby0nabaqs.ap-northeast-2.rds.amazonaws.com:3306/edutech
-    username: admin
-    password: 12345678
+    url: jdbc:mariadb://localhost:3306/edutech
+    username: root
+    password: 1234
   jpa:
     properties:
       hibernate:

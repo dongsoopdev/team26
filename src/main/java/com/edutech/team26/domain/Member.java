@@ -18,10 +18,11 @@ import java.util.Set;
 @ToString(exclude = "roleSet")
 public class Member extends BaseEntity {
 
-    @Column(nullable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mno;
 
-    @Id
+    @Column(nullable = false, unique=true)
     private String email;
 
     @Column(nullable = false)
@@ -63,20 +64,12 @@ public class Member extends BaseEntity {
     @Column
     private String userStatus;
 
-    @Column
-    @Builder.Default
-    private Boolean active = false;
-
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
     private Set<MemberRole> roleSet = new HashSet<>();
 
     public void changePassword(String password){
         this.password = password;
-    }
-
-    public void changeMno(Long mno){
-        this.mno = mno;
     }
 
     public void changeEmailAuthYn(boolean emailAuthYn) {
@@ -93,10 +86,6 @@ public class Member extends BaseEntity {
 
     public void changeUserStatus(String userStatus){
         this.userStatus = userStatus;
-    }
-
-    public void changeActive(boolean active){
-        this.active = active;
     }
 
     public void addRole(MemberRole memberRole){

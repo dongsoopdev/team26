@@ -51,22 +51,22 @@ public class MemberServiceImpl implements MemberService{
         String email = memberJoinDTO.getEmail();
         //boolean exist = memberRepository.existsById(email);
 
-        Optional<Member> optionalMember = memberRepository.findById(email);
+        Optional<Member> checkMember = memberRepository.findByEmail(email);
 
-        if(optionalMember.isPresent()){
+        if(checkMember.isPresent()){
             return false;
         }
 
-        Long mno = 0L;
-        Member userInfo = memberRepository.lastMemberMno();
+        //Long mno = 0L;
+        //Member userInfo = memberRepository.lastMemberMno();
 
-        if(userInfo != null) mno = userInfo.getMno();
+        //if(userInfo != null) mno = userInfo.getMno();
 
         String uuid = UUID.randomUUID().toString();
 
         Member member = modelMapper.map(memberJoinDTO, Member.class);
         member.changePassword(passwordEncoder.encode(memberJoinDTO.getPassword()));
-        member.changeMno(mno + 1L);
+        //member.changeMno(mno + 1L);
         // 사용자 등록시 아래 사용
         member.changeEmailAuthYn(false);
         member.changeEmailAuthKey(uuid);
@@ -76,8 +76,7 @@ public class MemberServiceImpl implements MemberService{
         /*member.changeEmailAuthYn(true);
         member.changeEmailAuthKey("");
         member.addRole(MemberRole.ADMIN);
-        member.changeUserStatus(MemberCode.MEMBER_STATUS_ING);
-        member.changeActive(true);*/
+        member.changeUserStatus(MemberCode.MEMBER_STATUS_ING);*/
 
         memberRepository.save(member);
 
@@ -154,11 +153,11 @@ public class MemberServiceImpl implements MemberService{
 
     }
 
-    @Override
+    /*@Override
     public MemberJoinDTO myinfo(String email) {
         Member member = memberRepository.findByEmail(email);
         MemberJoinDTO memberDto = modelMapper.map(member, MemberJoinDTO.class);
         return memberDto;
-    }
+    }*/
 
 }
