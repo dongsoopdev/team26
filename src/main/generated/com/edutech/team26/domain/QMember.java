@@ -22,8 +22,6 @@ public class QMember extends EntityPathBase<Member> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
-    public final BooleanPath active = createBoolean("active");
-
     public final StringPath addr = createString("addr");
 
     public final StringPath addrDetail = createString("addrDetail");

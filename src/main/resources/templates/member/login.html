@@ -22,7 +22,7 @@
             var cookie_user_id = getLogin();
             /*로딩시, 쿠키에 값이 있다면  넣어준다. */
             if (cookie_user_id != "") {
-                $("#inputId").val(cookie_user_id);
+                $("#username").val(cookie_user_id);
                 $("#idSave").attr("checked", true);
             }
 
@@ -30,8 +30,8 @@
                 var _this = this;
                 var isRemember;
                 if ($(_this).is(":checked")) {
-                    var inputId = $("#inputId").val();
-                    if (inputId == '') {
+                    var username = $("#username").val();
+                    if (username == '') {
                         alert('아이디를 입력해주세요');
                         $(_this).attr("checked", false);
                     } else {
@@ -40,20 +40,20 @@
                             $(_this).attr("checked", false);
                         } else {
                             /*쿠키 하루 저장*/
-                            setSave("inputId", $("#inputId").val(), 1);
+                            setSave("username", $("#username").val(), 1);
                         }
                     }
                 }
             });
 
             //아이디 인풋 박스 엔터 누를시
-            $('#inputId').on('keyup', function(k) {
+            $('#username').on('keyup', function(k) {
                 if (k.keyCode == 13) {
                     doLogin();
                 }
             });
             //비밀번호 인풋 박스 엔터 누를시
-            $('#inputPassword').on('keyup', function(k) {
+            $('#password').on('keyup', function(k) {
                 if (k.keyCode == 13) {
                     doLogin();
                 }
@@ -69,7 +69,7 @@
 
         function getLogin() {
             var cook = document.cookie + ";";
-            var idx = cook.indexOf("inputId", 0);
+            var idx = cook.indexOf("username", 0);
             var val = "";
             if (idx != -1) {
                 cook = cook.substring(idx, cook.length);
@@ -81,8 +81,8 @@
         }
 
         function doLogin(){
-            var id = $("#inputId");
-            var password = $("#inputPassword");
+            var id = $("#username");
+            var password = $("#password");
 
             if(id.val() == ''){
                 alert('아이디를 입력하세요.');
@@ -152,11 +152,11 @@
             <form id="registerForm" action="/login" method="post">
                 <div class="input-group mb-3">
                     <span class="input-group-text">아이디</span>
-                    <input type="text" name="username" class="form-control" placeholder="USER ID" required>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="USER ID" required>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">패스워드</span>
-                    <input type="password" name="password" class="form-control" placeholder="PASSWORD" required>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="PASSWORD" required>
                 </div>
                 <div class="input-group mb-3">
                     <input class="form-check-input" type="checkbox" value="remember-me" id="idSave">
@@ -179,7 +179,6 @@
                     </div>
                 </div>
             </form>
-            <a href="/oauth2/authorization/kakao">KAKAO</a>
         </div><!--end card body-->
     </div><!--end card-->
 </div>

@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 @Data
 public class MemberJoinDTO {
 
-    private Long mno;
     private String email;
     private String password;
     private String passwordConfirm = "";
