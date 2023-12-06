@@ -52,6 +52,7 @@ spring:
             enable: true
 
 logging:
+  config: classpath:logback.xml
   level:
     org:
       springframework: info

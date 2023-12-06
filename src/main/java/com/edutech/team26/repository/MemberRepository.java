@@ -27,8 +27,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m from Member m where m.email = :email")
     Member findByUserId(@Param("email") String email);
 
-    @Query("update Member m set m.emailAuthKey = :emailAuthKey, m.emailAuthYn = :emailAuthYn, m.emailAuthTime = CURRENT_TIMESTAMP() where m.mno = :mno")
-    void updateEmailAuth(@Param("emailAuthKey") String emailAuthKey, @Param("emailAuthYn") boolean emailAuthYn);
+    @Modifying
+    @Transactional
+    @Query("update Member m set m.lastLoginAt = CURRENT_TIMESTAMP() where m.mno = :mno")
+    void updateLoginDate(@Param("mno") Long mno) throws Exception;
 
     Optional<Member> findByEmailAuthKey(String emailAuthKey);
 

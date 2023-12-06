@@ -1,24 +1,22 @@
 package com.edutech.team26.config;
 
 import com.edutech.team26.biz.CustomUserDetailsService;
+import com.edutech.team26.biz.MemberService;
+import com.edutech.team26.component.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import javax.sql.DataSource;
+import java.lang.reflect.Field;
 
 @Log4j2
 @Configuration
@@ -38,7 +36,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        log.info("------------------- filter Chain ------------------");
 
         http
             .authorizeHttpRequests((authorizeHttpRequests) ->
@@ -51,6 +48,7 @@ public class SecurityConfig {
             .formLogin((formLogin) ->
                 formLogin
                     .loginPage("/login")
+                    .successHandler(new LoginSuccessHandler())
             );
 
         http
@@ -75,7 +73,6 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
-        log.info("-------------------- WebSecurity ----------------------");
         return (web) -> web.ignoring().requestMatchers(
                 PathRequest.toStaticResources().atCommonLocations());
     }

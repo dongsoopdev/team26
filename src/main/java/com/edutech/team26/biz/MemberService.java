@@ -11,6 +11,8 @@ public interface MemberService {
 
     boolean verifyRecaptcha(String recaptcha);
 
+    boolean updateLoginDate() throws Exception;
+
     /*MemberJoinDTO myinfo(String email);*/
 
 }

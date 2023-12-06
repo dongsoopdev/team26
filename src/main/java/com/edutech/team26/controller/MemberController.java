@@ -35,7 +35,6 @@ public class MemberController {
     // Member
     @GetMapping("/join_term")
     public String joinTerm(Model model){
-        log.info("-------------------- joinTerm --------------------");
         return "member/joinTerm";
     }
 
@@ -48,8 +47,6 @@ public class MemberController {
 
     @PostMapping("/join")
     public String joinPOST(MemberJoinDTO memberJoinDTO, RedirectAttributes redirectAttributes){
-        log.info("-------------------- join post --------------------");
-        log.info(memberJoinDTO);
         boolean result = false;
         try {
             result = memberService.join(memberJoinDTO);
@@ -63,15 +60,17 @@ public class MemberController {
 
     @GetMapping("/login")
     public String loginGet(){
-        log.info("-------------------- login GET --------------------");
         return "member/login";
+    }
+
+    @GetMapping("/loginPro")
+    public String loginPro() throws Exception{
+        memberService.updateLoginDate();
+        return "redirect:/";
     }
 
     @GetMapping("/member/email-auth/{id}")
     public String emailAuth(@PathVariable(required = false) String id, Model model){
-        log.info("-------------------- emailAuthPage --------------------");
-        log.info(id);
-
         boolean result = memberService.emailAuth(id);
         model.addAttribute("result", result);
 
@@ -85,10 +84,6 @@ public class MemberController {
 
         // member 토큰 정보 가져오기
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        log.info("-------------------- MyInfo --------------------");
-        log.info(">>>>> " + member.getMno());
-
         //String email = principal.getName();
         //MemberJoinDTO memberDto = memberService.myinfo(email);
         //log.info(memberDto);
@@ -116,17 +111,13 @@ public class MemberController {
 
     @GetMapping("/upgradeStudent")
     public String upgradeStudent(Model model){
-        log.info("-------------------- upgradeStudent --------------------");
         return "student/upgrade";
     }
 
     @PostMapping("/upgradeStudent")
     public String upgradeStudentPro(Model model, @Param("lectureNo") Long lectureNo) throws Exception {
-        log.info("-------------------- upgradeStudentPro --------------------");
-
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         studentService.updateGrade(member.getMno(), lectureNo);
-
         return "redirect:/";
     }
 
@@ -134,14 +125,11 @@ public class MemberController {
 
     @GetMapping("/upgradeTeacher")
     public String upgradeTeacher(Model model){
-        log.info("-------------------- upgradeTeacher --------------------");
         return "teacher/upgrade";
     }
 
     @PostMapping("/upgradeTeacher")
     public String upgradeTeacherPro(HttpServletRequest request, Model model, MultipartFile uploadFile) throws Exception {
-        log.info("-------------------- upgradeTeacherPro --------------------");
-
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         teacherService.updateGrade(member.getMno(), uploadFile, request);
 
@@ -150,9 +138,7 @@ public class MemberController {
 
     @GetMapping("/stateTeacher")
     public String stateTeacher(@Param("type") int type, @Param("mno") Long teacherNo) throws Exception {
-        log.info("-------------------- stateTeacher --------------------");
         teacherService.changeActive(teacherNo, type);
-
         return "redirect:/";
     }
 
