@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <title>EudTech LMS</title>
@@ -47,7 +48,14 @@
         </button>
 
         <div id="loginArea">
-            로그인영역
+            로그인영역진행중
+            <th:block sec:authorize="isAnonymous()">로그인 안함</th:block>
+            <th:block sec:authorize="isAuthenticated()">
+                <p sec:authorize="hasRole('USER')">회원</p>
+                <p sec:authorize="hasRole('STUDENT')">학생</p>
+                <p sec:authorize="hasRole('TEACHER')">선생</p>
+                <p sec:authorize="hasRole('ADMIN')">관리자</p>
+            </th:block>
         </div>
 
     </div>

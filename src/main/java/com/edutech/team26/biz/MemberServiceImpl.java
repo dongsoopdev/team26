@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
     private final ModelMapper modelMapper;
 
@@ -49,29 +50,23 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public boolean join(MemberJoinDTO memberJoinDTO) throws Exception {
         String email = memberJoinDTO.getEmail();
-        //boolean exist = memberRepository.existsById(email);
 
         Optional<Member> checkMember = memberRepository.findByEmail(email);
-
         if(checkMember.isPresent()){
             return false;
         }
-
-        //Long mno = 0L;
-        //Member userInfo = memberRepository.lastMemberMno();
-
-        //if(userInfo != null) mno = userInfo.getMno();
 
         String uuid = UUID.randomUUID().toString();
 
         Member member = modelMapper.map(memberJoinDTO, Member.class);
         member.changePassword(passwordEncoder.encode(memberJoinDTO.getPassword()));
-        //member.changeMno(mno + 1L);
+
         // 사용자 등록시 아래 사용
         member.changeEmailAuthYn(false);
         member.changeEmailAuthKey(uuid);
         member.addRole(MemberRole.USER);
         member.changeUserStatus(MemberCode.MEMBER_STATUS_REQ);
+
         // 관리자 등록시 아래 사용
         /*member.changeEmailAuthYn(true);
         member.changeEmailAuthKey("");
@@ -81,11 +76,11 @@ public class MemberServiceImpl implements MemberService{
         memberRepository.save(member);
 
         // 회원가입 후 키 인증 메일 보내기
-        String subject = "[LMS] 회원이 되신 것을 환영합니다.";
+        /*String subject = "[LMS] 회원이 되신 것을 환영합니다.";
         String text = "<h2>LMS 회원가입을 축하드립니다.</h2><br /><hr /><br />";
         text += "<p>" + memberJoinDTO.getUserName() + "님의 아래 링크를 클릭하셔서 가입을 완료 하세요.</p>";
         text += "<div><a target='_blank' href='http://localhost:8080/member/email-auth/" + uuid + "'>가입 완료</a></div>";
-        mailComponent.sendMail(email, subject, text);
+        mailComponent.sendMail(email, subject, text);*/
 
         return true;
 
@@ -151,6 +146,13 @@ public class MemberServiceImpl implements MemberService{
             return false;
         }
 
+    }
+
+    @Override
+    public boolean updateLoginDate() throws Exception {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        memberRepository.updateLoginDate(member.getMno());
+        return true;
     }
 
     /*@Override

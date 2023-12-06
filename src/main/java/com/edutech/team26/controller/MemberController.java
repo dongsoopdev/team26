@@ -2,16 +2,20 @@ package com.edutech.team26.controller;
 
 import com.edutech.team26.biz.CustomUserDetailsService;
 import com.edutech.team26.biz.MemberService;
+import com.edutech.team26.biz.StudentService;
+import com.edutech.team26.biz.TeacherService;
 import com.edutech.team26.dto.MemberJoinDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.lang.reflect.Field;
@@ -24,9 +28,13 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    private final StudentService studentService;
+
+    private final TeacherService teacherService;
+
+    // Member
     @GetMapping("/join_term")
     public String joinTerm(Model model){
-        log.info("-------------------- joinTerm --------------------");
         return "member/joinTerm";
     }
 
@@ -39,8 +47,6 @@ public class MemberController {
 
     @PostMapping("/join")
     public String joinPOST(MemberJoinDTO memberJoinDTO, RedirectAttributes redirectAttributes){
-        log.info("-------------------- join post --------------------");
-        log.info(memberJoinDTO);
         boolean result = false;
         try {
             result = memberService.join(memberJoinDTO);
@@ -54,15 +60,17 @@ public class MemberController {
 
     @GetMapping("/login")
     public String loginGet(){
-        log.info("-------------------- login GET --------------------");
         return "member/login";
+    }
+
+    @GetMapping("/loginPro")
+    public String loginPro() throws Exception{
+        memberService.updateLoginDate();
+        return "redirect:/";
     }
 
     @GetMapping("/member/email-auth/{id}")
     public String emailAuth(@PathVariable(required = false) String id, Model model){
-        log.info("-------------------- emailAuthPage --------------------");
-        log.info(id);
-
         boolean result = memberService.emailAuth(id);
         model.addAttribute("result", result);
 
@@ -76,10 +84,6 @@ public class MemberController {
 
         // member 토큰 정보 가져오기
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        log.info("-------------------- MyInfo --------------------");
-        log.info(">>>>> " + member.getMno());
-
         //String email = principal.getName();
         //MemberJoinDTO memberDto = memberService.myinfo(email);
         //log.info(memberDto);
@@ -100,6 +104,42 @@ public class MemberController {
             result = "false";
         }
         return result;
+    }
+
+
+    // Student
+
+    @GetMapping("/upgradeStudent")
+    public String upgradeStudent(Model model){
+        return "student/upgrade";
+    }
+
+    @PostMapping("/upgradeStudent")
+    public String upgradeStudentPro(Model model, @Param("lectureNo") Long lectureNo) throws Exception {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        studentService.updateGrade(member.getMno(), lectureNo);
+        return "redirect:/";
+    }
+
+    // Teacher
+
+    @GetMapping("/upgradeTeacher")
+    public String upgradeTeacher(Model model){
+        return "teacher/upgrade";
+    }
+
+    @PostMapping("/upgradeTeacher")
+    public String upgradeTeacherPro(HttpServletRequest request, Model model, MultipartFile uploadFile) throws Exception {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        teacherService.updateGrade(member.getMno(), uploadFile, request);
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/stateTeacher")
+    public String stateTeacher(@Param("type") int type, @Param("mno") Long teacherNo) throws Exception {
+        teacherService.changeActive(teacherNo, type);
+        return "redirect:/";
     }
 
 }
