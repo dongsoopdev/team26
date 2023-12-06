@@ -18,7 +18,6 @@ public class MemberSecurityDTO extends User {
     private String password;
     private String userName;
     private boolean emailAuthYn;
-    private boolean del;
 
     public MemberSecurityDTO(Long mno, String email, String password, String userName, boolean emailAuthYn, Collection<? extends GrantedAuthority> authorities) {
         super(email, password, authorities);

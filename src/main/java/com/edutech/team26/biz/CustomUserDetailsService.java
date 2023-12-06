@@ -28,13 +28,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("loadUserByUsername: " + username);
 
         Optional<Member> result = memberRepository.getWithRoles(username);
+        log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>" + result);
 
         if (result.isEmpty()) { //해당 아이디를 가진 사용자가 없다면
             throw new UsernameNotFoundException("username not found...");
         }
 
         if(!result.get().getUserStatus().equals(MemberCode.MEMBER_STATUS_ING)) {
-            throw new UsernameNotFoundException("로그인 안됨");
+            throw new UsernameNotFoundException("활성화 안된 아이디");
         }
 
         Member member = result.get();

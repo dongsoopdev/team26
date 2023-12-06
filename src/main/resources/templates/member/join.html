@@ -16,8 +16,9 @@
                     <div class="card-body p-5 text-center">
                         <form th:action="@{/join}" autocomplete="off" th:object="${member}" method="post">
                             <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
-                            <div class="form-outline mb-4 text-center">
-                                <a th:href="@{/}">EduTech</a>
+
+                            <div class="form-outline mb-4 text-center fs-2 fw-bolder">
+                                <a class="text-black text-decoration-none" th:href="@{/}">EduTech</a>
                             </div>
 
                             <div class="form-outline mb-4">

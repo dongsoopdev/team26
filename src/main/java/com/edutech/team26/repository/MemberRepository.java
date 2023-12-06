@@ -17,7 +17,7 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     Optional<Member> getWithRoles(String email);
 
     @EntityGraph(attributePaths = "roleSet")
-    Member findByEmail(String email);
+    Member findByMno(Long mno);
 
     @Modifying
     @Transactional
@@ -34,5 +34,7 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     void updateEmailAuth(@Param("emailAuthKey") String emailAuthKey, @Param("emailAuthYn") boolean emailAuthYn);
 
     Optional<Member> findByEmailAuthKey(String emailAuthKey);
+
+    Optional<Member> findByEmail(String email);
     
 }
