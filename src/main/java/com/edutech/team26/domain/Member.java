@@ -92,8 +92,9 @@ public class Member extends BaseEntity {
         this.roleSet.add(memberRole);
     }
 
-    public void clearRoles() {
+    public void updateRole(MemberRole memberRole){
         this.roleSet.clear();
+        this.roleSet.add(memberRole);
     }
 
 }

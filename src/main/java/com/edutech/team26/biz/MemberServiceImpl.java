@@ -81,11 +81,11 @@ public class MemberServiceImpl implements MemberService{
         memberRepository.save(member);
 
         // 회원가입 후 키 인증 메일 보내기
-        String subject = "[LMS] 회원이 되신 것을 환영합니다.";
+        /*String subject = "[LMS] 회원이 되신 것을 환영합니다.";
         String text = "<h2>LMS 회원가입을 축하드립니다.</h2><br /><hr /><br />";
         text += "<p>" + memberJoinDTO.getUserName() + "님의 아래 링크를 클릭하셔서 가입을 완료 하세요.</p>";
         text += "<div><a target='_blank' href='http://localhost:8080/member/email-auth/" + uuid + "'>가입 완료</a></div>";
-        mailComponent.sendMail(email, subject, text);
+        mailComponent.sendMail(email, subject, text);*/
 
         return true;
 

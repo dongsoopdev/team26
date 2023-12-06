@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, String> {
+public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @EntityGraph(attributePaths = "roleSet")
     @Query("select m from Member m where m.email = :email")
@@ -26,9 +26,6 @@ public interface MemberRepository extends JpaRepository<Member, String> {
 
     @Query("select m from Member m where m.email = :email")
     Member findByUserId(@Param("email") String email);
-
-    @Query("select m from Member m order by m.regDate desc limit 1")
-    Member lastMemberMno();
 
     @Query("update Member m set m.emailAuthKey = :emailAuthKey, m.emailAuthYn = :emailAuthYn, m.emailAuthTime = CURRENT_TIMESTAMP() where m.mno = :mno")
     void updateEmailAuth(@Param("emailAuthKey") String emailAuthKey, @Param("emailAuthYn") boolean emailAuthYn);
