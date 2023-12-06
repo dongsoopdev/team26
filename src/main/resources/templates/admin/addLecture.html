@@ -11,6 +11,8 @@
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
 <div id="layoutSidenav">
     <th:block th:insert="~{layout/lmsMenu :: lmsMenu}"></th:block>
+
+
     <div id="layoutSidenav_content">
         <main>
             <th:block layout:fragment="content"></th:block>
@@ -20,7 +22,7 @@
             <h1>강좌 등록</h1>
             <div class="detail">
 
-                <form th:action="@{/lecture/add}" id="submitForm" method="post" enctype="multipart/form-data">
+                <form th:action="@{/admin/save}" id="submitForm" method="post" enctype="multipart/form-data">
                     <table class="table">
                         <tbody>
 <!--                        <tr>-->
@@ -60,27 +62,27 @@
 
                         <tr >
                             <th>모집 수강 인원</th>
-                            <td colspan="2" ><input type="number" name="lectureMaxnum" id="lectureMaxnum" class="input" placeholder="모집인원 입력" style="width: 50%" required></td>
+                            <td colspan="2" ><input type="number" name="lectureMaxnum" id="lectureMaxnum" class="input" placeholder="모집 인원 입력" style="width: 50%" required></td>
                         </tr>
 
                         <tr >
                             <th>최소 수강 인원</th>
-                            <td colspan="2" ><input type="number" name="lectureMinnum" id="lectureMinnum" class="input" placeholder="모집인원 입력" style="width: 50%" required></td>
+                            <td colspan="2" ><input type="number" name="lectureMinnum" id="lectureMinnum" class="input" placeholder="최소 수강 인원 입력" style="width: 50%" required></td>
                         </tr>
 
 
 
                         <tr>
                             <th>수강신청 시작일</th>
-                            <td colspan="2"><input type="date" name="startEnrolmentDate" id="startEnrolmentDate" class="input" placeholder="수강신청 시작일" required></td>
+                            <td colspan="2"><input type="date" name="startEnrolmentDate" id="startEnrolmentDate" class="input" placeholder="수강 신청 시작일" required></td>
                         </tr>
                         <tr>
                             <th>수강신청 마감일</th>
-                            <td colspan="2"><input type="date" name="endEnrolmentDate" id="endEnrolmentDate" class="input" placeholder="수강신청 마감일" required></td>
+                            <td colspan="2"><input type="date" name="endEnrolmentDate" id="endEnrolmentDate" class="input" placeholder="수강 신청 마감일" required></td>
                         </tr>
                         <tr>
                             <th>강의 시작일</th>
-                            <td colspan="2"><input type="date" name="startStudyDatet" id="startStudyDate" class="input" placeholder="강의 시작일" required></td>
+                            <td colspan="2"><input type="date" name="startStudyDate" id="startStudyDate" class="input" placeholder="강의 시작일" required></td>
                         </tr>
                         <tr>
                             <th>강의 종료일</th>
@@ -91,16 +93,16 @@
 
                         <tr>
                             <th>썸네일 이미지</th>
-                            <td colspan="2"><input type="file" name="lectureImg1" id="lectureImg1" class="input" placeholder="썸네일 이미지" accept=".jpg, .png" required></td>
+                            <td colspan="2"><input type="file" name="file" id="lectureImg1" class="input" placeholder="썸네일 이미지" accept=".jpg, .png" required></td>
                         </tr>
 
                         <tr>
                             <th>강좌소개 이미지</th>
-                            <td colspan="2"><input type="file" name="lectureImg2" id="lectureImg2" class="input" placeholder="강좌소개 이미지" accept=".jpg, .png" required></td>
+                            <td colspan="2"><input type="file" name="file" id="lectureImg2" class="input" placeholder="강좌 소개 이미지" accept=".jpg, .png" required></td>
                         </tr>
                         <tr>
                             <th>샘플(OT) 영상</th>
-                            <td colspan="2"><input type="file" name="lectureVedio" id="lectureVedio" class="input" placeholder="샘플 영상" accept=".mp4" required></td>
+                            <td colspan="2"><input type="file" name="file" id="lectureVedio" class="input" placeholder="샘플 영상" accept=".mp4" required></td>
                         </tr>
 
 

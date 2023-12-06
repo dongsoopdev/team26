@@ -60,6 +60,11 @@ dependencies {
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+
+	// 12.06 예진 추가
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.1'
+
 }
 
 tasks.withType(JavaCompile) {

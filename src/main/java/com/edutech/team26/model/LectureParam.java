@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 public class LectureParam extends CommonParam {
 
-	long lecture_id; // lecture.id
+	long lecture_no; // lecture.id
 	long categoryId;
 }

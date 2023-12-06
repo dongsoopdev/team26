@@ -24,13 +24,13 @@ public class QLecture extends EntityPathBase<Lecture> {
 
     public final ListPath<Category, QCategory> categorys = this.<Category, QCategory>createList("categorys", Category.class, QCategory.class, PathInits.DIRECT2);
 
-    public final DateTimePath<java.time.LocalDateTime> endEnrolmentDate = createDateTime("endEnrolmentDate", java.time.LocalDateTime.class);
+    public final StringPath endEnrolmentDate = createString("endEnrolmentDate");
 
-    public final DateTimePath<java.time.LocalDateTime> endStudyDate = createDateTime("endStudyDate", java.time.LocalDateTime.class);
+    public final StringPath endStudyDate = createString("endStudyDate");
 
     public final StringPath filePath = createString("filePath");
 
-    public final NumberPath<Long> lecture_id = createNumber("lecture_id", Long.class);
+    public final NumberPath<Long> lecture_no = createNumber("lecture_no", Long.class);
 
     public final NumberPath<Integer> lectureAct = createNumber("lectureAct", Integer.class);
 
@@ -56,9 +56,9 @@ public class QLecture extends EntityPathBase<Lecture> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 
-    public final DateTimePath<java.time.LocalDateTime> startEnrolmentDate = createDateTime("startEnrolmentDate", java.time.LocalDateTime.class);
+    public final StringPath startEnrolmentDate = createString("startEnrolmentDate");
 
-    public final DateTimePath<java.time.LocalDateTime> startStudyDate = createDateTime("startStudyDate", java.time.LocalDateTime.class);
+    public final StringPath startStudyDate = createString("startStudyDate");
 
     public final NumberPath<Long> teacher_no = createNumber("teacher_no", Long.class);
 

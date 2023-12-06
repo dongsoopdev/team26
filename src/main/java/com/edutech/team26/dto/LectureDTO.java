@@ -5,6 +5,7 @@ import com.edutech.team26.domain.Category;
 import com.edutech.team26.domain.Lecture;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ import java.util.List;
 @ToString
 public class LectureDTO {
 
-    private long lecture_id;
-    private long teacher_no;
-    private List<Category> categorys = new ArrayList<>();
+    private long lecture_no;
+    //private long teacher_no;
+    //private List<Category> categorys = new ArrayList<>();
     private String lectureName;
     private String lectureContent;
     private String lectureImg1;
@@ -31,10 +32,10 @@ public class LectureDTO {
     private int lectureCurnum;
     private int lectureMinnum;
     private int lectureMaxnum;
-    private LocalDateTime startEnrolmentDate;                //수강신청일
-    private LocalDateTime endEnrolmentDate;                  //수강종료일
-    private LocalDateTime startStudyDate;                      //강의시작일
-    private LocalDateTime endStudyDate;                        //강의종료일
+    private String startEnrolmentDate;                //수강신청일
+    private String endEnrolmentDate;                  //수강종료일
+    private String startStudyDate;                      //강의시작일
+    private String endStudyDate;                        //강의종료일
     private int lectureAct;
 
 
@@ -44,9 +45,9 @@ public class LectureDTO {
 
     public static LectureDTO of(Lecture lecture) {
         return LectureDTO.builder()
-                .lecture_id(lecture.getLecture_id())
-                .teacher_no(lecture.getTeacher_no())
-                .categorys(lecture.getCategorys())
+                .lecture_no(lecture.getLecture_no())
+                //.teacher_no(lecture.getTeacher_no())
+                //.categorys(lecture.getCategorys())
                 .lectureName(lecture.getLectureName())
                 .lectureContent(lecture.getLectureContent())
                 .lectureImg1(lecture.getLectureImg1())

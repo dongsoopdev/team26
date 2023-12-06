@@ -5,15 +5,20 @@
 <html lang="en">
 
 <!-- head include-->
-<head th:replace="~{layout/head.html :: head}">
-    <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}"
-          integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <script th:src="@{https://kit.fontawesome.com/93f6428cee.js}" crossorigin="anonymous"></script>
-    <title>제목</title>
+<head>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+   <!--  <link rel="stylesheet" th:href="@{/css/lecture/bootstrap.min.css}">-->
+    <link rel="stylesheet" th:href="@{/css/lecture/slick.css}">
+    <link rel="stylesheet" th:href="@{/css/lecture/slick-theme.css}">
+    <link rel="stylesheet" th:href="@{/css/lecture/style.css}">
+
+
+
+    <title>강좌리스트</title>
 
 
     <style>
-        .btn btn-primary2{
+        .btn btn-primary2 {
             color: #fff;
             background-color: #FFA425;;
             /*border-color: #2e6da4;*/
@@ -23,396 +28,361 @@
 
 
 <body>
-<!-- header include-->
-<header class="header" id="hd">
-    <div th:insert="~{layout/header :: header}"></div>
-</header>
-
-<!--contens 필수-->
-<div class="contents">
-
-    <!-- SECTION -->
-    <div class="section">
-        <!-- container -->
-        <div class="container">
-            <!-- row -->
-            <!--<div class="row">
-                &lt;!&ndash; ASIDE &ndash;&gt;
-                <div id="aside" class="col-md-3">
-                    &lt;!&ndash; aside Widget &ndash;&gt;
-                    <div class="aside">
-                        <h3 class="aside-title">Categories</h3>
-                        <div class="checkbox-filter">
-
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="category-1">
-                                <label for="category-1">
-                                    <span></span>
-                                    Laptops
-                                    <small>(120)</small>
-                                </label>
-                            </div>
-
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="category-2">
-                                <label for="category-2">
-                                    <span></span>
-                                    Smartphones
-                                    <small>(740)</small>
-                                </label>
-                            </div>
-
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="category-3">
-                                <label for="category-3">
-                                    <span></span>
-                                    Cameras
-                                    <small>(1450)</small>
-                                </label>
-                            </div>
-
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="category-4">
-                                <label for="category-4">
-                                    <span></span>
-                                    Accessories
-                                    <small>(578)</small>
-                                </label>
-                            </div>
-
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="category-5">
-                                <label for="category-5">
-                                    <span></span>
-                                    Laptops
-                                    <small>(120)</small>
-                                </label>
-                            </div>
-
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="category-6">
-                                <label for="category-6">
-                                    <span></span>
-                                    Smartphones
-                                    <small>(740)</small>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    &lt;!&ndash; /aside Widget &ndash;&gt;
-
-                    &lt;!&ndash; aside Widget &ndash;&gt;
-                    <div class="aside">
-                        <h3 class="aside-title">Price</h3>
-                        <div class="price-filter">
-                            <div id="price-slider"></div>
-                            <div class="input-number price-min">
-                                <input id="price-min" type="number">
-                                <span class="qty-up">+</span>
-                                <span class="qty-down">-</span>
-                            </div>
-                            <span>-</span>
-                            <div class="input-number price-max">
-                                <input id="price-max" type="number">
-                                <span class="qty-up">+</span>
-                                <span class="qty-down">-</span>
-                            </div>
-                        </div>
-                    </div>
-                    &lt;!&ndash; /aside Widget &ndash;&gt;
-
-                    &lt;!&ndash; aside Widget &ndash;&gt;
-                    <div class="aside">
-                        <h3 class="aside-title">Brand</h3>
-                        <div class="checkbox-filter">
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="brand-1">
-                                <label for="brand-1">
-                                    <span></span>
-                                    SAMSUNG
-                                    <small>(578)</small>
-                                </label>
-                            </div>
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="brand-2">
-                                <label for="brand-2">
-                                    <span></span>
-                                    LG
-                                    <small>(125)</small>
-                                </label>
-                            </div>
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="brand-3">
-                                <label for="brand-3">
-                                    <span></span>
-                                    SONY
-                                    <small>(755)</small>
-                                </label>
-                            </div>
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="brand-4">
-                                <label for="brand-4">
-                                    <span></span>
-                                    SAMSUNG
-                                    <small>(578)</small>
-                                </label>
-                            </div>
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="brand-5">
-                                <label for="brand-5">
-                                    <span></span>
-                                    LG
-                                    <small>(125)</small>
-                                </label>
-                            </div>
-                            <div class="input-checkbox">
-                                <input type="checkbox" id="brand-6">
-                                <label for="brand-6">
-                                    <span></span>
-                                    SONY
-                                    <small>(755)</small>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    &lt;!&ndash; /aside Widget &ndash;&gt;
-
-                    &lt;!&ndash; aside Widget &ndash;&gt;
-                    <div class="aside">
-                        <h3 class="aside-title">Top selling</h3>
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product01.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product02.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="./img/product03.png" alt="">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">Category</p>
-                                <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                            </div>
-                        </div>
-                    </div>
-                    &lt;!&ndash; /aside Widget &ndash;&gt;
-                </div>-->
-            <!-- /ASIDE -->
+<th:block th:insert="~{layout/header :: header}"></th:block>
+<!--<th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>-->
 
 
+<div id="layoutSidenav">
+<!--    <th:block th:insert="~{layout/lmsMenu :: lmsMenu}"></th:block>-->
 
 
+    <div id="layoutSidenav_content">
+        <main>
 
-           <!--  STORE
-            <div id="store" class="col-md-9">
-                 store top filter
-                <div class="store-filter clearfix">
-                    <div class="store-sort">
-                        <label>
-                            Sort By:
-                            <select class="input-select">
-                                <option value="0">Popular</option>
-                                <option value="1">Position</option>
-                            </select>
-                        </label>
-
-                        <label>
-                            Show:
-                            <select class="input-select">
-                                <option value="0">20</option>
-                                <option value="1">50</option>
-                            </select>
-                        </label>
-                    </div>
+            <!-- SECTION -->
+            <div class="section">
+                <!-- container -->
+                <div class="container">
+                    <!-- row -->
+                    <div class="row">
 
 
-                    <ul class="store-grid">
-                        <li class="active">내 상품</li>
-                    </ul>
-                </div>
-                 /store top filter -->
+                        <!-- ASIDE 시작
+                       <div id="aside" class="col-md-3">
+                           &lt;!&ndash; aside Widget &ndash;&gt;
+                           <div class="aside">
+                               <h3 class="aside-title">Categories</h3>
+                               <div class="checkbox-filter">
+
+                                   <div class="input-checkbox">
+                                       <input type="checkbox" id="category-1">
+                                       <label for="category-1">
+                                           <span></span>
+                                           Laptops
+                                           <small>(120)</small>
+                                       </label>
+                                   </div>
+
+                                   <div class="input-checkbox">
+                                       <input type="checkbox" id="category-2">
+                                       <label for="category-2">
+                                           <span></span>
+                                           Smartphones
+                                           <small>(740)</small>
+                                       </label>
+                                   </div>
+
+                                   <div class="input-checkbox">
+                                       <input type="checkbox" id="category-3">
+                                       <label for="category-3">
+                                           <span></span>
+                                           Cameras
+                                           <small>(1450)</small>
+                                       </label>
+                                   </div>
+
+                                   <div class="input-checkbox">
+                                       <input type="checkbox" id="category-4">
+                                       <label for="category-4">
+                                           <span></span>
+                                           Accessories
+                                           <small>(578)</small>
+                                       </label>
+                                   </div>
+
+                                   <div class="input-checkbox">
+                                       <input type="checkbox" id="category-5">
+                                       <label for="category-5">
+                                           <span></span>
+                                           Laptops
+                                           <small>(120)</small>
+                                       </label>
+                                   </div>
+
+                                   <div class="input-checkbox">
+                                       <input type="checkbox" id="category-6">
+                                       <label for="category-6">
+                                           <span></span>
+                                           Smartphones
+                                           <small>(740)</small>
+                                       </label>
+                                   </div>
+                               </div>
+                           </div>
+                           &lt;!&ndash; /aside Widget &ndash;&gt;
+
+                           &lt;!&ndash; aside Widget &ndash;&gt;
+                           <div class="aside">
+                               <h3 class="aside-title">Price</h3>
+                               <div class="price-filter">
+                                   <div id="price-slider"></div>
+                                   <div class="input-number price-min">
+                                       <input id="price-min" type="number">
+                                       <span class="qty-up">+</span>
+                                       <span class="qty-down">-</span>
+                                   </div>
+                                   <span>-</span>
+                                   <div class="input-number price-max">
+                                       <input id="price-max" type="number">
+                                       <span class="qty-up">+</span>
+                                       <span class="qty-down">-</span>
+                                   </div>
+                               </div>
+                           </div>
+                           &lt;!&ndash; /aside Widget &ndash;&gt;
+
+                           &lt;!&ndash; aside Widget &ndash;&gt;
+                           <div class="aside">
+                               <h3 class="aside-title">Brand</h3>
+                               <div class="checkbox-filter">
+                                   <div class="input-checkbox">
+                                       <input type="checkbox" id="brand-1">
+                                       <label for="brand-1">
+                                           <span></span>
+                                           SAMSUNG
+                                           <small>(578)</small>
+                                       </label>
+                                   </div>
+                                   <div class="input-checkbox">
+                                       <input type="checkbox" id="brand-2">
+                                       <label for="brand-2">
+                                           <span></span>
+                                           LG
+                                           <small>(125)</small>
+                                       </label>
+                                   </div>
+                                   <div class="input-checkbox">
+                                       <input type="checkbox" id="brand-3">
+                                       <label for="brand-3">
+                                           <span></span>
+                                           SONY
+                                           <small>(755)</small>
+                                       </label>
+                                   </div>
+                                   <div class="input-checkbox">
+                                       <input type="checkbox" id="brand-4">
+                                       <label for="brand-4">
+                                           <span></span>
+                                           SAMSUNG
+                                           <small>(578)</small>
+                                       </label>
+                                   </div>
+                                   <div class="input-checkbox">
+                                       <input type="checkbox" id="brand-5">
+                                       <label for="brand-5">
+                                           <span></span>
+                                           LG
+                                           <small>(125)</small>
+                                       </label>
+                                   </div>
+                                   <div class="input-checkbox">
+                                       <input type="checkbox" id="brand-6">
+                                       <label for="brand-6">
+                                           <span></span>
+                                           SONY
+                                           <small>(755)</small>
+                                       </label>
+                                   </div>
+                               </div>
+                           </div>
+                           &lt;!&ndash; /aside Widget &ndash;&gt;
+
+                           &lt;!&ndash; aside Widget &ndash;&gt;
+                           <div class="aside">
+                               <h3 class="aside-title">Top selling</h3>
+                               <div class="product-widget">
+                                   <div class="product-img">
+                                       <img src="./img/product01.png" alt="">
+                                   </div>
+                                   <div class="product-body">
+                                       <p class="product-category">Category</p>
+                                       <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                                       <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                                   </div>
+                               </div>
+
+                               <div class="product-widget">
+                                   <div class="product-img">
+                                       <img src="./img/product02.png" alt="">
+                                   </div>
+                                   <div class="product-body">
+                                       <p class="product-category">Category</p>
+                                       <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                                       <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                                   </div>
+                               </div>
+
+                               <div class="product-widget">
+                                   <div class="product-img">
+                                       <img src="./img/product03.png" alt="">
+                                   </div>
+                                   <div class="product-body">
+                                       <p class="product-category">Category</p>
+                                       <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                                       <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                                   </div>
+                               </div>
+                           </div>
+                           &lt;!&ndash; /aside Widget &ndash;&gt;
+                       </div>-->
+                        <!-- /ASIDE -->
 
 
+                        <!-- STORE-->
+                        <div id="store" class="col-md-9">
+                            <!-- store top filter
+                            <div class="store-filter clearfix">
+                                <div class="store-sort">
+                                    <label>
+                                        Sort By:
+                                        <select class="input-select">
+                                            <option value="0">Popular</option>
+                                            <option value="1">Position</option>
+                                        </select>
+                                    </label>
 
-                <!-- section title -->
-                <div class="col-md-12">
-                    <div class="section-title">
-                        <h3 class="title"></h3>
-                        <div class="section-nav">
-                            <ul class="section-tab-nav tab-nav">
-                                <li class="active"><a data-toggle="tab" href="#tab1">최신순</a></li>
-                                <li><a data-toggle="tab" href="#tab1">인기순</a></li>
-                                <!--<li><a data-toggle="tab" href="#tab1">Cameras</a></li>
-                                <li><a data-toggle="tab" href="#tab1">Accessories</a></li>-->
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- store products -->
-                <div class="row">
-
-
-                    <!-- product -->
-                    <div class="col-md-4 col-xs-6" th:each="product: ${product}">
-                        <!--  <a th:href="@{/product/productDetail(pno=${product.pno})}" >-->
-                        <a th:href="@{'/product/getProduct/' + ${product.pno}}" >
-
-
-
-                            <div class="product">
-                                <div class="product-img">
-                                    <!--<img th:src="@{/upload/${product.getImgFile()}}" alt="">-->
-
-
-                                    <!--<img th:src="@{'/upload/' + ${product.getImgsrc1()}}" alt="">-->
-                                    <img th:src="@{'/upload/' + ${product.getImgsrc1()}}" alt="">
-                                    <!-- <img th:src="@{/upload/{fileName}(fileName=${product.getImgFile()})}" alt="">\-->
-
-                                    <div class="product-label">
-                                        <span class="sale" th:text="${product.getQuality()}">퀄리티</span>
-                                        <!--<span th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"</span>-->
-                                        <!--<span th:text="${#temporals.format(product.getResdate(), 'yyyy-MM-dd')}"></span>-->
-                                        <span th:if="${#dates.format(#dates.createNow(), 'yyyy-MM-dd') == #temporals.format(product.getResdate(), 'yyyy-MM-dd')}" class="new">NEW</span>
-
-                                    </div>
-
-
+                                    <label>
+                                        Show:
+                                        <select class="input-select">
+                                            <option value="0">20</option>
+                                            <option value="1">50</option>
+                                        </select>
+                                    </label>
                                 </div>
 
-                                <div class="product-body">
-                                    <!-- <p class="product-category">Category</p>-->
-                                    <h3 class="product-name" th:text="${product.getPname()}"><a href="#">상품이름</a></h3>
-                                    <h4 class="product-price" th:text="${product.getPrice()} +' '+ 원">가격 <!--<del class="product-old-price">$990.00</del>--></h4>
 
-                                    <!--<div class="product-rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>-->
-                                    <div class="product-btns">
-                                        <button class="add-to-wishlist"><img th:src="@{/images/icon/icon_heart_black.png}" style="width: 20px;"> <span class="tooltipp">찜하기</span></button>
-                                        <button class="add-to-compare"><img th:src="@{/images/icon/icon_chat.png}" style="width: 20px;"><span class="tooltipp">셀파톡</span></button>
+                                <ul class="store-grid">
+                                    <li class="active">내 상품</li>
+                                </ul>
+                            </div>
+                             /store top filter -->
 
+
+                            <!-- section title -->
+                            <div class="col-md-12">
+                                <div class="section-title">
+                                    <h3 class="title"></h3>
+                                    <div class="section-nav">
+                                        <ul class="section-tab-nav tab-nav">
+                                            <li class="active"><a data-toggle="tab" href="#tab1">최신순</a></li>
+                                            <li><a data-toggle="tab" href="#tab1">신청마감순</a></li>
+<!--                                            <li><a data-toggle="tab" href="#tab1">인기순</a></li>-->
+<!--                                            <li><a data-toggle="tab" href="#tab1">인기순</a></li>-->
+                                            <!--<li><a data-toggle="tab" href="#tab1">Cameras</a></li>
+                                            <li><a data-toggle="tab" href="#tab1">Accessories</a></li>-->
+                                        </ul>
                                     </div>
                                 </div>
-
                             </div>
-                        </a>
-                    </div>
-                    <!-- /product -->
 
-                    <div class="clearfix visible-lg visible-md"></div>
-
-                </div>
-                <!-- /store products -->
-
+                            <!-- store products -->
+                            <div class="row">
+                                <!-- product -->
+                                <div class="col-md-4 col-xs-6" th:each="lectureList: ${lectureList}">
+                                    <!--  <a th:href="@{/product/productDetail(pno=${product.pno})}" >-->
+                                    <a th:href="@{'/lecture/getLecture/' + ${lectureList.lecture_no}}">
 
 
+                                        <div class="product">
+                                            <div class="product-img">
+                                                <!--<img th:src="@{/upload/${product.getImgFile()}}" alt="">-->
 
 
-                <!-- store bottom filter -->
+                                                <!--<img th:src="@{'/upload/' + ${product.getImgsrc1()}}" alt="">-->
+                                                <img th:src="@{'/upload/' + ${lectureList.getLectureImg1()}}" alt="">
+                                                <!-- <img th:src="@{/upload/{fileName}(fileName=${product.getImgFile()})}" alt="">\-->
+
+                                                <!--                                        <div class="product-label">-->
+                                                <!--                                            <span class="sale" th:text="${lectureList.getQuality()}">퀄리티</span>-->
+                                                <!--                                            &lt;!&ndash;<span th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"</span>&ndash;&gt;-->
+                                                <!--                                            &lt;!&ndash;<span th:text="${#temporals.format(product.getResdate(), 'yyyy-MM-dd')}"></span>&ndash;&gt;-->
+                                                <!--                                            <span th:if="${#dates.format(#dates.createNow(), 'yyyy-MM-dd') == #temporals.format(product.getResdate(), 'yyyy-MM-dd')}" class="new">NEW</span>-->
+
+                                                <!--                                        </div>-->
 
 
-                <div sec:authorize="hasAuthority('ADMIN') or hasAuthority('TEACHER')"  class="button-group">
-                    <a class="btn btn-primary2" th:href="@{/product/addProduct}" style="color: #fff;
+                                            </div>
+
+                                            <div class="product-body">
+                                                <!-- <p class="product-category">Category</p>-->
+                                                <h3 class="product-name" th:text="${lectureList.getLectureName()}"><a
+                                                        href="#">강좌이름</a></h3>
+                                                <!--                                        <h4 class="product-price" th:text="${lectureList.getPrice()} +' '+ 원">가격 &lt;!&ndash;<del class="product-old-price">$990.00</del>&ndash;&gt;</h4>-->
+
+                                                <!--<div class="product-rating">
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
+                                                </div>-->
+<!--                                                <div class="product-btns">-->
+<!--                                                    <button class="add-to-wishlist"><img-->
+<!--                                                            th:src="@{/images/icon/icon_heart_black.png}"-->
+<!--                                                            style="width: 20px;"> <span class="tooltipp">찜하기</span>-->
+<!--                                                    </button>-->
+<!--                                                    <button class="add-to-compare"><img-->
+<!--                                                            th:src="@{/images/icon/icon_chat.png}" style="width: 20px;"><span-->
+<!--                                                            class="tooltipp">셀파톡</span></button>-->
+
+<!--                                                </div>-->
+                                            </div>
+
+                                        </div>
+                                    </a>
+                                </div>
+                                <!-- /product -->
+
+                                <div class="clearfix visible-lg visible-md"></div>
+                            </div>
+                            <!-- /store products -->
+
+
+                            <!-- store bottom filter -->
+                            <div sec:authorize="hasAuthority('ADMIN') or hasAuthority('TEACHER')" class="button-group">
+                                <a class="btn btn-primary2" th:href="@{/product/addProduct}" style="color: #fff;
             background-color: #FFA425;">글쓰기</a>
+                            </div>
+
+
+                            <div class="store-filter clearfix">
+
+                                <ul class="store-pagination" style="margin-top: 70px;">
+                                    <li><a href="#"> < </a></li>
+                                    <li class="active">1</li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#">4</a></li>
+                                    <li><a href="#"> > </a></li>
+                                </ul>
+                            </div>
+                            <!-- /store bottom filter -->
+
+
+                        </div>
+                        <!-- /STORE -->
+                    </div>
+                    <!-- /row -->
                 </div>
-
-
-                <div class="store-filter clearfix">
-
-                    <ul class="store-pagination" style="margin-top: 70px;">
-                        <li><a href="#"> < </a></li>
-                        <li class="active">1</li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#"> > </a></li>
-                    </ul>
-                </div>
-                <!-- /store bottom filter -->
+                <!-- /container -->
             </div>
-            <!-- /STORE -->
-        </div>
-        <!-- /row -->
+            <!-- /SECTION -->
+
+
+        </main>
+        <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
     </div>
-    <!-- /container -->
-</div>
-<!-- /SECTION -->
-
-<!--
- NEWSLETTER
-<div id="newsletter" class="section">
-     container
-    <div class="container">
-         row
-        <div class="row">
-            <div class="col-md-12">
-                <div class="newsletter">
-                    <p>Sign Up for the <strong>NEWSLETTER</strong></p>
-                    <form>
-                        <input class="input" type="email" placeholder="Enter Your Email">
-                        <button class="newsletter-btn"><i class="fab fa-500px"></i> Subscribe</button>
-                    </form>
-                    <ul class="newsletter-follow">
-                        <li>
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-         /row
-    </div>
-     /container
-</div>
- /NEWSLETTER
--->
-
-
-
-
 </div>
 
-<!--footer include--->
-<footer class="footer" id="ft">
-    <div th:insert="~{layout/footer :: footer}"></div>
-</footer>
-
-<!-- script 사용시-->
-<th:block layout:fragment="script">
-
-</th:block>
 </body>
+
+
+<!-- jQuery Plugins -->
+<script th:src="@{/js/lecture/jquery.min.js}"></script>
+<script th:src="@{/js/lecture/bootstrap.min.js}"></script>
+<script th:src="@{/js/lecture/slick.min.js}"></script>
+<script th:src="@{/js/lecture/nouislider.min.js}"></script>
+<script th:src="@{/js/lecture/jquery.zoom.min.js}"></script>
+<script th:src="@{/js/lecture/main.js}"></script>
 
 </html>

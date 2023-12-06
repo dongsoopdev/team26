@@ -17,7 +17,7 @@ import java.util.List;
 public class Lecture extends BaseEntity{
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long lecture_id;
+    private long lecture_no;
 
     long teacher_no;
 
@@ -47,11 +47,11 @@ public class Lecture extends BaseEntity{
     private int lectureMaxnum;
 
 
-    private LocalDateTime startEnrolmentDate;                //수강신청일
-    private LocalDateTime endEnrolmentDate;                  //수강종료일
+    private String startEnrolmentDate;                //수강신청일
+    private String endEnrolmentDate;                  //수강종료일
 
-    private LocalDateTime startStudyDate;                      //강의시작일
-    private LocalDateTime endStudyDate;                        //강의종료일
+    private String startStudyDate;                      //강의시작일
+    private String endStudyDate;                        //강의종료일
 
     @Column(columnDefinition = "INT DEFAULT 1")
     private int lectureAct;                               // 1.강의예정 ,2.강의진행중, 3.강의종료
