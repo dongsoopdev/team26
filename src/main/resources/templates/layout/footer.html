@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <th:block th:fragment="footer">
+        <div class="container-fluid px-0" id="footer">
+            <footer class="py-2">
+                <div class="border-bottom">
+                    <ul class="container nav justify-content-start mb-2">
+                        <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">개인 정보 처리 방침</a></li>
+                    </ul>
+                </div>
+                <div class="container">
+                    <div class="d-flex flex-wrap mt-2">
+                        <div class="col-md-3 d-flex justify-content-start">
+                            <a th:href="@{/}" class="footer_logo mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1 fw-bolder fs-1">
+                                EDUTECH
+                            </a>
+                        </div>
+                        <ul class="col-md-9 justify-content-start list-unstyled mb-0">
+                            <li class="ms-3 d-block">주소 [08511] 서울 금천구 벚꽃로 266</li>
+                            <li class="ms-3 d-block">COPYRIGHT ©2023 EduTech. ALL RIGHTS RESERVED.</li>
+                        </ul>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </th:block>
+</html>
