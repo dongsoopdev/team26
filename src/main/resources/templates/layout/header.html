@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <th:block th:fragment="header">
+<<<<<<< HEAD
         <div class="container-fluid border-bottom">
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar p-0">
@@ -18,11 +19,29 @@
                                     <a class="dropdown-item text-black" th:href="@{/}">공지사항</a>
                                     <a class="dropdown-item text-black" th:href="@{/}">이용사항</a>
                                 </div>
+=======
+        <div class="container-fluid" id="header">
+            <div class="border-bottom">
+                <div class="container">
+                    <nav class="navbar navbar-expand-lg navbar p-0">
+                        <a th:href="@{/}" class="navbar-brand"><h1 class="fw-bold mb-0">EduTech<span>LMS</span></h1></a>
+                        <button type="button" class="navbar-toggler ms-auto me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse navbar-end" id="navbarCollapse">
+                            <div class="navbar-nav ms-auto">
+                                <a th:href="@{/}" class="nav-item text-black nav-link">수강신청</a>
+                                <a th:href="@{/}" class="nav-item text-black nav-link">공지사항</a>
+                                <a th:href="@{/}" class="nav-item text-black nav-link">QnA</a>
+                                <a th:href="@{/}" class="nav-item text-black nav-link">선생님 신청</a>
+                                <th:block sec:authorize="isAuthenticated()">
+                                    <a th:href="@{/logout}" class="btn btn-primary">로그아웃</a>
+                                </th:block>
+>>>>>>> 1d3647a929720cbe882d81f4f3784e18fd493346
                             </div>
-                            <a th:href="@{/}" class="nav-item text-black nav-link">QnA</a>
                         </div>
-                    </div>
-                </nav>
+                    </nav>
+                </div>
             </div>
         </div>
     </th:block>

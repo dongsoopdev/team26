@@ -33,7 +33,7 @@ public class MemberController {
     private final TeacherService teacherService;
 
     // Member
-    @GetMapping("/join_term")
+    @GetMapping("/joinTerm")
     public String joinTerm(Model model){
         return "member/joinTerm";
     }
@@ -132,7 +132,6 @@ public class MemberController {
     public String upgradeTeacherPro(HttpServletRequest request, Model model, MultipartFile uploadFile) throws Exception {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         teacherService.updateGrade(member.getMno(), uploadFile, request);
-
         return "redirect:/";
     }
 
