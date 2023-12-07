@@ -118,7 +118,7 @@ public class AdminController extends lecBaseController{
         return "redirect:/admin/lectureList";
     }
 
-
+    //강의 수정하기
     @GetMapping(value = {"/edit"})
     public String add(Model model, HttpServletRequest request, LectureDTO lectureDTO) {
 
@@ -143,4 +143,9 @@ public class AdminController extends lecBaseController{
         model.addAttribute("detail", detail);
         return "lecture/addLecture";
     }
+    
+    
+    //강의 삭제하기
+
+
 }

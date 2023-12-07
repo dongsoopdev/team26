@@ -3,20 +3,22 @@ package com.edutech.team26.controller;
 import com.edutech.team26.biz.CategoryService;
 import com.edutech.team26.biz.LectureService;
 import com.edutech.team26.dto.LectureDTO;
+import com.edutech.team26.dto.StudentDTO;
 import com.edutech.team26.model.LectureParam;
-import jakarta.servlet.http.HttpServletRequest;
+import com.edutech.team26.model.ResponseResult;
+import com.edutech.team26.model.ServiceResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 
@@ -24,7 +26,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/lecture")
-public class lectureController extends lecBaseController{
+public class lectureController extends lecBaseController {
 
     private final LectureService lectureService;
     private final CategoryService categoryService;
@@ -45,7 +47,7 @@ public class lectureController extends lecBaseController{
         }
 
         String queryString = lectureParam.getQueryString();
-        String pageHtml  = getPaperHtml(totalCount,
+        String pageHtml = getPaperHtml(totalCount,
                 lectureParam.getPageSize(),
                 lectureParam.getPageIndex(),
                 queryString);
@@ -56,6 +58,46 @@ public class lectureController extends lecBaseController{
 
         return "lecture/lectureList";
     }
+
+    // 강의 상세보기
+    @GetMapping("/getLecture/{lecture_no}")
+    public String getLecture(@PathVariable("lecture_no") long lecture_no, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+
+        //강의 정보 가져오기
+        LectureDTO lecture = lectureService.getById(lecture_no);
+        System.out.println(lecture);
+
+        model.addAttribute("lecture", lecture);
+
+        return "lecture/lectureDetail";
+    }
+
+
+    @PostMapping("/api/course/req.api")
+    public ResponseEntity<?> courseReq(Model model,
+                                       @RequestBody StudentDTO studentDTO,
+                                       Principal principal) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+
+
+        //studentDTO.setStudentNo(principal.getName());
+
+        ServiceResult result = lectureService.apply(studentDTO);
+
+        if (!result.isResult()) {
+
+            ResponseResult responseResult = new ResponseResult(false, result.getMessage());
+            return ResponseEntity.ok().body(responseResult);
+        }
+
+        ResponseResult responseResult = new ResponseResult(true);
+        return ResponseEntity.ok().body(responseResult);
+    }
+
 
 //
 //    // add form
@@ -208,5 +250,5 @@ public class lectureController extends lecBaseController{
 //
 //        return "redirect:/admin/lecture/list.do";
 //    }
-    
+
 }

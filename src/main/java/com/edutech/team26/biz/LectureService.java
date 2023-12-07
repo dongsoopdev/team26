@@ -2,7 +2,9 @@ package com.edutech.team26.biz;
 
 import com.edutech.team26.domain.Lecture;
 import com.edutech.team26.dto.LectureDTO;
+import com.edutech.team26.dto.StudentDTO;
 import com.edutech.team26.model.LectureParam;
+import com.edutech.team26.model.ServiceResult;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +35,8 @@ public interface LectureService{
      */
     LectureDTO getById(long id);
 
+
+
     ;
 
 
@@ -51,10 +55,13 @@ public interface LectureService{
 //     */
 //    LectureDTO frontDetail(long lecture_no);
 //
+
 //    /*
 //     * 수강 신청
 //     */
-//    //ServiceResult req(TakeCourseInput takeCourseInput);
+     ServiceResult apply(StudentDTO studentDTO);
+
+
 //
 //    /*
 //     * 전체 강좌 목록
