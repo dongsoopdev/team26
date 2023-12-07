@@ -49,7 +49,10 @@ public class SecurityConfig {
             .formLogin((formLogin) ->
                 formLogin
                     .loginPage("/login")
+                    .usernameParameter("username")
+                    .passwordParameter("password")
                     .successHandler(new LoginSuccessHandler())
+                    .failureUrl("/login")
             );
 
         http

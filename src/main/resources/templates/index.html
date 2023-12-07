@@ -9,7 +9,7 @@
     <th:block th:insert="~{layout/header :: header}"></th:block>
 
     <!-- 비주얼 영역 -->
-    <div id="carouselExampleDark" class="carousel carousel-dark slide">
+    <div id="carouselExampleDark" class="carousel carousel-dark slide overflow-hidden">
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
             <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -17,25 +17,13 @@
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active" data-bs-interval="10000">
-                <img src="https://placehold.co/1920x300" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>First slide label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
-                </div>
+                <img th:src="@{/images/main/visual01.jpg}" class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item" data-bs-interval="2000">
-                <img src="https://placehold.co/1920x300" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Second slide label</h5>
-                    <p>Some representative placeholder content for the second slide.</p>
-                </div>
+                <img th:src="@{/images/main/visual02.jpg}" class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item">
-                <img src="https://placehold.co/1920x300" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Third slide label</h5>
-                    <p>Some representative placeholder content for the third slide.</p>
-                </div>
+                <img th:src="@{/images/main/visual03.jpg}" class="d-block w-100" alt="...">
             </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
@@ -47,18 +35,59 @@
             <span class="visually-hidden">Next</span>
         </button>
 
-        <div id="loginArea">
+        <div id="loginBgArea">
+            <div id="loginArea" class="text-end">
+                <div id="loginBtn" class="px-4 py-4">
+                    <th:block sec:authorize="isAnonymous()">
+                        <a th:href="@{/login}" class="btn btn-primary w-100">로그인</a>
+                        <a th:href="@{/joinTerm}" class="btn btn-success mt-4 w-100">회원가입</a>
+                    </th:block>
+                    <th:block sec:authorize="isAuthenticated()">
+                        <a th:href="@{/}" class="btn btn-primary w-100">LMS 이동</a>
+                    </th:block>
+                </div>
+                <ul class="list-unstyled mt-3">
+                    <li class="d-inline-block"><button class="manual" onclick="manual(1)">선생님 메뉴얼</button></li>
+                    <li class="d-inline-block"><button class="manual ms-3" onclick="manual(2)">학습자 메뉴얼</button></li>
+                </ul>
+            </div><!--
             로그인영역진행중
-            <th:block sec:authorize="isAnonymous()">로그인 안함</th:block>
+
             <th:block sec:authorize="isAuthenticated()">
                 <p sec:authorize="hasRole('USER')">회원</p>
                 <p sec:authorize="hasRole('STUDENT')">학생</p>
                 <p sec:authorize="hasRole('TEACHER')">선생</p>
                 <p sec:authorize="hasRole('ADMIN')">관리자</p>
-            </th:block>
+            </th:block>-->
         </div>
 
     </div>
     <!-- 비주얼 영역 -->
+
+    <th:block th:insert="~{layout/footer :: footer}"></th:block>
+
+    <script>
+        window.onload = function(){
+            let headerH = document.getElementById("header").clientHeight;
+            let footerH = document.getElementById("footer").clientHeight;
+            document.getElementById("carouselExampleDark").style.height = (window.innerHeight - (headerH + footerH)) + 'px';
+        }
+
+        function manual(type) {
+            let txt = "";
+            switch (type) {
+                case 1 :
+                    txt = "선생님";
+                    break;
+                case 2 :
+                    txt = "학습자";
+                    break;
+                default :
+                    alert("잘못된 정보입니다.");
+                    return false;
+            }
+            alert(txt + " 관련 메뉴얼을 준비중입니다.");
+        }
+    </script>
 </body>
 </html>
