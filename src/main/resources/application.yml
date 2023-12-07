@@ -1,5 +1,7 @@
 server:
-  port: 8080
+  #port: 8080
+  port: 8081 #삭제예정
+
 
 spring:
   profiles:
@@ -18,7 +20,8 @@ spring:
           enabled: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/edutech
+    # url: jdbc:mariadb://localhost:3306/edutech
+    url: jdbc:mariadb://localhost:3308/edutech  #예진집
     username: root
     password: 1234
   jpa:
@@ -63,3 +66,12 @@ google:
       site: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
       secret: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
       url: https://www.google.com/recaptcha/api/siteverify
+
+
+
+
+
+resource:
+  path: file:///C:/upload/
+upload:
+  path: /upload/**

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
+    <title>강좌 등록</title>
+</head>
+<body class="sb-nav-fixed">
+<th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="~{layout/lmsMenu :: lmsMenu}"></th:block>
+
+
+    <div id="layoutSidenav_content">
+        <div class="layoutSidenav_contents" style="width: 900px">
+            <main>
+                <th:block layout:fragment="content"></th:block>
+
+
+                <h1>강좌 등록</h1>
+                <div class="detail">
+
+                    <form th:action="@{/admin/save}" id="submitForm" method="post" enctype="multipart/form-data">
+                        <table class="table">
+                            <tbody>
+                            <!--                        <tr>-->
+                            <!--                            <th>강좌 카테고리</th>-->
+                            <!--                            <td>-->
+                            <!--                                <select name="categoryId" required>-->
+                            <!--                                    <option value=""> 카테고리 선택 </option>-->
+                            <!--                                    <option-->
+                            <!--                                            th:selected="${detail.categoryId == x.id}"-->
+                            <!--                                            th:each="x : ${category}" th:value="${x.id}" th:text="${x.categoryName}"> 기획 </option>-->
+                            <!--                                </select>-->
+                            <!--                            </td>-->
+                            <!--                        </tr>-->
+                            <tr>
+                                <th>강좌명</th>
+                                <td colspan="2"><input type="text" name="lectureName" id="lectureName" class="input"
+                                                       placeholder="강좌명 입력" required></td>
+                            </tr>
+
+
+<!--                                <tr>-->
+<!--                                    <th>강사 이름</th>-->
+<!--                                    <td colspan="2">-->
+<!--                                        <select name="teacher_no" id="teacher_no" autofocus required>-->
+<!--                                            <option th:each="teacherList : ${teacherList}" th:value="${teacherList.teacher_no}" th:text="${teacherList}"></option>-->
+<!--                                        </select>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+
+
+                            <tr>
+                                <th>강좌 설명</th>
+                                <td colspan="2"><textarea name="lectureContent" id="lectureContent" cols="50"
+                                                          class="textarea" rows="8" style="width: 100%"
+                                                          placeholder="강좌 설명 입력" required></textarea></td>
+                            </tr>
+
+
+                            <tr>
+                                <th>모집 수강 인원</th>
+                                <td colspan="2"><input type="number" name="lectureMaxnum" id="lectureMaxnum"
+                                                       class="input" placeholder="모집 인원 입력" style="width: 50%" required>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>최소 수강 인원</th>
+                                <td colspan="2"><input type="number" name="lectureMinnum" id="lectureMinnum"
+                                                       class="input" placeholder="최소 수강 인원 입력" style="width: 50%"
+                                                       required></td>
+                            </tr>
+
+
+                            <tr>
+                                <th>수강 신청 기간</th>
+                                <td colspan="2">
+                                    <input type="date" name="startEnrolmentDate" id="startEnrolmentDate"
+                                           class="input" placeholder="수강 신청 시작일" required>
+                                    <strong>&nbsp;&nbsp;-&nbsp;&nbsp;</strong>
+                                    <input type="date" name="endEnrolmentDate" id="endEnrolmentDate"
+                                           class="input" placeholder="수강 신청 마감일" required>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>강의 운영 기간</th>
+                                <td colspan="2">
+                                    <input type="date" name="startStudyDate" id="startStudyDate"
+                                           class="input" placeholder="강의 시작일" required>
+                                    <strong>&nbsp;&nbsp;-&nbsp;&nbsp;</strong>
+                                    <input type="date" name="endStudyDate" id="endStudyDate" class="input"
+                                           placeholder="강의 종료일" required></td>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <th>썸네일 이미지</th>
+                                <td colspan="2"><input type="file" name="file" id="lectureImg1" class="input"
+                                                       placeholder="썸네일 이미지" accept=".jpg, .png" required></td>
+                            </tr>
+
+                            <tr>
+                                <th>강좌소개 이미지</th>
+                                <td colspan="2"><input type="file" name="file" id="lectureImg2" class="input"
+                                                       placeholder="강좌 소개 이미지" accept=".jpg, .png" required></td>
+                            </tr>
+                            <tr>
+                                <th>샘플(OT) 영상</th>
+                                <td colspan="2"><input type="file" name="file" id="lectureVedio" class="input"
+                                                       placeholder="샘플 영상" accept=".mp4" required></td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+
+                        <tr>
+                            <td colspan="2">
+                                <input type="reset" value="취소" class="btn btn-danger" onclick="window.history.back();">
+                                <input type="submit" value="강의등록" class="btn btn-primary">
+                                <a th:href="@{product/productList}" type="button" class="btn btn-secondary"
+                                   style="float: right;">강의목록</a>
+                            </td>
+                        </tr>
+                    </form>
+                </div>
+
+                <!--            <script type="text/javascript" src="/res/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>-->
+
+                <!--            <script type="text/javascript">-->
+                <!--                var oEditors = [];-->
+                <!--                nhn.husky.EZCreator.createInIFrame({-->
+                <!--                    oAppRef: oEditors,-->
+                <!--                    elPlaceHolder: "content",-->
+                <!--                    sSkinURI: "/res/se2/SmartEditor2Skin.html",-->
+                <!--                    fCreator: "createSEditor2"-->
+                <!--                });-->
+                <!--            </script>-->
+
+
+            </main>
+        </div>
+        <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
+
+    </div>
+</div>
+</body>
+</html>
+
+

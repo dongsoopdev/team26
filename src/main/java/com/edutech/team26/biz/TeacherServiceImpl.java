@@ -5,8 +5,10 @@ import com.edutech.team26.constant.MemberRole;
 import com.edutech.team26.domain.Member;
 import com.edutech.team26.domain.Teacher;
 import com.edutech.team26.dto.TeacherDTO;
+import com.edutech.team26.model.VwTeacher;
 import com.edutech.team26.repository.MemberRepository;
 import com.edutech.team26.repository.TeacherRepository;
+import com.edutech.team26.repository.VwTeacherRepository;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,6 +35,8 @@ public class TeacherServiceImpl implements TeacherService {
     private final MemberRepository memberRepository;
 
     private final TeacherRepository teacherRepository;
+
+    private final VwTeacherRepository vwteacherRepository;
 
     @Override
     public boolean updateGrade(Long mno, MultipartFile uploadFile, HttpServletRequest request) throws Exception {
@@ -129,6 +134,16 @@ public class TeacherServiceImpl implements TeacherService {
         teacherRepository.save(teacher);
 
         return true;
+    }
+
+    @Override
+    public List<VwTeacher> findAll() {
+        return vwteacherRepository.findAll();
+    }
+
+    @Override
+    public VwTeacher getByMno(long mno) {
+        return vwteacherRepository.getByMno(mno);
     }
 
 }
