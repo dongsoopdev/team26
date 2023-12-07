@@ -90,10 +90,10 @@ public class AdminController extends lecBaseController{
     @GetMapping("/lectureSave")
     public String addForm(Model model) {
 
-        List<VwTeacher> vwTeachers = new ArrayList<>();
+//        List<VwTeacher> vwTeachers = new ArrayList<>();
 
 
-        List<VwTeacher> teacherList = teacherService.findAll();
+//        List<VwTeacher> teacherList = teacherService.findAll();
 //        List<String> memberNames = new ArrayList<>();
 //        for (Teacher teacher : teacherList) {
 //            Long mno = teacher.getMno();
@@ -105,8 +105,8 @@ public class AdminController extends lecBaseController{
 //                memberNames.add("Unknown Member");
 //            }
 //        }
-        System.out.println("강사리스트 : " + teacherList);
-        model.addAttribute("teacherList", teacherList ); //선생님 이름 담은 객체
+//        System.out.println("강사리스트 : " + teacherList);
+//        model.addAttribute("teacherList", teacherList ); //선생님 이름 담은 객체
         model.addAttribute("category", categoryService.list());
         return "admin/addLecture";
     }

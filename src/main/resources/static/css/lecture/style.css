@@ -411,52 +411,52 @@ textarea.input {
 	Top header
 \*----------------------------*/
 
-#top-header {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background-color: #1E1F29;
-}
+/*#top-header {*/
+/*  padding-top: 10px;*/
+/*  padding-bottom: 10px;*/
+/*  background-color: #1E1F29;*/
+/*}*/
 
-.header-links li {
-  display: inline-block;
-  margin-right: 15px;
-  font-size: 12px;
-}
+/*.header-links li {*/
+/*  display: inline-block;*/
+/*  margin-right: 15px;*/
+/*  font-size: 12px;*/
+/*}*/
 
-.header-links li:last-child {
-  margin-right: 0px;
-}
+/*.header-links li:last-child {*/
+/*  margin-right: 0px;*/
+/*}*/
 
-.header-links li a {
-  color: #FFF;
-}
+/*.header-links li a {*/
+/*  color: #FFF;*/
+/*}*/
 
-.header-links li a:hover {
-  color: #D10024;
-}
+/*.header-links li a:hover {*/
+/*  color: #D10024;*/
+/*}*/
 
-.header-links li i {
-  color: #D10024;
-  margin-right: 5px;
-}
+/*.header-links li i {*/
+/*  color: #D10024;*/
+/*  margin-right: 5px;*/
+/*}*/
 
 /*----------------------------*\
 	Logo
 \*----------------------------*/
 
-#header {
-  padding-top: 15px;
-  padding-bottom: 15px;
-  background-color: #15161D;
-}
+/*#header {*/
+/*  padding-top: 15px;*/
+/*  padding-bottom: 15px;*/
+/*  background-color: #15161D;*/
+/*}*/
 
-.header-logo {
-  float: left;
-}
+/*.header-logo {*/
+/*  float: left;*/
+/*}*/
 
-.header-logo .logo img {
-  display: block;
-}
+/*.header-logo .logo img {*/
+/*  display: block;*/
+/*}*/
 
 /*----------------------------*\
 	Search
