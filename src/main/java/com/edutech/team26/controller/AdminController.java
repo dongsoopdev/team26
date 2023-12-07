@@ -2,8 +2,14 @@ package com.edutech.team26.controller;
 
 import com.edutech.team26.biz.CategoryService;
 import com.edutech.team26.biz.LectureService;
+import com.edutech.team26.biz.TeacherService;
+import com.edutech.team26.domain.Member;
+import com.edutech.team26.domain.Teacher;
 import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.model.LectureParam;
+import com.edutech.team26.model.VwTeacher;
+import com.edutech.team26.repository.MemberRepository;
+import com.edutech.team26.repository.TeacherRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -30,6 +37,13 @@ public class AdminController extends lecBaseController{
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private TeacherService teacherService;
+
+    @Autowired
+    private TeacherRepository teacherRepository;
+
 
     @Autowired
     private ModelMapper mapper;
@@ -73,8 +87,26 @@ public class AdminController extends lecBaseController{
 
 
     // add form
-    @GetMapping("/save")
+    @GetMapping("/lectureSave")
     public String addForm(Model model) {
+
+        List<VwTeacher> vwTeachers = new ArrayList<>();
+
+
+        List<VwTeacher> teacherList = teacherService.findAll();
+//        List<String> memberNames = new ArrayList<>();
+//        for (Teacher teacher : teacherList) {
+//            Long mno = teacher.getMno();
+//            Member member = memberRepository.findByMno(mno);
+//            if (member != null) {
+//                String memberName = member.getUserName();
+//                memberNames.add(memberName);
+//            } else {
+//                memberNames.add("Unknown Member");
+//            }
+//        }
+        System.out.println("강사리스트 : " + teacherList);
+        model.addAttribute("teacherList", teacherList ); //선생님 이름 담은 객체
         model.addAttribute("category", categoryService.list());
         return "admin/addLecture";
     }

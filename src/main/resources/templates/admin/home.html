@@ -1,11 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>$Title$</title>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
+    <title>강좌 등록</title>
 </head>
-<body>
-테스트용
+<body class="sb-nav-fixed">
+<th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="~{layout/lmsMenu :: lmsMenu}"></th:block>
+
+
+    <div id="layoutSidenav_content">
+        <main>
+            <th:block layout:fragment="content"></th:block>
+
+            관리자 메인페이지
+        </main>
+        <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
+    </div>
+</div>
 </body>
 </html>
+
+
