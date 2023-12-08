@@ -82,7 +82,7 @@ public class AdminController extends lecBaseController{
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("pager", pageHtml);
 
-        return "lecture/lectureList";
+        return "admin/lectureList";
     }
 
 

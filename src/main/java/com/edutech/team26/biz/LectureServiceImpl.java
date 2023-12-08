@@ -1,18 +1,29 @@
 package com.edutech.team26.biz;
 
 
+import com.edutech.team26.constant.MemberRole;
 import com.edutech.team26.domain.Lecture;
+import com.edutech.team26.domain.Member;
 import com.edutech.team26.domain.Student;
+import com.edutech.team26.domain.Teacher;
 import com.edutech.team26.dto.LectureDTO;
+import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.dto.StudentDTO;
 import com.edutech.team26.mapper.LectureMapper;
 import com.edutech.team26.model.LectureParam;
 import com.edutech.team26.model.ServiceResult;
 import com.edutech.team26.repository.LectureRepository;
+import com.edutech.team26.repository.MemberRepository;
 import com.edutech.team26.repository.StudentRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,18 +33,18 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
+@Log4j2
 public class LectureServiceImpl implements LectureService {
 
     private final LectureRepository lectureRepository;
     private final StudentRepository studentRepository;
+    private final MemberRepository memberRepository;
     private final LectureMapper lectureMapper;
+    private final ModelMapper modelMapper;
 
 
     private LocalDate getLocalDate(String value) {
@@ -84,7 +95,11 @@ public class LectureServiceImpl implements LectureService {
             }
         }
 
-        Lecture lecture = Lecture.builder()
+        lectureDTO.setLectureAct(1);
+
+        Lecture lecture = modelMapper.map(lectureDTO, Lecture.class);
+
+        /*Lecture lecture = Lecture.builder()
                 .lecture_no(lectureDTO.getLecture_no())
                 //.teacher_no(lectureDTO.getTeacher_no())
                 .lectureName(lectureDTO.getLectureName())
@@ -101,8 +116,10 @@ public class LectureServiceImpl implements LectureService {
                 .endEnrolmentDate(lectureDTO.getEndEnrolmentDate())
                 .startStudyDate(lectureDTO.getStartStudyDate())
                 .endStudyDate(lectureDTO.getEndStudyDate())
-                .lectureAct(lectureDTO.getLectureAct())
-                .build();
+                .build();*/
+
+        log.info(">>>>>>>>>>>>>>>>>>>>>>" + lecture.getLectureAct());
+
         lectureRepository.save(lecture);
 
     }
@@ -117,8 +134,8 @@ public class LectureServiceImpl implements LectureService {
             return false;
         }
 
-        Lecture lecture = optionalLecture.get();
-        lecture.setLectureName(lectureDTO.getLectureName());
+        ///Lecture lecture = optionalLecture.get();
+       /* lecture.setLectureName(lectureDTO.getLectureName());
         lecture.setLectureContent(lectureDTO.getLectureContent());
         lecture.setLectureImg1(lectureDTO.getLectureImg1());
         lecture.setLectureImg2(lectureDTO.getLectureImg2());
@@ -133,10 +150,10 @@ public class LectureServiceImpl implements LectureService {
         lecture.setStartStudyDate(lectureDTO.getStartStudyDate());
         lecture.setEndStudyDate(lectureDTO.getEndStudyDate());
         lecture.setEndStudyDate(lectureDTO.getEndStudyDate());
-        lecture.setLectureAct(lectureDTO.getLectureAct());
+        lecture.setLectureAct(lectureDTO.getLectureAct());*/
 
+        Lecture lecture = modelMapper.map(lectureDTO, Lecture.class);
 
-        lectureRepository.save(lecture);
 
         return true;
     }
@@ -221,6 +238,18 @@ public class LectureServiceImpl implements LectureService {
 
     @Override
     public ServiceResult apply(StudentDTO studentDTO) {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+//        Optional<Member> m = memberRepository.findById(member.getMno());
+//        if(m.isEmpty()){
+//            return false;
+//        }
+//
+//        Optional<Student> checkStudent = studentRepository.findByMnoAndLectureNo(member.getMno(), lectureNo);
+//        if(checkStudent.isPresent()) {
+//            return false;
+//        }
+
 
         ServiceResult result = new ServiceResult();
 
@@ -254,11 +283,84 @@ public class LectureServiceImpl implements LectureService {
 
         studentRepository.save(takeLecture);
 
+
+        Member memberInfo = memberRepository.findByMno(member.getMno());
+
+        Member memberUpgrade = modelMapper.map(memberInfo, Member.class);
+        memberUpgrade.updateRole(MemberRole.STUDENT);
+        memberRepository.save(memberUpgrade);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+        updatedAuthorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+        // user -> student로 권한변경
+//        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Member memberInfo = memberRepository.findByMno(member.getMno());
+//        Member memberUpgrade = modelMapper.map(memberInfo, Member.class);
+//        memberUpgrade.updateRole(MemberRole.STUDENT);
+//        memberRepository.save(memberUpgrade);
+
+
         result.setResult(true);
         result.setMessage("");
 
         return result;
     }
+
+
+   // 수강신청
+//    @Override
+//    public ServiceResult apply(StudentDTO studentDTO) {
+//
+//
+//        ServiceResult result = new ServiceResult();
+//
+//        Optional<Lecture> optionalLecture = lectureRepository.findById(studentDTO.getLectureNo());
+//        if (!optionalLecture.isPresent()) {
+//            result.setResult(false);
+//            result.setMessage("강좌 정보가 존재하지 않습니다.");
+//            return result;
+//        }
+//
+//        Lecture lecture = optionalLecture.get();
+//
+//        String[] statusList = {Student.STATUS_REQ, Student.STATUS_COMPLETE};
+//        long count = studentRepository.countByLectureNoAndStudentNoAndStatusIn(
+//                lecture.getLecture_no(), studentDTO.getMno(), Arrays.asList(statusList));
+//
+//        if (count > 0) {
+//            result.setResult(false);
+//            result.setMessage("이미 신청한 강좌 정보가 존재합니다.");
+//            return result;
+//        }
+//
+//        Student takeLecture = Student.builder()
+//                .lectureNo(lecture.getLecture_no())
+//                .mno(studentDTO.getMno())
+//                .entranceYn(false)
+//                .status(Student.STATUS_REQ)
+//                .regDate(LocalDateTime.now())
+//
+//                .build();
+//
+//        studentRepository.save(takeLecture);
+//
+//        // user -> student로 권한변경
+//        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        Member memberInfo = memberRepository.findByMno(member.getMno());
+//        Member memberUpgrade = modelMapper.map(memberInfo, Member.class);
+//        memberUpgrade.updateRole(MemberRole.STUDENT);
+//        memberRepository.save(memberUpgrade);
+//
+//
+//        result.setResult(true);
+//        result.setMessage("");
+//
+//        return result;
+//    }
 //
 //	@Override
 //	public List<LectureDTO> listAll() {

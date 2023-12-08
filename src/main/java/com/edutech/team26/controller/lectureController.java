@@ -2,6 +2,10 @@ package com.edutech.team26.controller;
 
 import com.edutech.team26.biz.CategoryService;
 import com.edutech.team26.biz.LectureService;
+import com.edutech.team26.biz.StudentService;
+import com.edutech.team26.biz.StudentServiceImpl;
+import com.edutech.team26.domain.Member;
+import com.edutech.team26.domain.Student;
 import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.dto.StudentDTO;
@@ -11,9 +15,11 @@ import com.edutech.team26.model.ServiceResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -21,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -31,6 +38,7 @@ public class lectureController extends lecBaseController {
 
     private final LectureService lectureService;
     private final CategoryService categoryService;
+    private final StudentService studentService;
     private final ModelMapper mapper;
 
     @GetMapping("lectureList")
@@ -60,6 +68,9 @@ public class lectureController extends lecBaseController {
         return "lecture/lectureList";
     }
 
+
+
+
     // 강의 상세보기
     @GetMapping("/getLecture/{lecture_no}")
     public String getLecture(@PathVariable("lecture_no") long lecture_no, Model model) {
@@ -74,6 +85,29 @@ public class lectureController extends lecBaseController {
 
         return "lecture/lectureDetail";
     }
+
+
+//    @PostMapping("/api/course/req.api")
+//    public ResponseEntity<?> courseReq(Model model,
+//                                       @RequestBody StudentDTO studentDTO,
+//                                       Principal principal) throws Exception {
+//
+//        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//
+//        boolean apply = studentService.applyStudent(member.getMno(), studentDTO.getLectureNo());
+//
+//        studentDTO.setMno(member.getMno());
+//
+//
+//        if (!apply) {
+//            ResponseResult responseResult = new ResponseResult(false, "등록 실패");
+//            return ResponseEntity.ok().body(responseResult);
+//        }
+//
+//        ServiceResult result = lectureService.apply(studentDTO);
+//        ResponseResult responseResult = new ResponseResult(true);
+//        return ResponseEntity.ok().body(responseResult);
+//    }
 
 
     @PostMapping("/api/course/req.api")
@@ -96,6 +130,21 @@ public class lectureController extends lecBaseController {
         ResponseResult responseResult = new ResponseResult(true);
         return ResponseEntity.ok().body(responseResult);
     }
+
+
+/*
+    private boolean hasRequiredRole(Principal principal) {
+
+        if (principal instanceof UserDetails userDetails) {
+            return userDetails.getAuthorities().stream()
+                    .anyMatch(authority -> authority.getAuthority().equals("ROLE_USER"));
+        }
+
+        return false;
+    }
+
+
+*/
 
 
 //

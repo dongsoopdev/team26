@@ -31,7 +31,7 @@ public class Student implements TakeCourseCode {
     @Column(nullable = false, columnDefinition = "bit DEFAULT 0")
     private Boolean entranceYn;
 
-    @Column(columnDefinition = "varchar(10) DEFAULT 'REQ'")
+    @Column(columnDefinition = "varchar(50) DEFAULT 'REQ'")
     private String status; // 상태(REQ-수강신청완료, COMPLETE- 수강 중, CANCEL- 수강취소)
 
 
