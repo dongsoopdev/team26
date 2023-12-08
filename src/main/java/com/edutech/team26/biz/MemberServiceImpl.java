@@ -11,6 +11,7 @@ import com.edutech.team26.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,6 +39,9 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
+
+    @Value("${server.port}")
+    private String serverPost;
 
     private final ModelMapper modelMapper;
 
@@ -81,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
         /*String subject = "[LMS] 회원이 되신 것을 환영합니다.";
         String text = "<h2>LMS 회원가입을 축하드립니다.</h2><br /><hr /><br />";
         text += "<p>" + memberJoinDTO.getUserName() + "님의 아래 링크를 클릭하셔서 가입을 완료 하세요.</p>";
-        text += "<div><a target='_blank' href='http://localhost:8080/member/email-auth/" + uuid + "'>가입 완료</a></div>";
+        text += "<div><a target='_blank' href='http://localhost:" + serverPost + "/member/email-auth/" + uuid + "'>가입 완료</a></div>";
         mailComponent.sendMail(email, subject, text);*/
 
         return true;

@@ -53,7 +53,6 @@ public class AdminController extends lecBaseController{
     /*@PreAuthorize("hasRole('ADMIN')")*/
     @GetMapping("/home")
     public String adminHome(Model model) {
-        log.info("---------------------- ADMIN ----------------------");
         return "admin/home";
     }
 
