@@ -108,21 +108,6 @@ public class MemberController {
         return result;
     }
 
-
-    // Student
-
-    @GetMapping("/upgradeStudent")
-    public String upgradeStudent(Model model){
-        return "student/upgrade";
-    }
-
-    @PostMapping("/upgradeStudent")
-    public String upgradeStudentPro(Model model, @Param("lectureNo") Long lectureNo) throws Exception {
-        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        studentService.updateGrade(member.getMno(), lectureNo);
-        return "redirect:/";
-    }
-
     // Teacher
 
     @GetMapping("/upgradeTeacher")

@@ -27,6 +27,8 @@ public class QStudent extends EntityPathBase<Student> {
 
     public final DateTimePath<java.time.LocalDateTime> regDate = createDateTime("regDate", java.time.LocalDateTime.class);
 
+    public final StringPath status = createString("status");
+
     public final NumberPath<Long> studentNo = createNumber("studentNo", Long.class);
 
     public QStudent(String variable) {

@@ -1,5 +1,6 @@
 package com.edutech.team26.domain;
 
+import com.edutech.team26.model.TakeCourseCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student {
+public class Student implements TakeCourseCode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +27,13 @@ public class Student {
     @Column(nullable = false)
     private Long mno;
 
-    @Column
+
+    @Column(nullable = false, columnDefinition = "bit DEFAULT 0")
     private Boolean entranceYn;
+
+    @Column(columnDefinition = "varchar(50) DEFAULT 'REQ'")
+    private String status; // 상태(REQ-수강신청완료, COMPLETE- 수강 중, CANCEL- 수강취소)
+
 
     @CreatedDate
     @Column(updatable = false)

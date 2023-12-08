@@ -3,6 +3,9 @@ package com.edutech.team26.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,10 +13,11 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@DynamicInsert
+@DynamicUpdate
 public class Lecture extends BaseEntity{
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,7 +58,7 @@ public class Lecture extends BaseEntity{
     private String endStudyDate;                        //강의종료일
 
     @Column(columnDefinition = "INT DEFAULT 1")
-    private int lectureAct;                               // 1.강의예정 ,2.강의진행중, 3.강의종료
+    private int lectureAct = 1;                               // 1.강의예정 ,2.강의진행중, 3.강의종료
 
 
 

@@ -34,8 +34,47 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
 
+/*    @Override
+    public boolean applyStudent(Long mno, Long lectureNo) throws Exception {
+
+        Optional<Member> member = memberRepository.findById(mno);
+        if(member.isEmpty()){
+            return false;
+        }
+
+        Optional<Student> checkStudent = studentRepository.findByMnoAndLectureNo(mno, lectureNo);
+        if(checkStudent.isPresent()) {
+            return false;
+        }
+
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setMno(mno);
+        studentDTO.setLectureNo(lectureNo);
+        studentDTO.setEntranceYn(false);        // 선착순으로 진행 예정
+        studentDTO.setRegDate(LocalDateTime.now());
+
+        Student student = modelMapper.map(studentDTO, Student.class);
+
+        studentRepository.save(student);
+
+        Member memberInfo = memberRepository.findByMno(mno);
+
+        Member memberUpgrade = modelMapper.map(memberInfo, Member.class);
+        memberUpgrade.updateRole(MemberRole.STUDENT);
+        memberRepository.save(memberUpgrade);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+        updatedAuthorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
+        return true;
+    }*/
+
+
     @Override
-    public boolean updateGrade(Long mno, Long lectureNo) throws Exception {
+    public boolean applyStudent(Long mno, Long lectureNo) throws Exception {
 
         Optional<Member> member = memberRepository.findById(mno);
         if(member.isEmpty()){
