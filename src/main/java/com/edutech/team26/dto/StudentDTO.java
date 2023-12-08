@@ -10,7 +10,9 @@ public class StudentDTO {
     private Long studentNo;
     private Long lectureNo;
     private Long mno;
-    private String entranceYn;
+    private Boolean entranceYn;
+    private String status;
     private LocalDateTime regDate;
+
 
 }

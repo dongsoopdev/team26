@@ -50,7 +50,7 @@ public class StudentServiceImpl implements StudentService {
         StudentDTO studentDTO = new StudentDTO();
         studentDTO.setMno(mno);
         studentDTO.setLectureNo(lectureNo);
-        studentDTO.setEntranceYn(false);        // 선착순으로 진행 예정
+        //studentDTO.setEntranceYn(false);        // 선착순으로 진행 예정
         studentDTO.setRegDate(LocalDateTime.now());
 
         Student student = modelMapper.map(studentDTO, Student.class);

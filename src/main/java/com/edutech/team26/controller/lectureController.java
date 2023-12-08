@@ -3,6 +3,7 @@ package com.edutech.team26.controller;
 import com.edutech.team26.biz.CategoryService;
 import com.edutech.team26.biz.LectureService;
 import com.edutech.team26.dto.LectureDTO;
+import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.dto.StudentDTO;
 import com.edutech.team26.model.LectureParam;
 import com.edutech.team26.model.ResponseResult;
@@ -80,12 +81,10 @@ public class lectureController extends lecBaseController {
                                        @RequestBody StudentDTO studentDTO,
                                        Principal principal) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userId = authentication.getName();
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 
-        //studentDTO.setStudentNo(principal.getName());
-
+        studentDTO.setMno(member.getMno());
         ServiceResult result = lectureService.apply(studentDTO);
 
         if (!result.isResult()) {

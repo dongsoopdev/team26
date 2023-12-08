@@ -16,6 +16,9 @@
     <!-- main css -->
     <link rel="stylesheet" th:href="@{/css/lecture/detail/style.css}"/>
     <link rel="stylesheet" th:href="@{/css/lecture/detail/responsive.css}"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -42,9 +45,9 @@
                 <!--================Single Product Area =================-->
                 <div class="product_image_area">
                     <div class="container">
-                        <div class="row s_product_inner">
+                        <div class="row s_product_inner" th:each="lecture: ${lecture}">
                             <div class="col-lg-6">
-                                <div class="s_product_img" th:each="lecture: ${lecture}">
+                                <div class="s_product_img">
                                     <div id="carouselExampleIndicators"
                                          class="carousel slide"
                                          data-ride="carousel">
@@ -78,9 +81,9 @@
                                 <div class="s_product_text">
                                     <!--                                    <h3> 강좌제목 </h3>-->
                                     <h2 th:text="${lecture.getLectureName()}">강좌제목</h2>
-                                    <ul class="list" >
+                                    <ul class="list">
                                         <li>
-                                            <a href="#" >
+                                            <a href="#">
                                                 <span style="font-size: 15px;font-weight: bold;">신청 기간</span>
                                                 <p2 th:text="${lecture.getStartEnrolmentDate()}"></p2>
                                                 <strong> - </strong>
@@ -129,33 +132,33 @@
                                     </div>-->
 
 
-
                                     <div class="card_area" style="margin-top: 40px;">
                                         <form id="submitForm" method="post">
                                             <input type="hidden" name="id" th:value="${lecture.getLecture_no()}"/>
                                             <button type="submit" class="main_btn" style="width: 150px;">수강 신청</button>
                                             <!--<button type="submit">수강신청</button-->
-                                            <button class="main_btn" style="width: 150px;" th:href="@{lecture/lectureList}">강좌 목록</button>
+                                            <button class="main_btn" style="width: 150px;"
+                                                    th:href="@{lecture/lectureList}">강좌 목록
+                                            </button>
                                         </form>
                                     </div>
 
                                     <script>
-                                        $(function() {
+                                        $(function () {
 
-                                            $('#submitForm').on('submit', function() {
+                                            $('#submitForm').on('submit', function () {
 
                                                 if (!confirm('수강 신청을 하시겠습니까?')) {
                                                     return false;
                                                 }
 
                                                 var $thisForm = $(this);
-
-                                                var url = '/api/course/req.api';
+                                                var url = '/lecture/api/course/req.api';
                                                 var parameter = {
-                                                    courseId: $thisForm.find('input[name=id]').val()
+                                                    lectureNo: $thisForm.find('input[name=id]').val()
                                                 };
 
-                                                axios.post(url, parameter).then(function(response) {
+                                                axios.post(url, parameter).then(function (response) {
                                                     console.log(response);
                                                     console.log(response.data);
 
@@ -170,7 +173,7 @@
                                                     alert(' 강좌가 정상적으로 신청되었습니다. ');
                                                     location.href = '/';
 
-                                                }).catch(function(err) {
+                                                }).catch(function (err) {
                                                     console.log(err);
                                                 });
 
@@ -181,17 +184,15 @@
                                     </script>
 
 
-
-
-                                   <!-- <div class="card_area" style="margin-top: 40px;">
-                                        <a class="main_btn" href="#" style="width: 250px;">수강 신청</a>
-                                        &lt;!&ndash;<a class="icon_btn" href="#">
-                                            <i class="lnr lnr lnr-diamond"></i>
-                                        </a>
-                                        <a class="icon_btn" href="#">
-                                            <i class="lnr lnr lnr-heart"></i>
-                                        </a>&ndash;&gt;
-                                    </div>-->
+                                    <!-- <div class="card_area" style="margin-top: 40px;">
+                                         <a class="main_btn" href="#" style="width: 250px;">수강 신청</a>
+                                         &lt;!&ndash;<a class="icon_btn" href="#">
+                                             <i class="lnr lnr lnr-diamond"></i>
+                                         </a>
+                                         <a class="icon_btn" href="#">
+                                             <i class="lnr lnr lnr-heart"></i>
+                                         </a>&ndash;&gt;
+                                     </div>-->
 
                                 </div>
                             </div>
@@ -432,13 +433,7 @@
                     <div class="col-lg-6">
                         <div class="review_box">
                             <h4>Post a comment</h4>
-                            <form
-                                    class="row contact_form"
-                                    action="contact_process.php"
-                                    method="post"
-                                    id="contactForm"
-                                    novalidate="novalidate"
-                            >
+                            <form class="row contact_form" action="contact_process.php" method="post" id="contactForm" novalidate="novalidate">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <input

@@ -224,7 +224,7 @@ public class LectureServiceImpl implements LectureService {
 
         ServiceResult result = new ServiceResult();
 
-        Optional<Lecture> optionalLecture = lectureRepository.findById(studentDTO.getLectureId());
+        Optional<Lecture> optionalLecture = lectureRepository.findById(studentDTO.getLectureNo());
         if (!optionalLecture.isPresent()) {
             result.setResult(false);
             result.setMessage("강좌 정보가 존재하지 않습니다.");
@@ -234,8 +234,8 @@ public class LectureServiceImpl implements LectureService {
         Lecture lecture = optionalLecture.get();
 
         String[] statusList = {Student.STATUS_REQ, Student.STATUS_COMPLETE};
-        long count = studentRepository.countByLectureIdAndUserIdAndStatusIn(
-                lecture.getLecture_no(), studentDTO.getStudentNo(), Arrays.asList(statusList));
+        long count = studentRepository.countByLectureNoAndStudentNoAndStatusIn(
+                lecture.getLecture_no(), studentDTO.getMno(), Arrays.asList(statusList));
 
         if (count > 0) {
             result.setResult(false);
@@ -244,8 +244,9 @@ public class LectureServiceImpl implements LectureService {
         }
 
         Student takeLecture = Student.builder()
-                .studentNo(studentDTO.getStudentNo())
                 .lectureNo(lecture.getLecture_no())
+                .mno(studentDTO.getMno())
+                .entranceYn(false)
                 .status(Student.STATUS_REQ)
                 .regDate(LocalDateTime.now())
 

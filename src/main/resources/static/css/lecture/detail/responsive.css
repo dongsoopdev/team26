@@ -1,19 +1,19 @@
-@media (max-width:1619px){
-	/* Main Menu Area css
-	============================================================================================ */
+/*@media (max-width:1619px){
+	!* Main Menu Area css
+	============================================================================================ *!
    .header_area .navbar .search {
 		margin-left: 40px;
 	}
-	/* End Main Menu Area css
-	============================================================================================ */
-}
+	!* End Main Menu Area css
+	============================================================================================ *!
+}*/
 @media (max-width:1300px){
 	
 }
 @media (max-width:1199px){
 	/* Main Menu Area css
 	============================================================================================ */
-	.header_area .navbar .nav .nav-item {
+	.header_area .navbar2 .nav .nav-item {
 		margin-right: 28px;
 	}
 	/* End Main Menu Area css
@@ -122,10 +122,10 @@
 		transition: all 400ms linear;
 		cursor: pointer;
 	}
-    .navbar .container{
+/*    .navbar .container{
         padding-left: 15px;
         padding-right: 15px;
-    }
+    }*/
     .nav{
         padding: 0px 0px;
     }
@@ -299,11 +299,11 @@
 	}
 	/* End End Footer Area css
 	============================================================================================ */
-	.footer_area .container.box_1620{
+/*	.footer_area .container.box_1620{
 		width: 100%;
 		max-width: 100%;
 		padding: 0px;
-	}
+	}*/
 	.footer_inner .f_menu li {
 		margin-right: 18px;
 	}
