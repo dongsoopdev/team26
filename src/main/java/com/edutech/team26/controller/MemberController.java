@@ -8,6 +8,7 @@ import com.edutech.team26.dto.MemberJoinDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,6 +48,7 @@ public class MemberController {
 
     @PostMapping("/join")
     public String joinPOST(MemberJoinDTO memberJoinDTO, RedirectAttributes redirectAttributes){
+
         boolean result = false;
         try {
             result = memberService.join(memberJoinDTO);

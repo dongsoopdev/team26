@@ -1,7 +1,6 @@
 server:
   port: 8081
 
-
 spring:
   profiles:
     active: local
@@ -62,13 +61,9 @@ logging:
 google:
   recaptcha:
     key:
-      site: 6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI
-      secret: 6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe
+      site: 6LfOTCopAAAAAFSu2-wm--x38dsGuhGNmwUpIBRN
+      secret: 6LfOTCopAAAAAIiMB8muhm3fblR8MLixft3byVI4
       url: https://www.google.com/recaptcha/api/siteverify
-
-
-
-
 
 resource:
   path: file:///C:/upload/

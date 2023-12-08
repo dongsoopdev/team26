@@ -2,6 +2,7 @@ package com.edutech.team26.config;
 
 import com.edutech.team26.biz.CustomUserDetailsService;
 import com.edutech.team26.biz.MemberService;
+import com.edutech.team26.component.LoginFailHandler;
 import com.edutech.team26.component.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -49,10 +50,8 @@ public class SecurityConfig {
             .formLogin((formLogin) ->
                 formLogin
                     .loginPage("/login")
-                    .usernameParameter("username")
-                    .passwordParameter("password")
                     .successHandler(new LoginSuccessHandler())
-                    .failureUrl("/login")
+                    .failureHandler(new LoginFailHandler())
             );
 
         http
