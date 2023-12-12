@@ -2,17 +2,38 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <th:block th:insert="~{layout/head :: head}"></th:block>
-  <title>EduTech::회원 활성화</title>
+  <script src='https://www.google.com/recaptcha/api.js'></script>
+  <title>EduTech::회원 가입 완료</title>
 </head>
 <body>
-  <div th:if="${result eq true}">
-    <p>회원님의 계정이 활성화 되었습니다.</p>
-  </div>
 
-  <div th:if="${result eq false}">
-    <p>회원님의 계정 활성화에 실패하였습니다.</p>
+<!-- content 영역 시작 -->
+<section class="vh-100 bg-primary">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card shadow-2-strong" style="border-radius: 1rem;">
+          <div class="card-body p-5 text-center">
+
+            <div class="form-outline mb-4 text-center fs-2 fw-bolder">
+              <a class="text-black text-decoration-none" th:href="@{/}">EduTech</a>
+            </div>
+
+            <div class="form-outline mb-4">
+              <h1>활성화 알림</h1>
+              <p class="my-3" th:if="${result eq true}">회원님의 계정이 활성화 되었습니다.</p>
+              <p class="my-3"  th:if="${result eq false}">회원님의 계정 활성화에 실패하였습니다.</p>
+            </div>
+
+            <a th:href="@{/login}" class="btn btn-primary btn-block mb-4">로그인 하기</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <script th:src="@{/js/common.js}"></script>
-  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</section>
+<!-- content 영역 종료 -->
+
+<script th:src="@{/js/common.js}"></script>
 </body>
 </html>
