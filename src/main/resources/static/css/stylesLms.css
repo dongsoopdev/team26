@@ -1,4 +1,4 @@
-@charset "UTF-8";
+`@charset "UTF-8";
 /*!
 * Start Bootstrap - SB Admin v7.0.7 (https://startbootstrap.com/template/sb-admin)
 * Copyright 2013-2023 Start Bootstrap
@@ -11242,8 +11242,11 @@ body {
   border-radius: 0.375rem !important;
 }
 
-.layoutSidenav_contents {
-  padding-top: 100px;
+
+
+.layout_contents {
+  width: 90%;
+  padding-top: 30px;
   padding-bottom: 300px;
   margin: 0 auto;
 }

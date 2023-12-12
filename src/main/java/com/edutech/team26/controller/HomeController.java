@@ -27,4 +27,9 @@ public class HomeController {
         return "contentLayout";
     }
 
+    @GetMapping("/layout2")
+    public String layout2(Model model) throws Exception {
+        return "contentLayout2";
+    }
+
 }

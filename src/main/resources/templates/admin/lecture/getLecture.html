@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
+    <title>LMS</title>
+</head>
+<body class="sb-nav-fixed">
+<th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="~{layout/lmsMenuAdminLec :: lmsMenu2}"></th:block>
+
+    <div id="layoutSidenav_content">
+        <main>
+            <th:block layout:fragment="content"></th:block>
+            <div class="layout_contents"> <!--margin 설정-->
+
+            <div class="page_wrap">
+                <h2 class="page_tit"> 강좌 정보</h2>
+
+
+                <table class="table">
+                    <tr th:each="lecture, status: ${lecture}" style="vertical-align: middle;">
+
+
+                    <tr>
+                        <th>강의 제목</th>
+                        <td th:text="${lecture.getLectureName()}"></td>
+                    </tr>
+
+                    <tr>
+                        <th>강좌 설명</th>
+                        <td th:text="${lecture.getLectureContent()}"></td>
+                    </tr>
+
+                    <tr>
+                        <th>수강 신청 기간</th>
+                        <td>
+                            <p2 th:text="${lecture.getStartEnrolmentDate()}"></p2>
+                            <strong> - </strong>
+                            <p2 th:text="${lecture.getEndEnrolmentDate()}"></p2>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>강의 운영 기간</th>
+                        <td>
+                            <p2 th:text="${lecture.getStartStudyDate()}"></p2>
+                            <strong> - </strong>
+                            <p2 th:text="${lecture.getEndStudyDate()}"></p2>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>강의 상태</th>
+                        <td>
+                            <p2 th:text="${lecture.getLectureAct() == 1 ? '강의예정' : (lecture.getLectureAct() == 2 ? '강의중' : (lecture.getLectureAct() == 3 ? '강의종료' : '오류'))}"></p2>
+                        </td>
+                    </tr>
+
+
+                </table>
+            </div>
+            </div>
+        </main>
+        <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
+    </div>
+</div>
+</div>
+</body>
+</html>

@@ -3,28 +3,23 @@ package com.edutech.team26.controller;
 import com.edutech.team26.biz.CategoryService;
 import com.edutech.team26.biz.LectureService;
 import com.edutech.team26.biz.TeacherService;
-import com.edutech.team26.domain.Member;
-import com.edutech.team26.domain.Teacher;
 import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.model.LectureParam;
-import com.edutech.team26.model.VwTeacher;
-import com.edutech.team26.repository.MemberRepository;
 import com.edutech.team26.repository.TeacherRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -57,7 +52,13 @@ public class AdminController extends lecBaseController{
     }
 
 
-    @GetMapping("lectureList")
+    
+    
+    
+    // ===========================================   [강의 관련 시작]  ============================================================
+    
+    // 강의 전체 리스트
+    @GetMapping("/lectureList")
     public String list(Model model, LectureParam lectureParam) {
 
 //        lectureParam.init();
@@ -81,8 +82,23 @@ public class AdminController extends lecBaseController{
         model.addAttribute("totalCount", totalCount);
         model.addAttribute("pager", pageHtml);
 
-        return "admin/lectureList";
+        return "admin/lecture/lectureList";
     }
+
+    // 선택한 강의 상세보기
+    @GetMapping("/getLecture/{lecture_no}")
+    public String getProduct(@PathVariable("lecture_no") long lecture_no, Model model) {
+
+        //상품 정보
+        LectureDTO lectureDTO = lectureService.getById(lecture_no);
+        System.out.println(lectureDTO);
+
+
+        model.addAttribute("lecture", lectureDTO);
+        return "admin/lecture/getLecture";
+    }
+
+
 
 
     // add form
@@ -107,10 +123,11 @@ public class AdminController extends lecBaseController{
 //        System.out.println("강사리스트 : " + teacherList);
 //        model.addAttribute("teacherList", teacherList ); //선생님 이름 담은 객체
         model.addAttribute("category", categoryService.list());
-        return "admin/addLecture";
+        return "admin/lecture/addLecture";
     }
 
 
+    //강의 등록하기
     @PostMapping(value = {"/save"})
     public String saveSubmit(Model model, HttpServletRequest request, MultipartFile[] file, LectureDTO lectureDTO) throws IOException {
         lectureService.addLecture(lectureDTO, file, request);
@@ -145,6 +162,15 @@ public class AdminController extends lecBaseController{
     
     
     //강의 삭제하기
+
+
+
+
+
+
+
+
+    // ===========================================   [강의 관련 끝]  ============================================================
 
 
 }
