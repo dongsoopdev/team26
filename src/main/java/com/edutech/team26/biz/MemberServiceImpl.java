@@ -54,12 +54,25 @@ public class MemberServiceImpl implements MemberService {
     private final CaptchaSetting captchaSetting;
 
     @Override
-    public boolean join(MemberJoinDTO memberJoinDTO) throws Exception {
-        String email = memberJoinDTO.getEmail();
+    public boolean memberDupValidation(String email) throws Exception {
+
+        boolean pass = true;
 
         Optional<Member> checkMember = memberRepository.findByEmail(email);
         if(checkMember.isPresent()){
-            return false;
+            pass = false;
+        }
+
+        return pass;
+
+    }
+
+    @Override
+    public boolean join(MemberJoinDTO memberJoinDTO) throws Exception {
+
+        Optional<Member> findMember = memberRepository.findByEmail(memberJoinDTO.getEmail());
+        if(findMember.isPresent()){
+            throw new IllegalStateException("이미 가입된 회원입니다.");
         }
 
         String uuid = UUID.randomUUID().toString();

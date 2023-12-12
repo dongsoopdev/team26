@@ -7,6 +7,7 @@ import com.edutech.team26.biz.TeacherService;
 import com.edutech.team26.dto.MemberJoinDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.log4j.Log4j2;
@@ -15,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -46,10 +48,24 @@ public class MemberController {
         return "member/join";
     }
 
-    @PostMapping("/join")
-    public String joinPOST(MemberJoinDTO memberJoinDTO, RedirectAttributes redirectAttributes){
+    @GetMapping("/joinFinish")
+    public String joinFinish(Model model){
+        MemberJoinDTO member = new MemberJoinDTO();
+        model.addAttribute("member", member);
+        return "member/joinComplete";
+    }
 
-        boolean result = false;
+    @PostMapping(value = "/memberDup")
+    @ResponseBody
+    public boolean memberDupValidation(@RequestBody MemberJoinDTO data) throws Exception {
+        boolean result = memberService.memberDupValidation(data.getEmail());
+        return result;
+    }
+
+    @PostMapping("/join")
+    public String joinPOST(@Valid MemberJoinDTO memberJoinDTO, BindingResult bindingResult, Model model) throws Exception {
+
+        /*boolean result = false;
         try {
             result = memberService.join(memberJoinDTO);
         } catch (Exception e) {
@@ -57,11 +73,41 @@ public class MemberController {
         }
 
         redirectAttributes.addFlashAttribute("result", result);
-        return "member/joinComplete"; //회원 가입 후 로그인
+        return "member/joinComplete"; //회원 가입 후 로그인*/
+        /*boolean result = memberService.join(memberJoinDTO);
+        if(!result) {
+            model.addAttribute("errorMessage", "이메일 중복 검사를 다시 해주시기 바랍니다.");
+            return "member/join";
+        } else {
+            return "member/joinComplete";
+        }*/
+
+        if(bindingResult.hasErrors()){
+            log.info("dddddddddddddddddddddd");
+            return "member/join";
+        }
+
+        try {
+            memberService.join(memberJoinDTO);
+        } catch (IllegalStateException e){
+
+            model.addAttribute("errorMessage", "이메일 중복 검사를 진행해 주시기 바랍니다.");
+
+            return "member/join";
+        }
+        log.info("zzzzzzzzzzzzzzzzzzz");
+
+        return "redirect:/joinFinish";
     }
 
     @GetMapping("/login")
     public String loginGet(){
+        return "member/login";
+    }
+
+    @GetMapping("/login/error")
+    public String loginError(Model model){
+        model.addAttribute("loginErrorMsg", "아이디 또는 비밀번호를 확인해주세요.<br />회원가입을 하셨다면 이메일을 확인해주세요.");
         return "member/login";
     }
 

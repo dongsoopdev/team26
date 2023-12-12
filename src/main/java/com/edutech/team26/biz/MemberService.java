@@ -5,6 +5,8 @@ import com.edutech.team26.dto.MemberJoinDTO;
 public interface MemberService {
     //static class MidExistException extends Exception {}
 
+    boolean memberDupValidation(String email) throws Exception;
+
     boolean join(MemberJoinDTO memberJoinDTO) throws Exception;
 
     boolean emailAuth(String uuid);
