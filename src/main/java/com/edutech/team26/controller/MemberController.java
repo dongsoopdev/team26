@@ -50,8 +50,7 @@ public class MemberController {
 
     @GetMapping("/joinFinish")
     public String joinFinish(Model model){
-        MemberJoinDTO member = new MemberJoinDTO();
-        model.addAttribute("member", member);
+        //MemberJoinDTO member = new MemberJoinDTO();
         return "member/joinComplete";
     }
 
@@ -83,7 +82,6 @@ public class MemberController {
         }*/
 
         if(bindingResult.hasErrors()){
-            log.info("dddddddddddddddddddddd");
             return "member/join";
         }
 
@@ -95,7 +93,6 @@ public class MemberController {
 
             return "member/join";
         }
-        log.info("zzzzzzzzzzzzzzzzzzz");
 
         return "redirect:/joinFinish";
     }
