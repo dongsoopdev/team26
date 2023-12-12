@@ -1,15 +1,20 @@
 
-package com.edutech.team26.dto;
+package com.edutech.team26.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Data
-public class TeacherVO {
+@Getter
+@Entity
+@Table(name = "teacherlist")
+public class VwTeacher {
+    @Id
     private Long mno;
     private String email;
     private String userName;
@@ -27,4 +32,7 @@ public class TeacherVO {
     private LocalDateTime activeDate;
     private String status;
     private String intro;
+
+
+
 }

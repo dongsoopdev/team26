@@ -3,9 +3,8 @@ package com.edutech.team26.controller;
 import com.edutech.team26.biz.CategoryService;
 import com.edutech.team26.biz.LectureService;
 import com.edutech.team26.biz.StudentService;
-import com.edutech.team26.biz.StudentServiceImpl;
-import com.edutech.team26.domain.Member;
-import com.edutech.team26.domain.Student;
+import com.edutech.team26.domain.VwCourse;
+import com.edutech.team26.dto.TeacherVO;
 import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.dto.StudentDTO;
@@ -15,19 +14,15 @@ import com.edutech.team26.model.ServiceResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 
 @Slf4j
@@ -48,22 +43,23 @@ public class lectureController extends lecBaseController {
 //        List<LectureDTO> lectureList = lectureService.list(lectureParam);
 
 
-        List<LectureDTO> lectureList = lectureService.findAll();
+        List<VwCourse> lectureList = lectureService.vwFindAll();
+        //List<TeacherVO> lectureList = lectureService.vwFindAll();
 
-        long totalCount = 0;
-        if (!CollectionUtils.isEmpty(lectureList)) {
-            totalCount = lectureList.get(0).getTotalCount();
-        }
-
-        String queryString = lectureParam.getQueryString();
-        String pageHtml = getPaperHtml(totalCount,
-                lectureParam.getPageSize(),
-                lectureParam.getPageIndex(),
-                queryString);
+//        long totalCount = 0;
+//        if (!CollectionUtils.isEmpty(lectureList)) {
+//            totalCount = lectureList.get(0).getTotalCount();
+//        }
+//
+//        String queryString = lectureParam.getQueryString();
+//        String pageHtml = getPaperHtml(totalCount,
+//                lectureParam.getPageSize(),
+//                lectureParam.getPageIndex(),
+//                queryString);
 
         model.addAttribute("lectureList", lectureList);
-        model.addAttribute("totalCount", totalCount);
-        model.addAttribute("pager", pageHtml);
+//        model.addAttribute("totalCount", totalCount);
+//        model.addAttribute("pager", pageHtml);
 
         return "lecture/lectureList";
     }

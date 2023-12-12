@@ -1,11 +1,8 @@
 package com.edutech.team26.biz;
 
-import com.edutech.team26.dto.LectureDTO;
-import com.edutech.team26.model.VwTeacher;
+import com.edutech.team26.domain.VwCourse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 public interface TeacherService {
 
@@ -13,7 +10,9 @@ public interface TeacherService {
 
     boolean changeActive(Long teacherNo, int type) throws Exception;
 
-    List<VwTeacher> findAll();
-    VwTeacher getByMno(long mno);
+/*    List<VwCourse> findAll();*/
+
+
+    VwCourse getByMno(long mno);
 
 }

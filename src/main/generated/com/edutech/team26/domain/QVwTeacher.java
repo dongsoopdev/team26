@@ -1,4 +1,4 @@
-package com.edutech.team26.model;
+package com.edutech.team26.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QVwTeacher extends EntityPathBase<VwTeacher> {
 
-    private static final long serialVersionUID = 1706523038L;
+    private static final long serialVersionUID = 718723317L;
 
     public static final QVwTeacher vwTeacher = new QVwTeacher("vwTeacher");
 
@@ -25,7 +25,7 @@ public class QVwTeacher extends EntityPathBase<VwTeacher> {
 
     public final StringPath addr = createString("addr");
 
-    public final StringPath addr_detail = createString("addr_detail");
+    public final StringPath addrDetail = createString("addrDetail");
 
     public final StringPath email = createString("email");
 

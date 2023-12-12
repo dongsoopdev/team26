@@ -3,16 +3,23 @@ package com.edutech.team26.controller;
 import com.edutech.team26.biz.CategoryService;
 import com.edutech.team26.biz.LectureService;
 import com.edutech.team26.biz.TeacherService;
+import com.edutech.team26.domain.Student;
+import com.edutech.team26.domain.Teacher;
+import com.edutech.team26.domain.VwTeacher;
+import com.edutech.team26.dto.MemberSecurityDTO;
+import com.edutech.team26.dto.StudentDTO;
+import com.edutech.team26.dto.TeacherVO;
 import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.model.LectureParam;
+import com.edutech.team26.domain.VwCourse;
 import com.edutech.team26.repository.TeacherRepository;
+import com.edutech.team26.repository.VwTeacherRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,6 +46,9 @@ public class AdminController extends lecBaseController{
     @Autowired
     private TeacherRepository teacherRepository;
 
+    @Autowired
+    private VwTeacherRepository vwTeacherRepository;
+
 
     @Autowired
     private ModelMapper mapper;
@@ -64,23 +74,26 @@ public class AdminController extends lecBaseController{
 //        lectureParam.init();
 //        List<LectureDTO> lectureList = lectureService.list(lectureParam);
 
+//        long totalCount = 0;
+//        if (!CollectionUtils.isEmpty(lectureList)) {
+//            totalCount = lectureList.get(0).getTotalCount();
+//        }
+//
+//        String queryString = lectureParam.getQueryString();
+//        String pageHtml  = getPaperHtml(totalCount,
+//                lectureParam.getPageSize(),
+//                lectureParam.getPageIndex(),
+//                queryString);
+//        model.addAttribute("totalCount", totalCount);
+//        model.addAttribute("pager", pageHtml);
 
-        List<LectureDTO> lectureList = lectureService.findAll();
 
-        long totalCount = 0;
-        if (!CollectionUtils.isEmpty(lectureList)) {
-            totalCount = lectureList.get(0).getTotalCount();
-        }
+        List<VwCourse> lectureList = lectureService.vwFindAll();
+        //List<TeacherVO> lectureList = lectureService.vwFindAll();
+        //List<LectureDTO> lectureList = lectureService.findAll();
 
-        String queryString = lectureParam.getQueryString();
-        String pageHtml  = getPaperHtml(totalCount,
-                lectureParam.getPageSize(),
-                lectureParam.getPageIndex(),
-                queryString);
-
+        System.out.println("전체 강좌" + lectureList);
         model.addAttribute("lectureList", lectureList);
-        model.addAttribute("totalCount", totalCount);
-        model.addAttribute("pager", pageHtml);
 
         return "admin/lecture/lectureList";
     }
@@ -105,10 +118,9 @@ public class AdminController extends lecBaseController{
     @GetMapping("/lectureSave")
     public String addForm(Model model) {
 
-//        List<VwTeacher> vwTeachers = new ArrayList<>();
+//        List<VwCourse> VwCourses = new ArrayList<>();
 
 
-//        List<VwTeacher> teacherList = teacherService.findAll();
 //        List<String> memberNames = new ArrayList<>();
 //        for (Teacher teacher : teacherList) {
 //            Long mno = teacher.getMno();
@@ -120,8 +132,13 @@ public class AdminController extends lecBaseController{
 //                memberNames.add("Unknown Member");
 //            }
 //        }
-//        System.out.println("강사리스트 : " + teacherList);
-//        model.addAttribute("teacherList", teacherList ); //선생님 이름 담은 객체
+        /*List<Teacher> teacherList = teacherRepository.findAll();
+        System.out.println("강사리스트 : " + teacherList);*/
+
+        List<VwTeacher> teacherList =  vwTeacherRepository.findAll();
+        System.out.println("강사리스트 : " + teacherList);
+
+        model.addAttribute("teacherList", teacherList ); //선생님 이름 담은 객체
         model.addAttribute("category", categoryService.list());
         return "admin/lecture/addLecture";
     }
