@@ -23,15 +23,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Optional<Member> result = memberRepository.getWithRoles(username);
-        if (result.isEmpty()) { //해당 아이디를 가진 사용자가 없다면
-            throw new UsernameNotFoundException("username not found...");
-        }
+        Optional<Member> result = memberRepository.getWithRoles(email);
 
-        if(!result.get().getUserStatus().equals(MemberCode.MEMBER_STATUS_ING)) {
-            throw new UsernameNotFoundException("활성화 안된 아이디");
+        if (result.isEmpty()) {
+            throw new UsernameNotFoundException(email);
         }
 
         Member member = result.get();
