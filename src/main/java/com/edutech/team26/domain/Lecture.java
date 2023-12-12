@@ -26,7 +26,7 @@ public class Lecture extends BaseEntity{
 
     //long teacher_no;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_no")
     private Teacher teacher;
 

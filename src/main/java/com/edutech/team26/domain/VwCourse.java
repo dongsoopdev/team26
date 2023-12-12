@@ -30,6 +30,7 @@ public class VwCourse {
     private String intro;
     private String status;
 
+    private String lectureNo;
     private String lectureName;
     private String lectureContent;
     private LocalDateTime startEnrolmentDate;                //수강신청일

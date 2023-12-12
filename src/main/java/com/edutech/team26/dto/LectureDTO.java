@@ -20,7 +20,7 @@ import java.util.List;
 public class LectureDTO {
 
     private long lecture_no;
-    //private long teacher_no;
+    private long teacher_no;
     //private List<Category> categorys = new ArrayList<>();
     private String lectureName;
     private String lectureContent;

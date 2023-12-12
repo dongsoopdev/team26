@@ -45,6 +45,8 @@ public class QVwCourse extends EntityPathBase<VwCourse> {
 
     public final StringPath lectureName = createString("lectureName");
 
+    public final StringPath lectureNo = createString("lectureNo");
+
     public final StringPath lectureVedio = createString("lectureVedio");
 
     public final NumberPath<Long> mno = createNumber("mno", Long.class);
