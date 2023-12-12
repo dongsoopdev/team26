@@ -6,6 +6,7 @@ import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +30,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         if (result.isEmpty()) {
             throw new UsernameNotFoundException(email);
+        }
+
+        if(!result.get().getUserStatus().equals(MemberCode.MEMBER_STATUS_ING)) {
+            throw new UsernameNotFoundException("No Authentication");
         }
 
         Member member = result.get();

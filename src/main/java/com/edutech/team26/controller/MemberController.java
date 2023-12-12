@@ -43,14 +43,12 @@ public class MemberController {
 
     @GetMapping("/join")
     public String joinUser(Model model){
-        MemberJoinDTO member = new MemberJoinDTO();
-        model.addAttribute("member", member);
+        model.addAttribute("memberJoinDTO", new MemberJoinDTO());
         return "member/join";
     }
 
     @GetMapping("/joinFinish")
     public String joinFinish(Model model){
-        //MemberJoinDTO member = new MemberJoinDTO();
         return "member/joinComplete";
     }
 
@@ -63,37 +61,15 @@ public class MemberController {
 
     @PostMapping("/join")
     public String joinPOST(@Valid MemberJoinDTO memberJoinDTO, BindingResult bindingResult, Model model) throws Exception {
-
-        /*boolean result = false;
-        try {
-            result = memberService.join(memberJoinDTO);
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "email");
-        }
-
-        redirectAttributes.addFlashAttribute("result", result);
-        return "member/joinComplete"; //회원 가입 후 로그인*/
-        /*boolean result = memberService.join(memberJoinDTO);
-        if(!result) {
-            model.addAttribute("errorMessage", "이메일 중복 검사를 다시 해주시기 바랍니다.");
-            return "member/join";
-        } else {
-            return "member/joinComplete";
-        }*/
-
         if(bindingResult.hasErrors()){
             return "member/join";
         }
-
         try {
             memberService.join(memberJoinDTO);
         } catch (IllegalStateException e){
-
-            model.addAttribute("errorMessage", "이메일 중복 검사를 진행해 주시기 바랍니다.");
-
+            model.addAttribute("errorMessage", e.getMessage());
             return "member/join";
         }
-
         return "redirect:/joinFinish";
     }
 
