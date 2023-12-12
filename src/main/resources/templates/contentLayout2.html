@@ -6,22 +6,22 @@
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
     <title>LMS</title>
 </head>
-
-
 <body class="sb-nav-fixed">
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
 <div id="layoutSidenav">
-    <th:block th:insert="~{layout/lmsMenuAdmin :: lmsMenu}"></th:block>
-        <div id="layoutSidenav_content">
+ <th:block th:insert="~{layout/lmsMenuAdminLec :: lmsMenu2}"></th:block>
 
-            <main>
-                <th:block layout:fragment="content"></th:block>
-                <div class="layout_contents"> <!--margin 설정-->
-                <!--내용-->
-                </div>
-            </main>
+  <!--  <th:block th:insert="~{layout/lmsMenuAdminMenu :: lmsMenu}"></th:block>-->
 
-        </div>
+
+
+
+    <div id="layoutSidenav_content">
+        <main>
+            <th:block layout:fragment="content"></th:block>
+        </main>
+
+    </div>
     <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
 </div>
 </body>
