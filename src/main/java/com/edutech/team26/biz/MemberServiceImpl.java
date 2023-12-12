@@ -99,7 +99,7 @@ public class MemberServiceImpl implements MemberService {
         String text = "<h2>LMS 회원가입을 축하드립니다.</h2><br /><hr /><br />";
         text += "<p>" + memberJoinDTO.getUserName() + "님의 아래 링크를 클릭하셔서 가입을 완료 하세요.</p>";
         text += "<div><a target='_blank' href='http://localhost:" + serverPost + "/member/email-auth/" + uuid + "'>가입 완료</a></div>";
-        mailComponent.sendMail(email, subject, text);*/
+        mailComponent.sendMail(memberJoinDTO.getEmail(), subject, text);*/
 
         return true;
 
