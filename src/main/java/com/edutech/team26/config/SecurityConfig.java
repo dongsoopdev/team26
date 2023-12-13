@@ -1,9 +1,6 @@
 package com.edutech.team26.config;
 
 import com.edutech.team26.biz.CustomUserDetailsService;
-import com.edutech.team26.biz.MemberService;
-import com.edutech.team26.component.LoginFailHandler;
-import com.edutech.team26.component.LoginSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -17,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
-import java.lang.reflect.Field;
 
 @Log4j2
 @Configuration
