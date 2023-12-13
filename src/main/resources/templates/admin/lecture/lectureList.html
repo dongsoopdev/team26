@@ -20,7 +20,7 @@
             <div class="layout_contents">
                 <div class="btn_group">
                     <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/lectureSave}" class="btn btn-secondary"
-                       style="float: right;">강좌등록</a>
+                       style="float: right;">강의 등록</a>
                 </div>
 
                 <div class="page_wrap" style="margin-top: 50px;">
@@ -50,7 +50,8 @@
 
 
                             <td>
-                                <p2>임시 강사명</p2>
+                                <!--<p2>임시 강사명</p2>-->
+                                <p2 th:text="${lectureList.getUserName()}"></p2>
                             </td>
 
 
@@ -73,7 +74,7 @@
 
                             <td>
                                 <div class="btn_group">
-                                    <a th:href="@{'/admin/getLecture/'+${lectureList.lecture_no}}"
+                                    <a th:href="@{'/admin/getlecture/'+${lectureList.getLectureNo()}}"
                                        class="btn btn-primary">상세보기</a>
                                 </div>
                             </td>

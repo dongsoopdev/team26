@@ -1,10 +1,13 @@
 package com.edutech.team26.biz;
 
-import com.edutech.team26.domain.Lecture;
+
 import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.dto.StudentDTO;
+
+import com.edutech.team26.dto.TeacherVO;
 import com.edutech.team26.model.LectureParam;
 import com.edutech.team26.model.ServiceResult;
+import com.edutech.team26.domain.VwCourse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +32,8 @@ public interface LectureService{
      */
     List<LectureDTO> list(LectureParam lectureParam);
     List<LectureDTO> findAll();
+
+    List<VwCourse> vwFindAll();
 
     /*
      * 강좌 상세 정보
@@ -56,10 +61,10 @@ public interface LectureService{
 //    LectureDTO frontDetail(long lecture_no);
 //
 
-//    /*
+    //    /*
 //     * 수강 신청
 //     */
-     ServiceResult apply(StudentDTO studentDTO);
+    ServiceResult apply(StudentDTO studentDTO);
 
 
 //
@@ -67,6 +72,7 @@ public interface LectureService{
 //     * 전체 강좌 목록
 //     */
 //    List<LectureDTO> listAll();
+
 
 
 

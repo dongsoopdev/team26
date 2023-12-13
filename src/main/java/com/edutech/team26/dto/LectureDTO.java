@@ -20,7 +20,7 @@ import java.util.List;
 public class LectureDTO {
 
     private long lecture_no;
-    //private long teacher_no;
+    private long teacher_no;
     //private List<Category> categorys = new ArrayList<>();
     private String lectureName;
     private String lectureContent;
@@ -46,7 +46,7 @@ public class LectureDTO {
     public static LectureDTO of(Lecture lecture) {
         return LectureDTO.builder()
                 .lecture_no(lecture.getLecture_no())
-                //.teacher_no(lecture.getTeacher_no())
+                .teacher_no(lecture.getTeacher().getTeacherNo())
                 //.categorys(lecture.getCategorys())
                 .lectureName(lecture.getLectureName())
                 .lectureContent(lecture.getLectureContent())

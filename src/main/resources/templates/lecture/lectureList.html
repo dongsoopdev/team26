@@ -14,7 +14,7 @@
 
 
 
-    <title>강좌리스트</title>
+    <title>개설강좌</title>
 
 
     <style>
@@ -261,7 +261,9 @@
                             <div class="col-md-12">
                                 <div class="section-title">
                                     <h3 class="title"></h3>
+                                    <a th:href="@{/admin/lectureSave}" type="button" class="btn btn-primary">강의등록</a>
                                     <div class="section-nav">
+
                                         <ul class="section-tab-nav tab-nav">
                                             <li class="active"><a data-toggle="tab" href="#tab1">최신순</a></li>
                                             <li><a data-toggle="tab" href="#tab1">신청마감순</a></li>
@@ -279,7 +281,7 @@
                                 <!-- product -->
                                 <div class="col-md-4 col-xs-6" th:each="lectureList: ${lectureList}">
                                     <!--  <a th:href="@{/product/productDetail(pno=${product.pno})}" >-->
-                                    <a th:href="@{'/lecture/getLecture/' + ${lectureList.lecture_no}}">
+                                    <a th:href="@{'/lecture/getlecture/' + ${lectureList.getlectureNo()}}">
 
 
                                         <div class="product">
@@ -288,16 +290,27 @@
 
 
                                                 <!--<img th:src="@{'/upload/' + ${product.getImgsrc1()}}" alt="">-->
-                                                <img th:src="@{'/upload/' + ${lectureList.getLectureImg1()}}" alt="">
+                                                <img th:src="@{'/upload/' + ${lectureList.getlectureImg1()}}" alt="">
                                                 <!-- <img th:src="@{/upload/{fileName}(fileName=${product.getImgFile()})}" alt="">\-->
 
-                                                <!--                                        <div class="product-label">-->
-                                                <!--                                            <span class="sale" th:text="${lectureList.getQuality()}">퀄리티</span>-->
-                                                <!--                                            &lt;!&ndash;<span th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"</span>&ndash;&gt;-->
-                                                <!--                                            &lt;!&ndash;<span th:text="${#temporals.format(product.getResdate(), 'yyyy-MM-dd')}"></span>&ndash;&gt;-->
-                                                <!--                                            <span th:if="${#dates.format(#dates.createNow(), 'yyyy-MM-dd') == #temporals.format(product.getResdate(), 'yyyy-MM-dd')}" class="new">NEW</span>-->
+                                                <div class="product-label" style="background-color: #FFFFFF">
+                                                    <!--<span class="sale"th:text="${lectureList.getlectureAct() == 1 ? '강의예정' : (lectureList.getlectureAct() == 2 ? '강의중' : (lectureList.getlectureAct() == 3 ? '강의종료' : '오류'))}"></span>-->
+                                                    <!--<span th:style="'color: ' + (${lectureList.lectureAct} == 1 ? 'orange' : (${lectureList.lectureAct} == 2 ? 'blue' : (${lectureList.lectureAct} == 3 ? 'black' : 'red')));"
+                                                          th:text="${lectureList.lectureAct == 1 ? '강의예정' : (lectureList.lectureAct == 2 ? '강의중' : (lectureList.lectureAct == 3 ? '강의종료' : '오류'))}" ></span>-->
 
-                                                <!--                                        </div>-->
+                                                    <span th:style="'color: ' + (${lectureList.lectureAct} == 1 ? 'orange' : (${lectureList.lectureAct} == 2 ? 'green' : (${lectureList.lectureAct} == 3 ? 'black' : 'red'))) "
+                                                          th:text="${lectureList.lectureAct == 1 ? '강의예정' : (lectureList.lectureAct == 2 ? '강의중' : (lectureList.lectureAct == 3 ? '강의종료' : '오류'))}"
+                                                          style="background-color: white;"></span>
+
+
+
+
+                                                    <!--<span class="sale" th:text="${lectureList.getQuality()}">퀄리티</span>-->
+                                                    <!--<span th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"</span>-->
+                                                    <!--<span th:text="${#temporals.format(product.getResdate(), 'yyyy-MM-dd')}"></span>-->
+<!--                                                                                            <span th:if="${#dates.format(#dates.createNow(), 'yyyy-MM-dd') == #temporals.format(product.getResdate(), 'yyyy-MM-dd')}" class="new">NEW</span>-->
+
+                                                </div>
 
 
                                             </div>

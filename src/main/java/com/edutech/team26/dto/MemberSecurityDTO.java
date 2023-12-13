@@ -1,6 +1,7 @@
 package com.edutech.team26.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +28,7 @@ public class MemberSecurityDTO extends User {
         this.userName = userName;
         this.emailAuthYn = emailAuthYn;
     }
+
 
     public Long getMno() {
         return this.mno;

@@ -18,6 +18,8 @@ public class QLecture extends EntityPathBase<Lecture> {
 
     private static final long serialVersionUID = -1840107118L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QLecture lecture = new QLecture("lecture");
 
     public final QBaseEntity _super = new QBaseEntity(this);
@@ -60,20 +62,29 @@ public class QLecture extends EntityPathBase<Lecture> {
 
     public final StringPath startStudyDate = createString("startStudyDate");
 
-    public final NumberPath<Long> teacher_no = createNumber("teacher_no", Long.class);
+    public final QTeacher teacher;
 
     public final StringPath zoomUrl = createString("zoomUrl");
 
     public QLecture(String variable) {
-        super(Lecture.class, forVariable(variable));
+        this(Lecture.class, forVariable(variable), INITS);
     }
 
     public QLecture(Path<? extends Lecture> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QLecture(PathMetadata metadata) {
-        super(Lecture.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QLecture(PathMetadata metadata, PathInits inits) {
+        this(Lecture.class, metadata, inits);
+    }
+
+    public QLecture(Class<? extends Lecture> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.teacher = inits.isInitialized("teacher") ? new QTeacher(forProperty("teacher")) : null;
     }
 
 }

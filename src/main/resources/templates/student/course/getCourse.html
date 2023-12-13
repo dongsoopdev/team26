@@ -9,7 +9,7 @@
 <body class="sb-nav-fixed">
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
 <div id="layoutSidenav">
-    <th:block th:insert="~{layout/lmsMenuAdminLec :: lmsMenu2}"></th:block>
+    <th:block th:insert="~{layout/lmsMenuStuLec :: lmsMenu2}"></th:block>
 
     <div id="layoutSidenav_content">
         <main>
@@ -21,41 +21,58 @@
 
 
                 <table class="table" style=" width: 70%; margin: 0 auto;}">
-                    <tr th:each="lecture, status: ${lecture}" style="vertical-align: middle;">
+                    <tr th:each="course, status: ${course}" style="vertical-align: middle;">
+
+
+
+                    <tr>
+                        <th>강의 이미지</th>
+                        <td>  <img th:src="@{'/upload/' + ${course.getLectureImg1()}}" alt=""></td>
+                    </tr>
+
+                    <tr>
+                        <th>수강 상태</th>
+                        <td th:text="${course.getStudentStatus() == 'REQ' ? '수강신청완료' : (course.getStudentStatus() == 'COMPLETE' ? '수강 중' : (course.getStudentStatus()== 'CANCEL' ? '수강취소' : '알 수 없음'))}"></td>
+                    </tr>
 
 
                     <tr>
                         <th>강의 제목</th>
-                        <td th:text="${lecture.getLectureName()}"></td>
+                        <td th:text="${course.getLectureName()}"></td>
+                    </tr>
+
+                    <tr>
+                        <th>강사명</th>
+                        <td th:text="${course.getTeacherName()}"></td>
                     </tr>
 
                     <tr>
                         <th>강좌 설명</th>
-                        <td th:text="${lecture.getLectureContent()}"></td>
+                        <td th:text="${course.getLectureContent()}"></td>
                     </tr>
 
                     <tr>
                         <th>수강 신청 기간</th>
                         <td>
-                            <p2 th:text="${lecture.getStartEnrolmentDate()}"></p2>
+                            <p2 th:text="${course.getStartEnrolmentDate()}"></p2>
                             <strong> - </strong>
-                            <p2 th:text="${lecture.getEndEnrolmentDate()}"></p2>
+                            <p2 th:text="${course.getEndEnrolmentDate()}"></p2>
                         </td>
                     </tr>
 
                     <tr>
                         <th>강의 운영 기간</th>
                         <td>
-                            <p2 th:text="${lecture.getStartStudyDate()}"></p2>
+                            <p2 th:text="${course.getStartStudyDate()}"></p2>
                             <strong> - </strong>
-                            <p2 th:text="${lecture.getEndStudyDate()}"></p2>
+                            <p2 th:text="${course.getEndStudyDate()}"></p2>
                         </td>
                     </tr>
 
                     <tr>
                         <th>강의 상태</th>
                         <td>
-                            <p2 th:text="${lecture.getLectureAct() == 1 ? '강의예정' : (lecture.getLectureAct() == 2 ? '강의중' : (lecture.getLectureAct() == 3 ? '강의종료' : '오류'))}"></p2>
+                            <p2 th:text="${course.getLectureAct() == 1 ? '강의예정' : (course.getLectureAct() == 2 ? '강의중' : (course.getLectureAct() == 3 ? '강의종료' : '오류'))}"></p2>
                         </td>
                     </tr>
 

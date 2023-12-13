@@ -2,23 +2,25 @@ package com.edutech.team26.biz;
 
 
 import com.edutech.team26.constant.MemberRole;
-import com.edutech.team26.domain.Lecture;
-import com.edutech.team26.domain.Member;
-import com.edutech.team26.domain.Student;
-import com.edutech.team26.domain.Teacher;
+import com.edutech.team26.domain.*;
 import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.dto.StudentDTO;
+
+import com.edutech.team26.dto.TeacherVO;
+
 import com.edutech.team26.mapper.LectureMapper;
 import com.edutech.team26.model.LectureParam;
 import com.edutech.team26.model.ServiceResult;
 import com.edutech.team26.repository.LectureRepository;
 import com.edutech.team26.repository.MemberRepository;
 import com.edutech.team26.repository.StudentRepository;
+import com.edutech.team26.repository.VwCourseRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -45,6 +47,8 @@ public class LectureServiceImpl implements LectureService {
     private final MemberRepository memberRepository;
     private final LectureMapper lectureMapper;
     private final ModelMapper modelMapper;
+    private final VwCourseRepository VwCourseRepository;
+
 
 
     private LocalDate getLocalDate(String value) {
@@ -99,26 +103,6 @@ public class LectureServiceImpl implements LectureService {
 
         Lecture lecture = modelMapper.map(lectureDTO, Lecture.class);
 
-        /*Lecture lecture = Lecture.builder()
-                .lecture_no(lectureDTO.getLecture_no())
-                //.teacher_no(lectureDTO.getTeacher_no())
-                .lectureName(lectureDTO.getLectureName())
-                .lectureContent(lectureDTO.getLectureContent())
-                .lectureImg1(lectureDTO.getLectureImg1())
-                .lectureImg2(lectureDTO.getLectureImg2())
-                .lectureVedio(lectureDTO.getLectureVedio())
-                .filePath(lectureDTO.getFilePath())
-                .zoomUrl(lectureDTO.getZoomUrl())
-                .lectureCurnum(lectureDTO.getLectureCurnum())
-                .lectureMinnum(lectureDTO.getLectureMinnum())
-                .lectureMaxnum(lectureDTO.getLectureMaxnum())
-                .startEnrolmentDate(lectureDTO.getStartEnrolmentDate())
-                .endEnrolmentDate(lectureDTO.getEndEnrolmentDate())
-                .startStudyDate(lectureDTO.getStartStudyDate())
-                .endStudyDate(lectureDTO.getEndStudyDate())
-                .build();*/
-
-        log.info(">>>>>>>>>>>>>>>>>>>>>>" + lecture.getLectureAct());
 
         lectureRepository.save(lecture);
 
@@ -179,6 +163,25 @@ public class LectureServiceImpl implements LectureService {
         List<Lecture> lectureList = lectureRepository.findAll();
         return LectureDTO.of(lectureList);
     }
+
+    @Override
+    public List<VwCourse> vwFindAll() {
+        System.out.println("서비스에서 출력값: "+ VwCourseRepository.findAll());
+        return VwCourseRepository.findAll();
+    }
+
+//    @Override
+//    public List<TeacherVO> vwFindAll() {
+//        List<VwCourse> VwCourses = VwCourseRepository.findAll();
+//
+//        // 수정된 부분: List<VwCourse>를 List<TeacherVO>로 매핑
+//        List<TeacherVO> teacherVOList = VwCourses.stream()
+//                .map(VwCourse -> modelMapper.map(VwCourse, TeacherVO.class))
+//                .collect(Collectors.toList());
+//
+//        return teacherVOList;
+//    }
+
 
     @Override
     public LectureDTO getById(long id) {
@@ -263,7 +266,7 @@ public class LectureServiceImpl implements LectureService {
         Lecture lecture = optionalLecture.get();
 
         String[] statusList = {Student.STATUS_REQ, Student.STATUS_COMPLETE};
-        long count = studentRepository.countByLectureNoAndStudentNoAndStatusIn(
+        long count = studentRepository.countBylectureNoAndStudentNoAndStatusIn(
                 lecture.getLecture_no(), studentDTO.getMno(), Arrays.asList(statusList));
 
         if (count > 0) {
@@ -311,7 +314,7 @@ public class LectureServiceImpl implements LectureService {
     }
 
 
-   // 수강신청
+    // 수강신청
 //    @Override
 //    public ServiceResult apply(StudentDTO studentDTO) {
 //
