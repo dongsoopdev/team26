@@ -4,11 +4,13 @@ import com.edutech.team26.constant.AcceptCode;
 import com.edutech.team26.constant.MemberRole;
 import com.edutech.team26.domain.Member;
 import com.edutech.team26.domain.Teacher;
+import com.edutech.team26.domain.VwLecture;
+
 import com.edutech.team26.dto.TeacherDTO;
-import com.edutech.team26.domain.VwCourse;
 import com.edutech.team26.repository.MemberRepository;
 import com.edutech.team26.repository.TeacherRepository;
-import com.edutech.team26.repository.VwCourseRepository;
+
+import com.edutech.team26.repository.VwLectureRepository;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +37,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
 
-    private final VwCourseRepository VwCourseRepository;
+    private final VwLectureRepository vwlectureRepository;
 
     @Override
     public boolean updateGrade(Long mno, MultipartFile uploadFile, HttpServletRequest request) throws Exception {
@@ -134,18 +136,13 @@ public class TeacherServiceImpl implements TeacherService {
 
         return true;
     }
-/*
-    @Override
-    public List<VwCourse> findAll() {
-        return VwCourseRepository.findAll();
-    }
-*/
-
-
 
     @Override
-    public VwCourse getByMno(long mno) {
-        return VwCourseRepository.getByMno(mno);
+    public VwLecture getByMno(long mno) {
+        return null;
     }
+
+
+
 
 }

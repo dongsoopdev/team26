@@ -1,8 +1,9 @@
 package com.edutech.team26;
 
 import com.edutech.team26.biz.LectureService;
-import com.edutech.team26.domain.VwCourse;
-import com.edutech.team26.repository.VwCourseRepository;
+import com.edutech.team26.domain.VwLecture;
+
+import com.edutech.team26.repository.VwLectureRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,18 +11,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 
 @SpringBootTest
-public class VwCourseRepositoryTest {
+public class vwLectureRepositoryTest {
 
     @Autowired
-    private VwCourseRepository VwCourseRepository;
+    private VwLectureRepository vwLectureRepository;
 
     @Autowired
     private LectureService lectureService;
 
     @Test
     public void testFindAll() {
-        List<VwCourse> teachers = VwCourseRepository.findAll();
-        for (VwCourse teacher : teachers) {
+        List<VwLecture> teachers = vwLectureRepository.findAll();
+        for (VwLecture teacher : teachers) {
             System.out.println("선생님 : " + teacher);
         }
     }

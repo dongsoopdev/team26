@@ -19,11 +19,11 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 public class Lecture extends BaseEntity{
+
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="lecture_no")
     private long lecture_no;
-
-
     //long teacher_no;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,8 +32,8 @@ public class Lecture extends BaseEntity{
 
 
     //다대다
-    @ManyToMany(mappedBy = "lectures") //
-    List<Category> categorys = new ArrayList<>();
+    @ManyToMany(mappedBy = "lectures")
+            List<Category> categorys = new ArrayList<>();
 
     @Column(nullable = false)
     private String lectureName;

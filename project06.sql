@@ -34,23 +34,52 @@ FROM
     teacher t ON m.mno = t.mno;
 
 
-
-
--- 수강신청내역 view (예진 view)
-drop VIEW courselist;
-CREATE VIEW courselist AS
+-- 등록된 강의view (예진 view)   수정.231213
+drop VIEW lecturelist;
+CREATE VIEW lecturelist AS
 SELECT
-    m.mno AS mno,
-    m.mod_date AS mod_date,
-    m.reg_date AS reg_date,
-    m.user_name AS user_name,
-    m.user_status AS user_status,
+    l.lecture_no AS lecture_no,
+    l.lecture_name AS lecture_name,
+    l.lecture_content AS lecture_content,
+    l.start_enrolment_date AS start_enrolment_date,
+    l.end_enrolment_date AS end_enrolment_date,
+    l.start_study_date AS start_study_date,
+    l.end_study_date AS end_study_date,
+    l.lecture_img1 AS lecture_img1,
+    l.lecture_img2 AS lecture_img2,
+    l.lecture_vedio AS lecture_vedio,
+    l.lecture_maxnum AS lecture_maxnum,
+    l.lecture_minnum AS lecture_minnum,
+    l.lecture_curnum AS lecture_curnum,
+    l.lecture_act AS lecture_act,
+    l.zoom_url AS zoom_url,
 
     t.teacher_no AS teacher_no,
     t.active_date AS active_date,
     t.active_yn AS active_yn,
     t.intro AS intro,
     t.status AS STATUS,
+
+    m.mno AS mno,
+    m.mod_date AS mod_date,
+    m.reg_date AS reg_date,
+    m.user_name AS user_name,
+    m.user_status AS user_status
+FROM Lecture l
+         JOIN Teacher t ON l.teacher_no = t.teacher_no
+         LEFT JOIN Member m ON m.mno = t.mno;
+
+
+
+-- 수강신청한 강의view (예진 view)   생성.231213
+drop VIEW courselist;
+CREATE VIEW courselist AS
+SELECT
+    s.student_no AS student_no,
+    s.mno AS student_mno,
+    s.entrance_yn AS entrance_yn,
+    s.status AS student_status,
+    s.reg_date AS student_reg_date,
 
     l.lecture_no AS lecture_no,
     l.lecture_name AS lecture_name,
@@ -66,10 +95,26 @@ SELECT
     l.lecture_minnum AS lecture_minnum,
     l.lecture_curnum AS lecture_curnum,
     l.lecture_act AS lecture_act,
-    l.zoom_url AS zoom_url
-FROM
-    member m
-        JOIN
-    teacher t ON m.mno = t.mno
-        JOIN
-    lecture l ON t.teacher_no = l.lecture_no;
+    l.zoom_url AS zoom_url,
+
+    t.teacher_no AS teacher_no,
+    t.mno AS teacher_mno,
+    t.active_date AS active_date,
+    t.active_yn AS active_yn,
+    t.intro AS intro,
+    t.status AS teacher_status,
+    (
+        SELECT m.user_name
+        FROM Teacher t_inner
+                 LEFT JOIN Member m ON m.mno = t_inner.mno
+        WHERE t_inner.teacher_no = t.teacher_no
+        LIMIT 1
+    ) AS teacher_name,
+
+    m.mno AS mno,
+    m.user_name AS user_name,
+    m.user_status AS user_status
+FROM Lecture l
+JOIN Teacher t ON l.teacher_no = t.teacher_no
+JOIN Student s ON l.lecture_no = s.lecture_no
+JOIN Member m ON s.mno = m.mno;

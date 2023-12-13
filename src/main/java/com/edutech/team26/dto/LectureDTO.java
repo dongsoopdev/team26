@@ -46,7 +46,7 @@ public class LectureDTO {
     public static LectureDTO of(Lecture lecture) {
         return LectureDTO.builder()
                 .lecture_no(lecture.getLecture_no())
-                //.teacher_no(lecture.getTeacher_no())
+                .teacher_no(lecture.getTeacher().getTeacherNo())
                 //.categorys(lecture.getCategorys())
                 .lectureName(lecture.getLectureName())
                 .lectureContent(lecture.getLectureContent())

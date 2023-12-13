@@ -10,24 +10,22 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * QVwCourse is a Querydsl query type for VwCourse
+ * QVwLecture is a Querydsl query type for VwLecture
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QVwCourse extends EntityPathBase<VwCourse> {
+public class QVwLecture extends EntityPathBase<VwLecture> {
 
-    private static final long serialVersionUID = 1208902824L;
+    private static final long serialVersionUID = -2083972463L;
 
-    public static final QVwCourse vwCourse = new QVwCourse("vwCourse");
+    public static final QVwLecture vwLecture = new QVwLecture("vwLecture");
 
     public final DateTimePath<java.time.LocalDateTime> activeDate = createDateTime("activeDate", java.time.LocalDateTime.class);
 
     public final BooleanPath activeYn = createBoolean("activeYn");
 
-    public final StringPath endEnrolmentDate = createString("endEnrolmentDate");
+    public final DateTimePath<java.time.LocalDateTime> endEnrolmentDate = createDateTime("endEnrolmentDate", java.time.LocalDateTime.class);
 
-    public final StringPath endStudyDate = createString("endStudyDate");
-
-    public final BooleanPath entranceYn = createBoolean("entranceYn");
+    public final DateTimePath<java.time.LocalDateTime> endStudyDate = createDateTime("endStudyDate", java.time.LocalDateTime.class);
 
     public final StringPath intro = createString("intro");
 
@@ -53,25 +51,17 @@ public class QVwCourse extends EntityPathBase<VwCourse> {
 
     public final NumberPath<Long> mno = createNumber("mno", Long.class);
 
-    public final StringPath startEnrolmentDate = createString("startEnrolmentDate");
+    public final DateTimePath<java.time.LocalDateTime> modDate = createDateTime("modDate", java.time.LocalDateTime.class);
 
-    public final StringPath startStudyDate = createString("startStudyDate");
+    public final DateTimePath<java.time.LocalDateTime> regDate = createDateTime("regDate", java.time.LocalDateTime.class);
 
-    public final NumberPath<Long> studentMno = createNumber("studentMno", Long.class);
+    public final DateTimePath<java.time.LocalDateTime> startEnrolmentDate = createDateTime("startEnrolmentDate", java.time.LocalDateTime.class);
 
-    public final NumberPath<Long> studentNo = createNumber("studentNo", Long.class);
+    public final DateTimePath<java.time.LocalDateTime> startStudyDate = createDateTime("startStudyDate", java.time.LocalDateTime.class);
 
-    public final DateTimePath<java.time.LocalDateTime> studentRegDate = createDateTime("studentRegDate", java.time.LocalDateTime.class);
-
-    public final StringPath studentStatus = createString("studentStatus");
-
-    public final NumberPath<Long> teacherMno = createNumber("teacherMno", Long.class);
-
-    public final StringPath teacherName = createString("teacherName");
+    public final StringPath status = createString("status");
 
     public final NumberPath<Long> teacherNo = createNumber("teacherNo", Long.class);
-
-    public final StringPath teacherStatus = createString("teacherStatus");
 
     public final StringPath userName = createString("userName");
 
@@ -79,16 +69,16 @@ public class QVwCourse extends EntityPathBase<VwCourse> {
 
     public final StringPath zoomUrl = createString("zoomUrl");
 
-    public QVwCourse(String variable) {
-        super(VwCourse.class, forVariable(variable));
+    public QVwLecture(String variable) {
+        super(VwLecture.class, forVariable(variable));
     }
 
-    public QVwCourse(Path<? extends VwCourse> path) {
+    public QVwLecture(Path<? extends VwLecture> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QVwCourse(PathMetadata metadata) {
-        super(VwCourse.class, metadata);
+    public QVwLecture(PathMetadata metadata) {
+        super(VwLecture.class, metadata);
     }
 
 }

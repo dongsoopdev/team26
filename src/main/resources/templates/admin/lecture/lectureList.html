@@ -51,7 +51,7 @@
 
                             <td>
                                 <!--<p2>임시 강사명</p2>-->
-                                <p2 th:text="${lectureList.getUserName()}">임시 강사명</p2>
+                                <p2 th:text="${lectureList.getUserName()}"></p2>
                             </td>
 
 
@@ -74,7 +74,7 @@
 
                             <td>
                                 <div class="btn_group">
-                                    <a th:href="@{'/admin/getLecture/'+${lectureList.getLectureNo()}}"
+                                    <a th:href="@{'/admin/getlecture/'+${lectureList.getLectureNo()}}"
                                        class="btn btn-primary">상세보기</a>
                                 </div>
                             </td>

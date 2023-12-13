@@ -8,6 +8,7 @@ import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.dto.StudentDTO;
 
 import com.edutech.team26.dto.TeacherVO;
+
 import com.edutech.team26.mapper.LectureMapper;
 import com.edutech.team26.model.LectureParam;
 import com.edutech.team26.model.ServiceResult;
@@ -163,9 +164,9 @@ public class LectureServiceImpl implements LectureService {
         return LectureDTO.of(lectureList);
     }
 
-   @Override
+    @Override
     public List<VwCourse> vwFindAll() {
-       System.out.println("서비스에서 출력값: "+ VwCourseRepository.findAll());
+        System.out.println("서비스에서 출력값: "+ VwCourseRepository.findAll());
         return VwCourseRepository.findAll();
     }
 
@@ -265,7 +266,7 @@ public class LectureServiceImpl implements LectureService {
         Lecture lecture = optionalLecture.get();
 
         String[] statusList = {Student.STATUS_REQ, Student.STATUS_COMPLETE};
-        long count = studentRepository.countByLectureNoAndStudentNoAndStatusIn(
+        long count = studentRepository.countBylectureNoAndStudentNoAndStatusIn(
                 lecture.getLecture_no(), studentDTO.getMno(), Arrays.asList(statusList));
 
         if (count > 0) {
@@ -313,7 +314,7 @@ public class LectureServiceImpl implements LectureService {
     }
 
 
-   // 수강신청
+    // 수강신청
 //    @Override
 //    public ServiceResult apply(StudentDTO studentDTO) {
 //

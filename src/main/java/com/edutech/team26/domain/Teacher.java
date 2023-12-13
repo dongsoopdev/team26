@@ -20,6 +20,7 @@ public class Teacher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="teacher_no")
     private Long teacherNo;
 
     @Column(nullable = false)

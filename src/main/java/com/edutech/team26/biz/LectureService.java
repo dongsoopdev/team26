@@ -61,10 +61,10 @@ public interface LectureService{
 //    LectureDTO frontDetail(long lecture_no);
 //
 
-//    /*
+    //    /*
 //     * 수강 신청
 //     */
-     ServiceResult apply(StudentDTO studentDTO);
+    ServiceResult apply(StudentDTO studentDTO);
 
 
 //
