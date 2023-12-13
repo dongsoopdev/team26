@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,6 +20,7 @@ public class Teacher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="teacher_no")
     private Long teacherNo;
 
     @Column(nullable = false)
@@ -43,5 +46,6 @@ public class Teacher {
 
     @Column
     private LocalDateTime activeDate;
+
 
 }

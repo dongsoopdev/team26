@@ -42,14 +42,14 @@
                         </tr>
 
 
-                        <!--                                <tr>-->
-                        <!--                                    <th>강사 이름</th>-->
-                        <!--                                    <td colspan="2">-->
-                        <!--                                        <select name="teacher_no" id="teacher_no" autofocus required>-->
-                        <!--                                            <option th:each="teacherList : ${teacherList}" th:value="${teacherList.teacher_no}" th:text="${teacherList}"></option>-->
-                        <!--                                        </select>-->
-                        <!--                                    </td>-->
-                        <!--                                </tr>-->
+                        <tr>
+                            <th>강사 이름</th>
+                            <td colspan="2">
+                                <select name="teacher_no" id="teacher_no" autofocus required>
+                                    <option th:each="teacherList : ${teacherList}" th:value="${teacherList.teacherNo}" th:text="${teacherList.userName}"></option>
+                                </select>
+                            </td>
+                        </tr>
 
 
                         <tr>

@@ -9,14 +9,14 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <!--<div class="sb-sidenav-menu-heading">Core</div>-->
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             내 강의실
                         </a>
                         <div class="sb-sidenav-menu-heading">Interface</div>
-                        <a class="nav-link collapsed" th:href="@{/teacher/lectureList}">
+                        <a class="nav-link collapsed" th:href="@{'/student/getCourse/'+${student_no}}">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            강좌목록
+                            강좌 정보
                             <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
                         </a>
                         <!--<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"

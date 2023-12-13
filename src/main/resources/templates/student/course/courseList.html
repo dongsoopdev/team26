@@ -5,7 +5,7 @@
 <head>
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
-    <title>LMS_선생님 페이지</title>
+    <title>LMS_수강생 페이지</title>
 </head>
 
 
@@ -13,16 +13,12 @@
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
 <div id="layoutSidenav">
     <!--<th:block th:insert="~{layout/lmsMenuAdmin :: lmsMenu}"></th:block>-->
-    <th:block th:insert="~{layout/lmsMenuTea :: lmsMenu}"></th:block>
+    <th:block th:insert="~{layout/lmsMenuStu :: lmsMenu}"></th:block>
     <div id="layoutSidenav_content">
         <main>
             <th:block layout:fragment="content"></th:block>
 
             <div class="layout_contents">
-                <div class="btn_group">
-                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/lectureSave}" class="btn btn-secondary"
-                       style="float: right;">강좌등록</a>
-                </div>
 
                 <div class="page_wrap" style="margin-top: 50px;">
                     <h2 class="page_tit"></h2>
@@ -30,8 +26,10 @@
                         <thead>
                         <tr>
                             <th class="text-center" style="vertical-align: middle">번호</th>
+                            <!--<th class="text-center" style="vertical-align: middle">수강생명</th>-->
                             <th class="text-center" style="vertical-align: middle">강의명</th>
-
+                            <th class="text-center" style="vertical-align: middle">강사명</th>
+                            <th class="text-center" style="vertical-align: middle">수강 현황</th>
                             <th class="text-center" style="vertical-align: middle">수강 신청 기간</th>
                             <th class="text-center" style="vertical-align: middle">강의 운영 기간</th>
                             <th class="text-center" style="vertical-align: middle">강의 상태</th>
@@ -40,38 +38,49 @@
                         </thead>
                         <tbody>
 
-                        <tr th:each="lectureList, status: ${lectureList}" style="vertical-align: middle;">
+                        <tr th:each="courseList, status: ${courseList}" style="vertical-align: middle;">
                             <td th:text="${status.index + 1}">
                                 <!--<p th:text="${status.count }"></p>-->
                             </td>
 
+                        <!--    <td>
+                                <p2 th:text="${courseList.getUserName()}"></p2>
+                            </td>-->
+
                             <td>
-                                <p2 th:text="${lectureList.getLectureName()}"></p2>
+                                <p2 th:text="${courseList.getLectureName()}"></p2>
+                            </td>
+
+                            <td>
+                                <p2 th:text="${courseList.getTeacherName()}"></p2>
+                            </td>
+
+                            <td>
+                                <p2 th:text="${courseList.getStudentStatus() == 'REQ' ? '수강신청완료' : (courseList.getStudentStatus() == 'COMPLETE' ? '수강 중' : (courseList.getStudentStatus()== 'CANCEL' ? '수강취소' : '알 수 없음'))}"></p2>
                             </td>
 
 
 
-
                             <td>
-                                <p2 th:text="${lectureList.getStartEnrolmentDate()}"></p2>
+                                <p2 th:text="${courseList.getStartEnrolmentDate()}"></p2>
                                 <strong> - </strong>
-                                <p2 th:text="${lectureList.getEndEnrolmentDate()}"></p2>
+                                <p2 th:text="${courseList.getEndEnrolmentDate()}"></p2>
                             </td>
 
                             <td>
-                                <p2 th:text="${lectureList.getStartStudyDate()}"></p2>
+                                <p2 th:text="${courseList.getStartStudyDate()}"></p2>
                                 <strong> - </strong>
-                                <p2 th:text="${lectureList.getEndStudyDate()}"></p2>
+                                <p2 th:text="${courseList.getEndStudyDate()}"></p2>
                             </td>
 
                             <td>
-                                <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정' : (lectureList.getLectureAct() == 2 ? '강의중' : (lectureList.getLectureAct() == 3 ? '강의종료' : '오류'))}"></p2>
+                                <p2 th:text="${courseList.getLectureAct() == 1 ? '강의예정' : (courseList.getLectureAct() == 2 ? '강의중' : (courseList.getLectureAct() == 3 ? '강의종료' : '오류'))}"></p2>
                             </td>
 
 
                             <td>
                                 <div class="btn_group">
-                                    <a th:href="@{'/teacher/getlecture/'+${lectureList.getLectureNo()}}"
+                                    <a th:href="@{'/student/getCourse/'+${courseList.getStudentNo()}}"
                                        class="btn btn-primary">상세보기</a>
                                 </div>
                             </td>

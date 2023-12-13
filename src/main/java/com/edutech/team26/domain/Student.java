@@ -21,7 +21,7 @@ public class Student implements TakeCourseCode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long studentNo;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name="lecture_no")
     private Long lectureNo;
 
     @Column(nullable = false)

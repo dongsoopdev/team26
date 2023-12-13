@@ -3,67 +3,62 @@ package com.edutech.team26.controller;
 import com.edutech.team26.biz.CategoryService;
 import com.edutech.team26.biz.LectureService;
 import com.edutech.team26.biz.StudentService;
-import com.edutech.team26.biz.StudentServiceImpl;
-import com.edutech.team26.domain.Member;
-import com.edutech.team26.domain.Student;
+import com.edutech.team26.domain.VwCourse;
+import com.edutech.team26.domain.VwLecture;
 import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.dto.StudentDTO;
 import com.edutech.team26.model.LectureParam;
 import com.edutech.team26.model.ResponseResult;
 import com.edutech.team26.model.ServiceResult;
+import com.edutech.team26.repository.VwLectureRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 
 @Slf4j
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/lecture")
-public class lectureController extends lecBaseController {
+public class LectureController extends lecBaseController {
 
     private final LectureService lectureService;
     private final CategoryService categoryService;
     private final StudentService studentService;
     private final ModelMapper mapper;
+    private final VwLectureRepository vwLectureRepository;
 
     @GetMapping("lectureList")
     public String list(Model model, LectureParam lectureParam) {
 
 //        lectureParam.init();
-//        List<LectureDTO> lectureList = lectureService.list(lectureParam);
+//        List<lectureDTO> lectureList = lectureService.list(lectureParam);
 
+//        long totalCount = 0;
+//        if (!CollectionUtils.isEmpty(lectureList)) {
+//            totalCount = lectureList.get(0).getTotalCount();
+//        }
+//
+//        String queryString = lectureParam.getQueryString();
+//        String pageHtml = getPaperHtml(totalCount,
+//                lectureParam.getPageSize(),
+//                lectureParam.getPageIndex(),
+//                queryString);
+//        model.addAttribute("totalCount", totalCount);
+//        model.addAttribute("pager", pageHtml);
 
-        List<LectureDTO> lectureList = lectureService.findAll();
-
-        long totalCount = 0;
-        if (!CollectionUtils.isEmpty(lectureList)) {
-            totalCount = lectureList.get(0).getTotalCount();
-        }
-
-        String queryString = lectureParam.getQueryString();
-        String pageHtml = getPaperHtml(totalCount,
-                lectureParam.getPageSize(),
-                lectureParam.getPageIndex(),
-                queryString);
-
+        List<VwLecture> lectureList = vwLectureRepository.findAll();
         model.addAttribute("lectureList", lectureList);
-        model.addAttribute("totalCount", totalCount);
-        model.addAttribute("pager", pageHtml);
 
         return "lecture/lectureList";
     }
@@ -72,8 +67,8 @@ public class lectureController extends lecBaseController {
 
 
     // 강의 상세보기
-    @GetMapping("/getLecture/{lecture_no}")
-    public String getLecture(@PathVariable("lecture_no") long lecture_no, Model model) {
+    @GetMapping("/getlecture/{lecture_no}")
+    public String getlecture(@PathVariable("lecture_no") long lecture_no, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
 
@@ -94,7 +89,7 @@ public class lectureController extends lecBaseController {
 //
 //        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //
-//        boolean apply = studentService.applyStudent(member.getMno(), studentDTO.getLectureNo());
+//        boolean apply = studentService.applyStudent(member.getMno(), studentDTO.getlectureNo());
 //
 //        studentDTO.setMno(member.getMno());
 //
@@ -157,37 +152,37 @@ public class lectureController extends lecBaseController {
 //
 //
 //    @PostMapping(value = {"/save"})
-//    public String saveSubmit(Model model,HttpServletRequest request, MultipartFile[] file,LectureDTO lectureDTO) throws IOException {
-//        lectureService.addLecture(lectureDTO,file,request);
+//    public String saveSubmit(Model model,HttpServletRequest request, MultipartFile[] file,lectureDTO lectureDTO) throws IOException {
+//        lectureService.addlecture(lectureDTO,file,request);
 //        return "redirect:/lecture/list";
 //    }
 //
 //
 //
 //    @GetMapping(value = {"/edit"})
-//    public String add(Model model, HttpServletRequest request, LectureDTO lectureDTO){
+//    public String add(Model model, HttpServletRequest request, lectureDTO lectureDTO){
 //
 //        model.addAttribute("category", categoryService.list());
 //
 //        boolean editMode = request.getRequestURI().contains("/edit");
-//        LectureDTO detail = new LectureDTO();
+//        lectureDTO detail = new lectureDTO();
 //
 //        if (editMode) {
-//            long id = lectureDTO.getLecture_no();
+//            long id = lectureDTO.getlecture_no();
 //
-//            LectureDTO existLecture = lectureService.getById(id);
+//            lectureDTO existlecture = lectureService.getById(id);
 //
-//            if (existLecture == null) {
+//            if (existlecture == null) {
 //                model.addAttribute("message", "강좌 정보가 존재하지 않습니다.");
 //                return "common/error";
 //            }
-//            detail = existLecture;
+//            detail = existlecture;
 //
 //        }
 //
 //        model.addAttribute("editMode", editMode);
 //        model.addAttribute("detail", detail);
-//        return "lecture/addLecture";
+//        return "lecture/addlecture";
 //    }
 
 
@@ -237,7 +232,7 @@ public class lectureController extends lecBaseController {
 //    }
 
 //    @PostMapping(value = {"/add"})
-//    public String addSubmit(Model model,HttpServletRequest request, MultipartFile[] file,LectureDTO lectureDTO) throws IOException {
+//    public String addSubmit(Model model,HttpServletRequest request, MultipartFile[] file,lectureDTO lectureDTO) throws IOException {
 
 //        String saveFilename = "";
 //        String urlFilename = "";
@@ -264,7 +259,7 @@ public class lectureController extends lecBaseController {
 //
 ////        lectureInput.setFilename(saveFilename);
 ////        lectureInput.setUrlFilename(urlFilename);
-//          lectureDTO.setLectureImg1(saveFilename);
+//          lectureDTO.setlectureImg1(saveFilename);
 //          lectureDTO.setFilePath(urlFilename);
 //
 //        boolean editMode = request.getRequestURI().contains("/edit");

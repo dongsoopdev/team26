@@ -1,0 +1,14 @@
+package com.edutech.team26.repository;
+
+import com.edutech.team26.domain.VwLecture;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface VwLectureRepository extends JpaRepository<VwLecture, Long> {
+
+    VwLecture getBylectureNo(long lectureNo);
+    List<VwLecture> findByMno(long teacherMno);
+
+}
