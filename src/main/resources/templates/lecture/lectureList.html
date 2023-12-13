@@ -281,7 +281,7 @@
                                 <!-- product -->
                                 <div class="col-md-4 col-xs-6" th:each="lectureList: ${lectureList}">
                                     <!--  <a th:href="@{/product/productDetail(pno=${product.pno})}" >-->
-                                    <a th:href="@{'/lecture/getlecture/' + ${lectureList.getlectureNo()}}">
+                                    <a th:href="@{'/lecture/getlecture/' + ${lectureList.getLectureNo()}}">
 
 
                                         <div class="product">
@@ -290,7 +290,7 @@
 
 
                                                 <!--<img th:src="@{'/upload/' + ${product.getImgsrc1()}}" alt="">-->
-                                                <img th:src="@{'/upload/' + ${lectureList.getlectureImg1()}}" alt="">
+                                                <img th:src="@{'/upload/' + ${lectureList.getLectureImg1()}}" alt="">
                                                 <!-- <img th:src="@{/upload/{fileName}(fileName=${product.getImgFile()})}" alt="">\-->
 
                                                 <div class="product-label" style="background-color: #FFFFFF">
@@ -298,7 +298,7 @@
                                                     <!--<span th:style="'color: ' + (${lectureList.lectureAct} == 1 ? 'orange' : (${lectureList.lectureAct} == 2 ? 'blue' : (${lectureList.lectureAct} == 3 ? 'black' : 'red')));"
                                                           th:text="${lectureList.lectureAct == 1 ? '강의예정' : (lectureList.lectureAct == 2 ? '강의중' : (lectureList.lectureAct == 3 ? '강의종료' : '오류'))}" ></span>-->
 
-                                                    <span th:style="'color: ' + (${lectureList.lectureAct} == 1 ? 'orange' : (${lectureList.lectureAct} == 2 ? 'green' : (${lectureList.lectureAct} == 3 ? 'black' : 'red'))) "
+                                                    <span th:style="'color: ' + (${lectureList.LectureAct} == 1 ? 'orange' : (${lectureList.LectureAct} == 2 ? 'green' : (${lectureList.LectureAct} == 3 ? 'black' : 'red'))) "
                                                           th:text="${lectureList.lectureAct == 1 ? '강의예정' : (lectureList.lectureAct == 2 ? '강의중' : (lectureList.lectureAct == 3 ? '강의종료' : '오류'))}"
                                                           style="background-color: white;"></span>
 
@@ -351,11 +351,11 @@
 
 
                             <!-- store bottom filter -->
-                            <div sec:authorize="hasAuthority('ADMIN') or hasAuthority('TEACHER')" class="button-group">
+                         <!--   <div sec:authorize="hasRole('ADMIN') or hasRole('TEACHER')" class="button-group">
                                 <a class="btn btn-primary2" th:href="@{/product/addProduct}" style="color: #fff;
             background-color: #FFA425;">글쓰기</a>
                             </div>
-
+-->
 
                             <div class="store-filter clearfix">
 
