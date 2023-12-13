@@ -5,6 +5,7 @@ import com.edutech.team26.component.MailComponent;
 import com.edutech.team26.constant.MemberCode;
 import com.edutech.team26.constant.MemberRole;
 import com.edutech.team26.domain.Member;
+import com.edutech.team26.dto.MemberDTO;
 import com.edutech.team26.dto.MemberJoinDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.repository.MemberRepository;
@@ -12,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,12 +27,9 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
-import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -174,11 +171,10 @@ public class MemberServiceImpl implements MemberService {
         return true;
     }
 
-    /*@Override
-    public MemberJoinDTO myinfo(String email) {
-        Member member = memberRepository.findByEmail(email);
-        MemberJoinDTO memberDto = modelMapper.map(member, MemberJoinDTO.class);
-        return memberDto;
-    }*/
-
+    @Override
+    public MemberDTO getMemberInfo(Long mno) {
+        Member member = memberRepository.findByMno(mno);
+        MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
+        return memberDTO;
+    }
 }
