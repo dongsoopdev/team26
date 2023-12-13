@@ -24,8 +24,8 @@ public class Lecture extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="lecture_no")
     private long lecture_no;
-    //long teacher_no;
 
+    //long teacher_no;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_no")
     private Teacher teacher;

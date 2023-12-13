@@ -286,7 +286,6 @@ public class LectureServiceImpl implements LectureService {
 
         studentRepository.save(takeLecture);
 
-
         Member memberInfo = memberRepository.findByMno(member.getMno());
 
         Member memberUpgrade = modelMapper.map(memberInfo, Member.class);
@@ -298,13 +297,6 @@ public class LectureServiceImpl implements LectureService {
         updatedAuthorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
         Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
         SecurityContextHolder.getContext().setAuthentication(newAuth);
-
-        // user -> student로 권한변경
-//        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Member memberInfo = memberRepository.findByMno(member.getMno());
-//        Member memberUpgrade = modelMapper.map(memberInfo, Member.class);
-//        memberUpgrade.updateRole(MemberRole.STUDENT);
-//        memberRepository.save(memberUpgrade);
 
 
         result.setResult(true);

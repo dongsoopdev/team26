@@ -11,4 +11,6 @@ public interface VwLectureRepository extends JpaRepository<VwLecture, Long> {
     VwLecture getBylectureNo(long lectureNo);
     List<VwLecture> findByMno(long teacherMno);
 
+
+
 }
