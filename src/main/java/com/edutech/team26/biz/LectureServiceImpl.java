@@ -12,10 +12,7 @@ import com.edutech.team26.dto.TeacherVO;
 import com.edutech.team26.mapper.LectureMapper;
 import com.edutech.team26.model.LectureParam;
 import com.edutech.team26.model.ServiceResult;
-import com.edutech.team26.repository.LectureRepository;
-import com.edutech.team26.repository.MemberRepository;
-import com.edutech.team26.repository.StudentRepository;
-import com.edutech.team26.repository.VwCourseRepository;
+import com.edutech.team26.repository.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -47,8 +44,8 @@ public class LectureServiceImpl implements LectureService {
     private final MemberRepository memberRepository;
     private final LectureMapper lectureMapper;
     private final ModelMapper modelMapper;
-    private final VwCourseRepository VwCourseRepository;
-
+    private final VwCourseRepository vwCourseRepository;
+    private final VwLectureRepository vwLectureRepository;
 
 
     private LocalDate getLocalDate(String value) {
@@ -62,6 +59,65 @@ public class LectureServiceImpl implements LectureService {
 
         return null;
     }
+
+    @Override
+    public List<VwLecture> findAll() {
+
+
+
+        return vwLectureRepository.findAll();
+    }
+
+    //비즈니스 로직 추가시 쓸 메서드
+    @Override
+    public List<VwLecture> vwFindAll() {
+        List<VwLecture> lectureList = vwLectureRepository.findAll();
+
+
+
+
+
+        return lectureList;
+    }
+
+//    @Override
+//    public List<TeacherVO> vwFindAll() {
+//        List<VwCourse> VwCourses = VwCourseRepository.findAll();
+//
+//        // 수정된 부분: List<VwCourse>를 List<TeacherVO>로 매핑
+//        List<TeacherVO> teacherVOList = VwCourses.stream()
+//                .map(VwCourse -> modelMapper.map(VwCourse, TeacherVO.class))
+//                .collect(Collectors.toList());
+//
+//        return teacherVOList;
+//    }
+
+
+
+//    // 강의 상태 변경
+//    public void updateLectureAct(Lecture lecture) {
+//        // Get the current date
+//        LocalDate currentDate = LocalDate.now();
+//
+//        // Parse the start and end study dates
+//        LocalDate startStudyLocalDate = LocalDate.parse(lecture.getStartStudyDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+//        LocalDate endStudyLocalDate = LocalDate.parse(lecture.getEndStudyDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+//
+//        // Create a new Lecture entity and set lectureAct based on the conditions
+//        if (startStudyLocalDate.isAfter(currentDate)) {
+//            lecture.setLectureAct(1); // 강의예정
+//        } else if (startStudyLocalDate.isBefore(currentDate) && endStudyLocalDate.isAfter(currentDate)) {
+//            lecture.setLectureAct(2); // 강의진행중
+//        } else if (endStudyLocalDate.isBefore(currentDate)) {
+//            lecture.setLectureAct(3); // 강의종료
+//        }
+//
+//        // Optionally, you might want to persist the changes to the database
+//        // Uncomment the following line if you are using Spring Data JPA
+//        // lectureRepository.save(lecture);
+//    }
+
+
 
     @Override
     public void addLecture(LectureDTO lectureDTO, MultipartFile[] imgFiles, HttpServletRequest request) throws IOException {
@@ -99,10 +155,9 @@ public class LectureServiceImpl implements LectureService {
             }
         }
 
-        lectureDTO.setLectureAct(1);
+        //lectureDTO.setLectureAct(1);
 
         Lecture lecture = modelMapper.map(lectureDTO, Lecture.class);
-
 
         lectureRepository.save(lecture);
 
@@ -117,24 +172,6 @@ public class LectureServiceImpl implements LectureService {
         if (!optionalLecture.isPresent()) {
             return false;
         }
-
-        ///Lecture lecture = optionalLecture.get();
-       /* lecture.setLectureName(lectureDTO.getLectureName());
-        lecture.setLectureContent(lectureDTO.getLectureContent());
-        lecture.setLectureImg1(lectureDTO.getLectureImg1());
-        lecture.setLectureImg2(lectureDTO.getLectureImg2());
-        lecture.setLectureVedio(lectureDTO.getLectureVedio());
-        lecture.setFilePath(lectureDTO.getFilePath());
-        lecture.setZoomUrl(lectureDTO.getZoomUrl());
-        lecture.setLectureCurnum(lectureDTO.getLectureCurnum());
-        lecture.setLectureMinnum(lectureDTO.getLectureMinnum());
-        lecture.setLectureMaxnum(lectureDTO.getLectureMaxnum());
-        lecture.setStartEnrolmentDate(lectureDTO.getStartEnrolmentDate());
-        lecture.setEndEnrolmentDate(lectureDTO.getEndEnrolmentDate());
-        lecture.setStartStudyDate(lectureDTO.getStartStudyDate());
-        lecture.setEndStudyDate(lectureDTO.getEndStudyDate());
-        lecture.setEndStudyDate(lectureDTO.getEndStudyDate());
-        lecture.setLectureAct(lectureDTO.getLectureAct());*/
 
         Lecture lecture = modelMapper.map(lectureDTO, Lecture.class);
 
@@ -158,29 +195,7 @@ public class LectureServiceImpl implements LectureService {
         return list;
     }
 
-    @Override
-    public List<LectureDTO> findAll() {
-        List<Lecture> lectureList = lectureRepository.findAll();
-        return LectureDTO.of(lectureList);
-    }
 
-    @Override
-    public List<VwCourse> vwFindAll() {
-        System.out.println("서비스에서 출력값: "+ VwCourseRepository.findAll());
-        return VwCourseRepository.findAll();
-    }
-
-//    @Override
-//    public List<TeacherVO> vwFindAll() {
-//        List<VwCourse> VwCourses = VwCourseRepository.findAll();
-//
-//        // 수정된 부분: List<VwCourse>를 List<TeacherVO>로 매핑
-//        List<TeacherVO> teacherVOList = VwCourses.stream()
-//                .map(VwCourse -> modelMapper.map(VwCourse, TeacherVO.class))
-//                .collect(Collectors.toList());
-//
-//        return teacherVOList;
-//    }
 
 
     @Override

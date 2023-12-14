@@ -46,7 +46,7 @@
                                 <th>강사 이름</th>
                                 <td colspan="2">
                                     <select name="teacher_no" id="teacher_no" autofocus required>
-                                        <option th:each="teacherList : ${teacherList}" th:value="${teacherList.teacherNo}" th:text="${teacherList.userName}"></option>
+                                        <option th:if="${teacherList.Status} eq 'OK'" th:each="teacherList : ${teacherList}" th:value="${teacherList.teacherNo}" th:text="${teacherList.userName}"></option>
                                     </select>
                                 </td>
                             </tr>
@@ -55,7 +55,7 @@
                             <tr>
                                 <th>강좌 설명</th>
                                 <td colspan="2"><textarea name="lectureContent" id="lectureContent" cols="50"
-                                                          class="textarea" rows="8" style="width: 100%"
+                                                          class="textarea" rows="8" maxlength="2000" style="width: 100%"
                                                           placeholder="강좌 설명 입력" required></textarea></td>
                             </tr>
 
@@ -73,6 +73,35 @@
                                                        class="input" placeholder="최소 수강 인원 입력" style="width: 50%"
                                                        required></td>
                             </tr>
+                            <script>
+                                document.getElementById('lectureMaxnum').addEventListener('change', function() {
+                                    var maxNum = parseInt(this.value, 10);
+                                    var minNum = parseInt(document.getElementById('lectureMinnum').value, 10);
+
+                                    if (maxNum > 100) {
+                                        alert('모집 수강인원은 100명 이하로 제한됩니다.');
+                                        this.value = 100;
+                                    } else if (maxNum < 1) {
+                                        alert('모집 수강인원은 1명 이상이어야 합니다.');
+                                        this.value = 1;
+                                    }
+
+                                    if (minNum < 1 || minNum > maxNum) {
+                                        alert('최소 수강 인원은 1명 이상이여야 하고, 모집 수강인원 이내여야 합니다.');
+                                        document.getElementById('lectureMinnum').value = 1;
+                                    }
+                                });
+
+                                document.getElementById('lectureMinnum').addEventListener('change', function() {
+                                    var minNum = parseInt(this.value, 10);
+                                    var maxNum = parseInt(document.getElementById('lectureMaxnum').value, 10);
+
+                                    if (minNum < 1 || minNum > maxNum) {
+                                        alert('최소 수강 인원은 1명 이상여하 하고, 모집 수강인원 이내여야 합니다.');
+                                        this.value = 1;
+                                    }
+                                });
+                            </script>
 
 
                             <tr>
@@ -86,6 +115,48 @@
                                 </td>
                             </tr>
 
+                            <script>
+                                // 스크립트 부분
+                                document.getElementById('startEnrolmentDate').addEventListener('change', function() {
+                                    // 현재 날짜를 가져오기
+                                    var currentDate = new Date();
+                                    currentDate.setHours(0, 0, 0, 0); // 시, 분, 초, 밀리초를 0으로 설정
+
+                                    // 선택한 시작일과 마감일을 가져오기
+                                    var startEnrolmentDate = new Date(this.value);
+                                    var endEnrolmentDate = new Date(document.getElementById('endEnrolmentDate').value);
+
+                                    // 시작일이 현재 날짜보다 이전인 경우
+                                    if (startEnrolmentDate < currentDate) {
+                                        alert('현재 날짜보다 이전의 날짜를 선택할 수 없습니다.');
+                                        // 선택한 시작일을 초기화
+                                        this.value = '';
+                                    }
+
+                                    // 시작일이 마감일보다 이전인 경우
+                                    if (startEnrolmentDate > endEnrolmentDate) {
+                                        alert('시작일은 마감일보다 이전이어야 합니다.');
+                                        // 선택한 마감일을 초기화
+                                        document.getElementById('endEnrolmentDate').value = '';
+                                    }
+                                });
+
+                                document.getElementById('endEnrolmentDate').addEventListener('change', function() {
+                                    // 선택한 시작일과 마감일을 가져오기
+                                    var startEnrolmentDate = new Date(document.getElementById('startEnrolmentDate').value);
+                                    var endEnrolmentDate = new Date(this.value);
+
+                                    // 마감일이 시작일보다 이전인 경우
+                                    if (endEnrolmentDate < startEnrolmentDate) {
+                                        alert('마감일은 시작일보다 이후이어야 합니다.');
+                                        // 선택한 마감일을 초기화
+                                        this.value = '';
+                                    }
+                                });
+                            </script>
+
+
+
                             <tr>
                                 <th>강의 운영 기간</th>
                                 <td colspan="2">
@@ -96,6 +167,28 @@
                                            placeholder="강의 종료일" required></td>
                                 </td>
                             </tr>
+
+                            <script>
+                                document.getElementById('startStudyDate').addEventListener('change', function() {
+                                    var startStudyDate = new Date(this.value);
+                                    var endEnrolmentDate = new Date(document.getElementById('endEnrolmentDate').value);
+
+                                    if (startStudyDate <= endEnrolmentDate) {
+                                        alert('강의 시작일은 수강 신청 마감일보다 이후에 있어야 합니다.');
+                                        this.value = '';
+                                    }
+                                });
+
+                                document.getElementById('endStudyDate').addEventListener('change', function() {
+                                    var startStudyDate = new Date(document.getElementById('startStudyDate').value);
+                                    var endStudyDate = new Date(this.value);
+
+                                    if (endStudyDate <= startStudyDate) {
+                                        alert('강의 종료일은 강의 시작일보다 이후에 있어야 합니다.');
+                                        this.value = '';
+                                    }
+                                });
+                            </script>
 
 
                             <tr>

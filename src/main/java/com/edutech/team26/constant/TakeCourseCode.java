@@ -1,4 +1,4 @@
-package com.edutech.team26.model;
+package com.edutech.team26.constant;
 
 public interface TakeCourseCode {
 
