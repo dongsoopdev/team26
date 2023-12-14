@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <th:block th:insert="~{layout/head :: head}"></th:block>
+        <title>에러페이지</title>
+    </head>
+    <body>
+        <section class="vh-100">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-6">
+                        <div class="card border-0 shadow-2-strong">
+                            <div class="card-body p-5 text-center error_page">
+                                <h3 class="mb-0">
+                                    <i class="fas fa-exclamation-triangle fs-1 d-block mb-5"></i>
+                                    <p class="mb-0">[[${statusCode}]] ERROR</p>
+                                </h3>
+                                <p class="border-top mt-5 mb-0 pt-5">이 서비스를 연결할 수 없습니다.</p>
+                                <p class="mb-0">문제를 해결하기 위해 노력하고 있습니다.</p>
+                                <p class="mb-0">잠시 후 다시 확인해주세요.</p>
+                                <a class="btn btn-primary mt-5" th:href="@{/}">홈페이지 이동</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
