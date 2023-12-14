@@ -11,6 +11,7 @@ import com.edutech.team26.dto.StudentDTO;
 import com.edutech.team26.model.LectureParam;
 import com.edutech.team26.model.ResponseResult;
 import com.edutech.team26.model.ServiceResult;
+import com.edutech.team26.repository.LectureRepository;
 import com.edutech.team26.repository.VwLectureRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

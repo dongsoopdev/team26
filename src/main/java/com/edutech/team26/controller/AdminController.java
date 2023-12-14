@@ -3,15 +3,13 @@ package com.edutech.team26.controller;
 import com.edutech.team26.biz.CategoryService;
 import com.edutech.team26.biz.LectureService;
 import com.edutech.team26.biz.TeacherService;
+import com.edutech.team26.domain.Lecture;
 import com.edutech.team26.domain.VwCourse;
 import com.edutech.team26.domain.VwLecture;
 import com.edutech.team26.domain.VwTeacher;
 import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.model.LectureParam;
-import com.edutech.team26.repository.TeacherRepository;
-import com.edutech.team26.repository.VwCourseRepository;
-import com.edutech.team26.repository.VwLectureRepository;
-import com.edutech.team26.repository.VwTeacherRepository;
+import com.edutech.team26.repository.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -25,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Log4j2
@@ -45,6 +45,9 @@ public class AdminController extends lecBaseController{
 
     @Autowired
     private TeacherRepository teacherRepository;
+
+    @Autowired
+    private LectureRepository lectureRepository;
 
     @Autowired
     private VwTeacherRepository vwTeacherRepository;
@@ -84,6 +87,23 @@ public class AdminController extends lecBaseController{
 //                queryString);
 //        model.addAttribute("totalCount", totalCount);
 //        model.addAttribute("pager", pageHtml);
+
+//        Lecture lecture = new Lecture();
+//        lecture.setStartStudyDate(lecture.getStartStudyDate());
+//        lecture.setEndStudyDate(lecture.getEndStudyDate());
+//        lecture.updateLectureAct();
+/*
+        List<Lecture> lecList =  lectureRepository.findAll();
+        System.out.println("강의 >>>>>" + lecList);
+
+
+
+
+       */
+/* for(Lecture lecture : lecList){
+            lectureRepository.
+            lecture.updateLectureAct(lecture.getStartStudyDate(), lecture.getEndStudyDate());
+        }*//*
 
 
         List<VwLecture> lectureList = vwLectureRepository.findAll();
@@ -140,9 +160,43 @@ public class AdminController extends lecBaseController{
     }
 
 
+
+
+
+
+
+    // 강의 상태 변경 (Entity에서 가져올때)
+    public LectureDTO updateLectureAct(LectureDTO lectureDTO) {
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // Parse the start and end study dates
+        LocalDate startStudyLocalDate = LocalDate.parse(lectureDTO.getStartStudyDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate endStudyLocalDate = LocalDate.parse(lectureDTO.getEndStudyDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+
+        // Create a new Lecture entity and set lectureAct based on the conditions
+        if (startStudyLocalDate.isAfter(currentDate)) {
+            lectureDTO.setLectureAct(1); // 강의예정
+        } else if (startStudyLocalDate.isBefore(currentDate) && endStudyLocalDate.isAfter(currentDate)) {
+            lectureDTO.setLectureAct(2); // 강의진행중
+        } else if (endStudyLocalDate.isBefore(currentDate)) {
+            lectureDTO.setLectureAct(3); // 강의종료
+        }
+
+        // Optionally, you might want to persist the changes to the database
+        // Uncomment the following line if you are using Spring Data JPA
+        // lectureRepository.save(lecture);
+
+        return lectureDTO;
+    }
+
+
     //강의 등록하기
     @PostMapping(value = {"/save"})
     public String saveSubmit(Model model, HttpServletRequest request, MultipartFile[] file, LectureDTO lectureDTO) throws IOException {
+
+
+        lectureDTO = updateLectureAct(lectureDTO);
         lectureService.addLecture(lectureDTO, file, request);
         return "redirect:/admin/lectureList";
     }

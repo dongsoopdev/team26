@@ -1,6 +1,7 @@
 package com.edutech.team26.biz;
 
 
+import com.edutech.team26.domain.VwLecture;
 import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.dto.StudentDTO;
 
@@ -31,9 +32,9 @@ public interface LectureService{
      * 강좌 목록
      */
     List<LectureDTO> list(LectureParam lectureParam);
-    List<LectureDTO> findAll();
+    List<VwLecture> findAll();
 
-    List<VwCourse> vwFindAll();
+    List<VwLecture> vwFindAll();
 
     /*
      * 강좌 상세 정보

@@ -1,6 +1,6 @@
 package com.edutech.team26.domain;
 
-import com.edutech.team26.model.TakeCourseCode;
+import com.edutech.team26.constant.TakeCourseCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
