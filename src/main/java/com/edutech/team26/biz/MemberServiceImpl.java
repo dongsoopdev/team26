@@ -177,4 +177,5 @@ public class MemberServiceImpl implements MemberService {
         MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
         return memberDTO;
     }
+
 }
