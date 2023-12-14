@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <title>EudTech LMS</title>
+</head>
+<body>
+    <th:block th:insert="~{layout/header :: header}"></th:block>
+
+    <div class="container my-5">
+        <section id="applyTeacher">
+            <table class="table" th:if="${#lists.isEmpty(teacherList)}">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">신청자</th>
+                    <th scope="col">신청일자</th>
+                    <th scope="col">신청결과</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="5" class="text-center">선생님 신청 내역이 없습니다.</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table" th:unless="${#lists.isEmpty(teacherList)}">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">신청일자</th>
+                    <th scope="col">신청결과</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="teacher, num : ${teacherList}">
+                    <th scope="row">[[${num}]]</th>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <th:block th:insert="~{layout/footer :: footer}"></th:block>
+</body>
+</html>
