@@ -20,6 +20,8 @@ public class ErrorCtrl implements ErrorController {
             model.addAttribute("statusCode", statusCode);
             if(statusCode == HttpStatus.NOT_FOUND.value()) {
                 return "error/notFoundError";
+            } else if(statusCode == HttpStatus.UNAUTHORIZED.value()) {
+                return "error/unauthorizedError";
             } else {
                 return "error/error";
             }
