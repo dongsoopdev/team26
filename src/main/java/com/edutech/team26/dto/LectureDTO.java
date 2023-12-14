@@ -7,7 +7,9 @@ import com.edutech.team26.domain.Lecture;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +43,9 @@ public class LectureDTO {
 
     long totalCount;
     long seq;
+
+
+
 
 
     public static LectureDTO of(Lecture lecture) {
