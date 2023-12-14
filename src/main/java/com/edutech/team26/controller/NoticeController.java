@@ -25,13 +25,13 @@ public class NoticeController {
         model.addAttribute("noticeList",noticeList);
         return "notice/noticeList";
     }
-    @GetMapping("/notice/noticeList")
+    @GetMapping("/admin/noticeList")
     public String adminNoticeList(@RequestParam(name = "lecture_no") Long lecture_no, Model model) {
         List<NoticeDTO> noticeList = noticeService.noticeList(lecture_no);
         model.addAttribute("noticeList",noticeList);
         return "notice/noticeList";
     }
-    @GetMapping("/notice/noticeList")
+    @GetMapping("/teacher/noticeList")
     public String TeacherNoticeList(@RequestParam(name = "lecture_no") Long lecture_no, Model model) {
         List<NoticeDTO> noticeList = noticeService.noticeList(lecture_no);
         model.addAttribute("noticeList",noticeList);
