@@ -37,8 +37,8 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
-                    //.requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                    .requestMatchers("/admin/**", "/lecture/**","/teacher/**").permitAll() //예진 테스트중
+                    .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                    //.requestMatchers("/admin/**", "/lecture/**","/teacher/**").permitAll() //예진 테스트중
                     .requestMatchers("/", "/**","/login","/join_frm", "join_frm_u", "join_frm_t").permitAll()
                     .anyRequest().authenticated());
 

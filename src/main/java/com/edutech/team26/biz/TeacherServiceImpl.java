@@ -6,7 +6,9 @@ import com.edutech.team26.domain.Member;
 import com.edutech.team26.domain.Teacher;
 import com.edutech.team26.domain.VwLecture;
 
+import com.edutech.team26.domain.VwTeacher;
 import com.edutech.team26.dto.TeacherDTO;
+import com.edutech.team26.dto.TeacherVO;
 import com.edutech.team26.repository.MemberRepository;
 import com.edutech.team26.repository.TeacherRepository;
 
@@ -22,8 +24,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -135,6 +139,15 @@ public class TeacherServiceImpl implements TeacherService {
         teacherRepository.save(teacher);
 
         return true;
+    }
+
+    @Override
+    public List<TeacherVO> teacherList() {
+        List<VwTeacher> vwTeacherList = teacherRepository.teacherList();
+        List<TeacherVO> teacherList = vwTeacherList.stream().map(teacher
+                        -> modelMapper.map(teacher, TeacherVO.class))
+                .collect(Collectors.toList());
+        return teacherList;
     }
 
     @Override

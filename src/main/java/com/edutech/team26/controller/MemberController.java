@@ -8,6 +8,7 @@ import com.edutech.team26.domain.Member;
 import com.edutech.team26.dto.MemberDTO;
 import com.edutech.team26.dto.MemberJoinDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
+import com.edutech.team26.dto.TeacherVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.lang.reflect.Field;
 import java.security.Principal;
+import java.util.List;
 
 @Log4j2
 @Controller
@@ -109,6 +111,13 @@ public class MemberController {
         MemberDTO memberDTO = memberService.getMemberInfo(memberSecurityDTO.getMno());
         model.addAttribute("memberDTO", memberDTO);
         return "member/myPage";
+    }
+
+    @GetMapping("/teacherApply")
+    public String teacherApply(Model model) {
+        List<TeacherVO> teacherList = teacherService.teacherList();
+        model.addAttribute("teacherList", teacherList);
+        return "member/teacherApply";
     }
 
     // 리캡챠 부분

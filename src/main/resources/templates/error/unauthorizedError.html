@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <th:block th:insert="~{layout/head :: head}"></th:block>
+        <title>에러페이지</title>
+    </head>
+    <body>
+        <section class="vh-100">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12 col-md-8 col-lg-6 col-xl-6">
+                        <div class="card border-0 shadow-2-strong">
+                            <div class="card-body p-5 text-center error_page">
+                                <h3 class="mb-0">
+                                    <i class="fab fa-keycdn fs-1 d-block mb-5"></i>
+                                    <p class="mb-0">권한이 없는 페이지입니다.</p>
+                                </h3>
+                                <p class="border-top mt-5 mb-0 pt-5">권한이 없거나, 사용할 수 없는 페이지입니다.</p>
+                                <p class="mb-0">로그인 정보를 다시 한번 확인해 주시기 바랍니다.</p>
+                                <a class="btn btn-primary mt-5" th:href="@{/}">홈페이지 이동</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
