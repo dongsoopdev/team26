@@ -4,6 +4,8 @@ import com.edutech.team26.biz.CustomUserDetailsService;
 import com.edutech.team26.biz.MemberService;
 import com.edutech.team26.biz.StudentService;
 import com.edutech.team26.biz.TeacherService;
+import com.edutech.team26.domain.Member;
+import com.edutech.team26.dto.MemberDTO;
 import com.edutech.team26.dto.MemberJoinDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -100,16 +102,13 @@ public class MemberController {
 
     //@PreAuthorize("hasRole('USER')") // 권한 한개
     @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')") // 권한 여러개
-    @GetMapping("/mypage")
-    public String myPage(Model model) throws NoSuchFieldException {
+    @GetMapping("/myPage")
+    public String myPage(Model model) {
+        MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        // member 토큰 정보 가져오기
-        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //String email = principal.getName();
-        //MemberJoinDTO memberDto = memberService.myinfo(email);
-        //log.info(memberDto);
-        //model.addAttribute("memberDto",memberDto);
-        return "member/mypage";
+        MemberDTO memberDTO = memberService.getMemberInfo(memberSecurityDTO.getMno());
+        model.addAttribute("memberDTO", memberDTO);
+        return "member/myPage";
     }
 
     // 리캡챠 부분

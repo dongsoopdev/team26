@@ -1,5 +1,7 @@
 package com.edutech.team26.biz;
 
+import com.edutech.team26.domain.Member;
+import com.edutech.team26.dto.MemberDTO;
 import com.edutech.team26.dto.MemberJoinDTO;
 
 public interface MemberService {
@@ -14,6 +16,8 @@ public interface MemberService {
     boolean verifyRecaptcha(String recaptcha);
 
     boolean updateLoginDate() throws Exception;
+
+    MemberDTO getMemberInfo(Long mno);
 
     /*MemberJoinDTO myinfo(String email);*/
 
