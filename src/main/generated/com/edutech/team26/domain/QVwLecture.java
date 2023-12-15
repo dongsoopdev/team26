@@ -29,6 +29,10 @@ public class QVwLecture extends EntityPathBase<VwLecture> {
 
     public final StringPath intro = createString("intro");
 
+    public final DateTimePath<java.time.LocalDateTime> lecModDate = createDateTime("lecModDate", java.time.LocalDateTime.class);
+
+    public final DateTimePath<java.time.LocalDateTime> lecRegDate = createDateTime("lecRegDate", java.time.LocalDateTime.class);
+
     public final NumberPath<Integer> lectureAct = createNumber("lectureAct", Integer.class);
 
     public final StringPath lectureContent = createString("lectureContent");

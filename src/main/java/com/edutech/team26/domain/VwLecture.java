@@ -33,6 +33,8 @@ public class VwLecture {
     private int lectureMaxnum;
     private int lectureAct;
     private String zoomUrl;
+    private LocalDateTime lecRegDate;
+    private LocalDateTime lecModDate;
 
     private Long mno;
     private LocalDateTime modDate;

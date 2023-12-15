@@ -3,6 +3,8 @@ package com.edutech.team26.controller;
 import com.edutech.team26.biz.CategoryService;
 import com.edutech.team26.biz.LectureService;
 import com.edutech.team26.biz.StudentService;
+import com.edutech.team26.domain.Lecture;
+import com.edutech.team26.domain.Student;
 import com.edutech.team26.domain.VwCourse;
 import com.edutech.team26.domain.VwLecture;
 import com.edutech.team26.dto.LectureDTO;
@@ -12,6 +14,8 @@ import com.edutech.team26.model.LectureParam;
 import com.edutech.team26.model.ResponseResult;
 import com.edutech.team26.model.ServiceResult;
 import com.edutech.team26.repository.LectureRepository;
+import com.edutech.team26.repository.StudentRepository;
+import com.edutech.team26.repository.VwCourseRepository;
 import com.edutech.team26.repository.VwLectureRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +28,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -37,7 +44,10 @@ public class LectureController extends lecBaseController {
     private final CategoryService categoryService;
     private final StudentService studentService;
     private final ModelMapper mapper;
+    private final StudentRepository studentRepository;
+    private final LectureRepository lectureRepository;
     private final VwLectureRepository vwLectureRepository;
+    private final VwCourseRepository vwCourseRepository;
 
     @GetMapping("lectureList")
     public String list(Model model, LectureParam lectureParam) {
@@ -58,7 +68,8 @@ public class LectureController extends lecBaseController {
 //        model.addAttribute("totalCount", totalCount);
 //        model.addAttribute("pager", pageHtml);
 
-        List<VwLecture> lectureList = vwLectureRepository.findAll();
+        List<VwLecture> lectureList = vwLectureRepository.findAllByOrderByLecRegDateDesc(); //최신등록순
+        //List<VwLecture> lectureList = vwLectureRepository.findAll();
         model.addAttribute("lectureList", lectureList);
 
         return "lecture/lectureList";
@@ -81,6 +92,9 @@ public class LectureController extends lecBaseController {
 
         return "lecture/lectureDetail";
     }
+
+
+
 
 
 //    @PostMapping("/api/course/req.api")
@@ -117,6 +131,7 @@ public class LectureController extends lecBaseController {
         studentDTO.setMno(member.getMno());
         ServiceResult result = lectureService.apply(studentDTO);
 
+
         if (!result.isResult()) {
 
             ResponseResult responseResult = new ResponseResult(false, result.getMessage());
@@ -126,6 +141,29 @@ public class LectureController extends lecBaseController {
         ResponseResult responseResult = new ResponseResult(true);
         return ResponseEntity.ok().body(responseResult);
     }
+
+
+    @GetMapping("/api/checkEnrollment.api")
+    public ResponseEntity<Map<String, Object>> checkEnrollment(@RequestParam long lectureNo) {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Map<String, Object> response = new HashMap<>();
+        boolean isEnrolled = vwCourseRepository.countByLectureNoAndMno(lectureNo,member.getMno()) > 0; // yourStudentId를 실제 사용하는 ID로 변경해야 합니다.
+
+        Map<String, Object> header = new HashMap<>();
+        if (isEnrolled) {
+            header.put("result", true);
+            header.put("message", "이미 수강 중인 강의입니다.");
+        } else {
+            header.put("result", false);
+            header.put("message", "수강 가능한 강의입니다.");
+        }
+
+        response.put("header", header);
+
+        return ResponseEntity.ok(response);
+    }
+
 
 
 /*

@@ -58,7 +58,7 @@
                         <tr>
                             <th>강의 상태</th>
                             <td>
-                                <p2 th:text="${lecture.getLectureAct() == 1 ? '강의예정' : (lecture.getLectureAct() == 2 ? '강의중' : (lecture.getLectureAct() == 3 ? '강의종료' : '오류'))}"></p2>
+                                <p2 th:text="${lecture.getLectureAct() == 1 ? '강의예정' : (lecture.getLectureAct() == 2 ? '강의중' : (lecture.getLectureAct() == 3 ? '강의종료' : '폐강'))}"></p2>
                             </td>
                         </tr>
 

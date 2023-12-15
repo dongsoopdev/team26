@@ -3968,6 +3968,11 @@ h6 {
     display: inline-block
 }
 
+.s_product_text .list li span {
+    width: 90px;
+    display: inline-block
+}
+
 .s_product_text .list li a span:hover {
     color: #555
 }
