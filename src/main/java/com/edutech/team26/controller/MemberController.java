@@ -5,10 +5,8 @@ import com.edutech.team26.biz.MemberService;
 import com.edutech.team26.biz.StudentService;
 import com.edutech.team26.biz.TeacherService;
 import com.edutech.team26.domain.Member;
-import com.edutech.team26.dto.MemberDTO;
-import com.edutech.team26.dto.MemberJoinDTO;
-import com.edutech.team26.dto.MemberSecurityDTO;
-import com.edutech.team26.dto.TeacherVO;
+import com.edutech.team26.dto.*;
+import com.edutech.team26.repository.FilesRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -114,10 +112,19 @@ public class MemberController {
     }
 
     @GetMapping("/teacherApply")
-    public String teacherApply(Model model) {
-        List<TeacherVO> teacherList = teacherService.teacherList();
-        model.addAttribute("teacherList", teacherList);
+    @PreAuthorize("hasAnyRole('TEACHER', 'USER')") // 권한 여러개
+    public String teacherApply(Model model) throws Exception {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<TeacherHistoryFilesDTO> teacherHistoryList = teacherService.getHistoryList(member.getMno());
+        model.addAttribute("teacherHistoryList", teacherHistoryList);
         return "member/teacherApply";
+    }
+
+    @PostMapping("/teacherApply")
+    public String teacherApplyPro(HttpServletRequest request, List<MultipartFile> uploadFiles) throws Exception {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        teacherService.applyGrade(member.getMno(), uploadFiles, request);
+        return "redirect:/teacherApply";
     }
 
     // 리캡챠 부분
@@ -140,13 +147,6 @@ public class MemberController {
     @GetMapping("/upgradeTeacher")
     public String upgradeTeacher(Model model){
         return "teacher/upgrade";
-    }
-
-    @PostMapping("/upgradeTeacher")
-    public String upgradeTeacherPro(HttpServletRequest request, Model model, MultipartFile uploadFile) throws Exception {
-        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        teacherService.updateGrade(member.getMno(), uploadFile, request);
-        return "redirect:/";
     }
 
     @GetMapping("/stateTeacher")
