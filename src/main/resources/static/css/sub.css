@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+/* 마이페이지 */
+.container.my_page {min-height:75vh;}
+.my_menu li.active {background-color:rgb(60, 134, 246);}
+.my_menu li:hover, .my_menu li:active {background-color:rgb(134, 180, 249);}
+.my_menu a:hover, .my_menu a:active, .my_menu li.active a {color:#fff!important;}
+.my_page .breadcrumb_area {right:0;bottom:0;}
+.my_page .profile_img th {vertical-align:middle}
+.my_page .profile_img button {vertical-align:bottom;}
+.my_page .profile_img img {width:80px;height:80px;border-radius:50%;}

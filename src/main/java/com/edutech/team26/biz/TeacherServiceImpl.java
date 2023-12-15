@@ -1,7 +1,6 @@
 package com.edutech.team26.biz;
 
 import com.edutech.team26.constant.AcceptCode;
-import com.edutech.team26.constant.MemberRole;
 import com.edutech.team26.domain.*;
 
 import com.edutech.team26.dto.*;
@@ -18,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,24 +41,32 @@ public class TeacherServiceImpl implements TeacherService {
     private final FilesRepository filesRepository;
 
     @Override
-    public List<TeacherHistoryFilesDTO> getHistoryList(Long mno) throws Exception {
-        List<TeacherHistory> teacherHistoryList = teacherHistoryRepository.findByMno(mno);
+    public List<TeacherHistoryFilesVO> getHistoryList(Long mno) throws Exception {
+        List<TeacherHistory> teacherHistoryList = teacherHistoryRepository.findByMnoOrderByRegDateDesc(mno);
 
-        List<FilesDTO> fileList = new ArrayList<>();
-        for(TeacherHistory teacherHistory : teacherHistoryList) {
-            List<Files> filesList = filesRepository.findByPar(teacherHistory.getTeacherHistoryNo());
-            List<FilesDTO> filesDTOList = fileList.stream().map(files -> modelMapper.map(files, FilesDTO.class)).collect(Collectors.toList());
-            fileList.addAll(filesDTOList);
-        }
-
-        List<TeacherHistoryFilesDTO> teacherHistoryDTOList = teacherHistoryList.stream()
-                .map(teacherHistory -> modelMapper.map(teacherHistory, TeacherHistoryFilesDTO.class))
+        List<TeacherHistoryFilesVO> teacherHistoryDTOList = teacherHistoryList.stream()
+                .map(teacherHistory -> modelMapper.map(teacherHistory, TeacherHistoryFilesVO.class))
                 .collect(Collectors.toList());
 
-        log.info("====================================================");
-        log.info(">> " + teacherHistoryDTOList.stream().toString());
-        log.info("====================================================");
-
+        int cnt = 0;
+        for(TeacherHistoryFilesVO teacherHistoryFilesVO : teacherHistoryDTOList) {
+            List<Files> filesList = filesRepository.findByPar(teacherHistoryFilesVO.getTeacherHistoryNo());
+            List<FilesDTO> filesDTOList = filesList.stream().map(files -> modelMapper.map(files, FilesDTO.class)).collect(Collectors.toList());
+            cnt = filesDTOList.size() - 1;
+            teacherHistoryFilesVO.setFilesList(filesDTOList);
+            teacherHistoryFilesVO.setFileCnt(cnt);
+            switch (teacherHistoryFilesVO.getStatus()) {
+                case AcceptCode.ACCEPT_STATUS_OK: 
+                    teacherHistoryFilesVO.setStatus("승인 완료");
+                    break;
+                case AcceptCode.ACCEPT_STATUS_REQ :
+                    teacherHistoryFilesVO.setStatus("신청 대기");
+                    break;
+                case AcceptCode.ACCEPT_STATUS_REFUSE:
+                    teacherHistoryFilesVO.setStatus("승인 거절");
+                    break;
+            }
+        }
         return teacherHistoryDTOList;
     }
 
@@ -101,12 +107,16 @@ public class TeacherServiceImpl implements TeacherService {
 
         }
 
+        TeacherHistoryDTO teacherHistoryDTO = new TeacherHistoryDTO();
+        teacherHistoryDTO.setMno(mno);
+        teacherHistoryDTO.setStatus(AcceptCode.ACCEPT_STATUS_REQ);
+        TeacherHistory teacherHistory = modelMapper.map(teacherHistoryDTO, TeacherHistory.class);
+        Long teacherHistoryNo = teacherHistoryRepository.save(teacherHistory).getTeacherHistoryNo();
+
         ServletContext application = request.getSession().getServletContext();
         String realPath = application.getRealPath("/teacher/" + teacherNo);
 
         if(uploadFiles != null) {
-            
-            log.info("퍄일 있음");
 
             for(MultipartFile multipartFile : uploadFiles) {
                 File uploadPath = new File(realPath);
@@ -120,26 +130,22 @@ public class TeacherServiceImpl implements TeacherService {
                 fileUploadNm = uploadName;
 
                 multipartFile.transferTo(new File(uploadPath, uploadName));
+
+                FilesDTO filesDTO = new FilesDTO();
+                filesDTO.setPar(teacherHistoryNo);
+                filesDTO.setToUse("teacherApplyFiles");
+                filesDTO.setFileOriginNm(fileOriginNm);
+                filesDTO.setFileSaveNm(fileUploadNm);
+                filesDTO.setFileSaveFolder(realPath);
+                Files files = modelMapper.map(filesDTO, Files.class);
+                filesRepository.save(files);
             }
 
         }
 
         log.info(">>>>>>>>>>>>>>>>" + realPath);
 
-        TeacherHistoryDTO teacherHistoryDTO = new TeacherHistoryDTO();
-        teacherHistoryDTO.setMno(mno);
-        teacherHistoryDTO.setActiveYn(false);
-        TeacherHistory teacherHistory = modelMapper.map(teacherHistoryDTO, TeacherHistory.class);
-        Long teacherHistoryNo = teacherHistoryRepository.save(teacherHistory).getTeacherHistoryNo();
 
-        FilesDTO filesDTO = new FilesDTO();
-        filesDTO.setPar(teacherHistoryNo);
-        filesDTO.setToUse("teacherApplyFiles");
-        filesDTO.setFileOriginNm(fileOriginNm);
-        filesDTO.setFileSaveNm(fileUploadNm);
-        filesDTO.setFileSaveFolder(realPath);
-        Files files = modelMapper.map(filesDTO, Files.class);
-        filesRepository.save(files);
 
 
 

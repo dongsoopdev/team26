@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface TeacherHistoryRepository extends JpaRepository<TeacherHistory, Long> {
 
-    List<TeacherHistory> findByMno(Long mno);
+    List<TeacherHistory> findByMnoOrderByRegDateDesc(Long mno);
 
 }

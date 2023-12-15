@@ -29,7 +29,7 @@ public class TeacherHistory {
     private String reason;
 
     @Column
-    private Boolean activeYn;
+    private String status;
 
     @CreationTimestamp
     private LocalDateTime regDate;

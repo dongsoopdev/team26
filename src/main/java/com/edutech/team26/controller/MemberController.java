@@ -1,16 +1,12 @@
 package com.edutech.team26.controller;
 
-import com.edutech.team26.biz.CustomUserDetailsService;
 import com.edutech.team26.biz.MemberService;
 import com.edutech.team26.biz.StudentService;
 import com.edutech.team26.biz.TeacherService;
-import com.edutech.team26.domain.Member;
 import com.edutech.team26.dto.*;
-import com.edutech.team26.repository.FilesRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,10 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.lang.reflect.Field;
-import java.security.Principal;
 import java.util.List;
 
 @Log4j2
@@ -111,20 +104,20 @@ public class MemberController {
         return "member/myPage";
     }
 
-    @GetMapping("/teacherApply")
+    @GetMapping("/myPage/teacherApply")
     @PreAuthorize("hasAnyRole('TEACHER', 'USER')") // 권한 여러개
     public String teacherApply(Model model) throws Exception {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<TeacherHistoryFilesDTO> teacherHistoryList = teacherService.getHistoryList(member.getMno());
+        List<TeacherHistoryFilesVO> teacherHistoryList = teacherService.getHistoryList(member.getMno());
         model.addAttribute("teacherHistoryList", teacherHistoryList);
         return "member/teacherApply";
     }
 
-    @PostMapping("/teacherApply")
+    @PostMapping("/myPage/teacherApply")
     public String teacherApplyPro(HttpServletRequest request, List<MultipartFile> uploadFiles) throws Exception {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         teacherService.applyGrade(member.getMno(), uploadFiles, request);
-        return "redirect:/teacherApply";
+        return "redirect:/myPage/teacherApply";
     }
 
     // 리캡챠 부분

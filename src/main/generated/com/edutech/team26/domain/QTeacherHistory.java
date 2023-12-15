@@ -21,13 +21,13 @@ public class QTeacherHistory extends EntityPathBase<TeacherHistory> {
 
     public final DateTimePath<java.time.LocalDateTime> activeDate = createDateTime("activeDate", java.time.LocalDateTime.class);
 
-    public final BooleanPath activeYn = createBoolean("activeYn");
-
     public final NumberPath<Long> mno = createNumber("mno", Long.class);
 
     public final StringPath reason = createString("reason");
 
     public final DateTimePath<java.time.LocalDateTime> regDate = createDateTime("regDate", java.time.LocalDateTime.class);
+
+    public final StringPath status = createString("status");
 
     public final NumberPath<Long> teacherHistoryNo = createNumber("teacherHistoryNo", Long.class);
 

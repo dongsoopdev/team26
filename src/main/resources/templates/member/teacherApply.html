@@ -1,16 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <title>EudTech LMS</title>
-    <style>
-        .my_menu li.active {background-color:rgb(60, 134, 246);}
-        .my_menu li:hover, .my_menu li:active {background-color:rgb(134, 180, 249);}
-        .my_menu a:hover, .my_menu a:active, .my_menu li.active a {color:#fff!important;}
-        .my_page .breadcrumb_area {right:0;bottom:0;}
-    </style>
+    <title>EudTech LMS::선생님 신청</title>
+    <link rel="stylesheet" th:href="@{/css/sub.css}">
 </head>
 <body>
     <th:block th:insert="~{layout/header :: header}"></th:block>
@@ -19,10 +13,10 @@
         <div class="row">
             <div class="col-lg-3 col-md-5 left_sidebar_area pe-5">
                 <div>
-                    <h2 class="text-center fw-bolder py-5 bg-primary text-white mb-0">마이페이지</h2>
+                    <h2 class="text-center fw-bolder py-5 bg-primary text-white mb-2">마이페이지</h2>
                     <ul class="nav nav-pills flex-column mb-auto my_menu">
-                        <li class="border-bottom"><a href="#" class="nav-link link-dark">마이페이지</a></li>
-                        <li class="border-bottom active"><a href="#" class="nav-link link-dark">선생님신청</a></li>
+                        <li class="border-bottom"><a th:href="@{/myPage}" class="nav-link link-dark">마이페이지</a></li>
+                        <li class="border-bottom active"><a th:href="@{/myPage/teacherApply}" class="nav-link link-dark">선생님신청</a></li>
                     </ul>
                 </div>
             </div>
@@ -33,7 +27,6 @@
                         <nav class="position-absolute align-middle breadcrumb_area mb-0 lh-1" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item"><a class="link-dark" th:href="@{/}">Home</a></li>
-                                <li class="breadcrumb-item"><a class="link-dark" th:href="@{/mypage}">마이페이지</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">선생님 신청</li>
                             </ol>
                         </nav>
@@ -71,29 +64,6 @@
                             }
                             return true;
                         }
-
-                        /*document.getElementById("applyBtn").addEventListener("click", function() {
-                            alert("ddd");
-                            addApplyFiles();
-                        });*/
-
-                        /*async function addApplyFiles() {
-
-                            if(emailTxt == "") {
-                                alert("이메일을 입력해주세요.");
-                                return false;
-                            }
-
-                            let data = {email:emailTxt};
-                            let result = await axios.post('/memberDup', data);
-                            if(result.data){
-                                regBtn.style.display = 'inline-block';
-                                isEmailChecked = true;
-                                //document.getElementById("checkEmail").value = true;
-                            } else {
-                                alert("다른 이메일을 입력해주세요.");
-                            }
-                        }*/
                     </script>
                     <section id="applyList" class="mt-5 pt-5 border-top">
                         <table class="table" th:if="${#lists.isEmpty(teacherHistoryList)}">
@@ -119,70 +89,44 @@
                         </table>
                         <table class="table" th:unless="${#lists.isEmpty(teacherHistoryList)}">
                             <colgroup>
-                                <col style="width:25%;">
-                                <col style="width:25%;">
+                                <col style="width:6%;">
+                                <col style="width:auto;">
                                 <col style="width:25%;">
                                 <col style="width:25%;">
                             </colgroup>
                             <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">제목</th>
-                                <th scope="col">신청일자</th>
-                                <th scope="col">신청결과</th>
+                                <th class="text-center" scope="col">#</th>
+                                <th class="text-center" scope="col">제목</th>
+                                <th class="text-center" scope="col">신청일자</th>
+                                <th class="text-center" scope="col">신청결과</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="teacherHistory, num : ${teacherHistoryList}">
-                                <th scope="row">[[${num}]]</th>
-                                <td><!--<a th:href="@{/teacherApplyDetail}" th:text="${teacherHistory.userName}"></a>--></td>
+                                <th class="text-center" scope="row" th:text="${num.count}"></th>
+                                <td class="text-start">
+                                    <th:block th:if="${teacherHistory.fileCnt > 0}">
+                                        <a th:href="@{/teacherApplyDetail}" th:text="|${teacherHistory.filesList[0].getFileOriginNm()} 외 ${teacherHistory.fileCnt}건|"></a>
+                                    </th:block>
+                                    <th:block th:if="${teacherHistory.fileCnt == 0}">
+                                        <a th:href="@{/teacherApplyDetail}" th:text="|${teacherHistory.filesList[0].getFileOriginNm()}|"></a>
+                                    </th:block>
+                                </td>
+                                <td class="text-center" th:text="${#temporals.format(teacherHistory.regDate, 'yyyy-MM-dd HH:mm')}"></td>
+                                <td class="text-center" th:text="${teacherHistory.status}"></td>
                             </tr>
                             </tbody>
                         </table>
                     </section>
                 </div>
-                <div class="text-center">
+                <!--<div class="text-center">
                     <a href="#">1</a>
                     <a href="#">2</a>
                     <a href="#">3</a>
                     <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-                </div>
+                </div>-->
             </div>
-            <!--<div class="d-flex flex-column flex-shrink-0 p-3" style="width:calc(100% - 280px);">
-                <section id="applyTeacher">
-                    <table class="table" th:if="${#lists.isEmpty(teacherList)}">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">제목</th>
-                            <th scope="col">신청자</th>
-                            <th scope="col">신청일자</th>
-                            <th scope="col">신청결과</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td colspan="5" class="text-center">선생님 신청 내역이 없습니다.</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <table class="table" th:unless="${#lists.isEmpty(teacherList)}">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">제목</th>
-                            <th scope="col">신청일자</th>
-                            <th scope="col">신청결과</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="teacher, num : ${teacherList}">
-                            <th scope="row">[[${num}]]</th>
-                        </tr>
-                        </tbody>
-                    </table>
-                </section>
-            </div>-->
         </div>
     </div>
 

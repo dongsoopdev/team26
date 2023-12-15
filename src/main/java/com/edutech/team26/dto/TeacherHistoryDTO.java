@@ -13,7 +13,7 @@ public class TeacherHistoryDTO {
 
     private String reason;
 
-    private Boolean activeYn;
+    private String status;
 
     private LocalDateTime regDate;
 

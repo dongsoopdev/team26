@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class TeacherHistoryFilesDTO {
+public class TeacherHistoryFilesVO {
 
     private Long teacherHistoryNo;
 
@@ -14,12 +14,14 @@ public class TeacherHistoryFilesDTO {
 
     private String reason;
 
-    private Boolean activeYn;
+    private String status;
 
     private LocalDateTime regDate;
 
     private LocalDateTime activeDate;
 
     private List<FilesDTO> filesList;
+
+    private int fileCnt = 0;
 
 }
