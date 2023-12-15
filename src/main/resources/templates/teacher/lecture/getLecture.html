@@ -9,7 +9,11 @@
 <body class="sb-nav-fixed">
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
 <div id="layoutSidenav">
-    <th:block th:insert="~{layout/lmsMenuTeaLec :: lmsMenu2}"></th:block>
+<!--    <th:block th:replace="layout/lmsMenuTeaLec :: lmsMenu2(~{::2})"></th:block>-->
+    <!--<th:block th:replace="~{layout/lmsMenuTeaLec :: lmsMenu2(lecture_no = ${lecture_no})}"></th:block>-->
+
+    <th:block th:replace="~{layout/lmsMenuTeaLec :: lmsMenu2(${lecture_no})}"></th:block>
+
     <div id="layoutSidenav_content">
         <main>
             <th:block layout:fragment="content"></th:block>
@@ -68,6 +72,5 @@
 
 </div>
 <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
-</div>
 </body>
 </html>
