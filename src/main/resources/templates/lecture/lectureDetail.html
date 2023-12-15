@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
@@ -82,8 +83,9 @@
                                     <!--                                    <h3> 강좌제목 </h3>-->
                                     <h2 th:text="${lecture.getLectureName()}">강좌제목</h2>
                                     <ul class="list">
+
+
                                         <li>
-                                            <a href="#">
                                                 <span style="font-size: 15px;font-weight: bold;">신청 기간</span>
                                                 <p2 th:text="${lecture.getStartEnrolmentDate()}"></p2>
                                                 <strong> - </strong>
@@ -92,12 +94,23 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#"> <span style=" font-size: 15px; font-weight: bold;">학습 기간</span>
+                                        <span style=" font-size: 15px; font-weight: bold;">학습 기간</span>
                                                 <p2 th:text="${lecture.getStartStudyDate()}"></p2>
                                                 <strong> - </strong>
                                                 <p2 th:text="${lecture.getEndStudyDate()}"></p2>
 
-                                            </a>
+
+                                        </li>
+
+
+                                        <li>
+
+                                                <span style="font-size: 15px;font-weight: bold;">신청 현황</span>
+                                                 <strong><p2 style="color: #002a80" th:text="${lecture.getLectureCurnum()}" ></p2></strong>
+                                                 <strong> / </strong>
+                                                <p2 th:text="${lecture.getLectureMaxnum()}"></p2>
+
+
                                         </li>
                                     </ul>
                                     <!--<p>
@@ -134,54 +147,86 @@
 
                                     <div class="card_area" style="margin-top: 40px;">
                                         <form id="submitForm" method="post">
+
+
                                             <input type="hidden" name="id" th:value="${lecture.getLecture_no()}"/>
-                                            <button type="submit" class="main_btn" style="width: 300px;">수강 신청</button>
+                                            <button type="submit" class="main_btn" style="width: 300px;" sec:authorize="hasRole('STUDENT') or hasRole('USER') " th:if="${lecture.getLectureCurnum} < ${lecture.getLectureMaxnum} and ${lecture.getLectureAct()} == 1">수강 신청</button>
+                                            <!--<a class="btn btn-secondary " style="width: 300px; color: white;" sec:authorize="hasRole('STUDENT') or hasRole('USER') or hasRole('TEACHER')" th:if="(${lecture.getLectureCurnum} eq ${lecture.getLectureMaxnum}) || (${lecture.getLectureAct} ne 1)"> 신청 마감 </a>-->
+                                            <a class="btn btn-secondary" style="width: 300px; color: white; margin-bottom: 10px;"
+                                               th:if="${lecture.getLectureCurnum() == lecture.getLectureMaxnum() or lecture.getLectureAct() != 1}">신청 마감</a><br>
+
+
+                                            <a th:href="@{'/admin/updateLecture/' + ${lecture.getLecture_no()}}" class="btn btn-primary " style="width: 150px;" sec:authorize="hasRole('ADMIN')">수정</a>
+                                            <a th:href="@{'/admin/deleteLecture/' + ${lecture.getLecture_no()}}" class="btn btn-danger" style="width: 150px;" sec:authorize="hasRole('ADMIN')">삭제</a>
                                             <!--<button type="submit">수강신청</button-->
                                             <!--<button class="main_btn" style="width: 150px;"
                                                     th:href="@{lecture/lectureList}">강좌 목록
                                             </button>-->
+
+
+
+
+
+
+
                                         </form>
                                     </div>
 
+
                                     <script>
                                         $(function () {
-
                                             $('#submitForm').on('submit', function () {
-
-                                                if (!confirm('수강 신청을 하시겠습니까?')) {
-                                                    return false;
-                                                }
-
                                                 var $thisForm = $(this);
-                                                var url = '/lecture/api/course/req.api';
-                                                var parameter = {
-                                                    lectureNo: $thisForm.find('input[name=id]').val()
-                                                };
 
-                                                axios.post(url, parameter).then(function (response) {
-                                                    console.log(response);
-                                                    console.log(response.data);
+                                                // 서버로부터 강의 수강 여부 체크
+                                                var lectureNo = $thisForm.find('input[name=id]').val();
+                                                var checkUrl = '/lecture/api/checkEnrollment.api?lectureNo=' + lectureNo;
 
-                                                    response.data = response.data || {};
-                                                    response.data.header = response.data.header || {};
+                                                axios.get(checkUrl)
+                                                    .then(function (response) {
+                                                        response.data = response.data || {};
+                                                        response.data.header = response.data.header || {};
 
-                                                    if (!response.data.header.result) {
-                                                        alert(response.data.header.message);
-                                                        return false;
-                                                    }
+                                                        if (response.data.header.result) {
+                                                            // 강의 수강 중인 경우
+                                                            if (confirm('이미 수강 중인 강의입니다. 강의 목록으로 이동하시겠습니까?')) {
+                                                                location.href = '/lecture/lectureList';
+                                                            }
+                                                        } else {
+                                                            // 강의 수강 중이 아닌 경우
+                                                            if (confirm('수강 신청을 하시겠습니까?')) {
+                                                                // 서버로 신청 요청
+                                                                var submitUrl = '/lecture/api/course/req.api';
+                                                                axios.post(submitUrl, { lectureNo: lectureNo })
+                                                                    .then(function (response) {
+                                                                        response.data = response.data || {};
+                                                                        response.data.header = response.data.header || {};
 
-                                                    alert(' 강좌가 정상적으로 신청되었습니다. ');
-                                                    location.href = '/';
-
-                                                }).catch(function (err) {
-                                                    console.log(err);
-                                                });
+                                                                        if (!response.data.header.result) {
+                                                                            alert(response.data.header.message);
+                                                                        } else {
+                                                                            alert('강좌가 정상적으로 신청되었습니다.');
+                                                                            location.reload(); // 페이지 리로드
+                                                                        }
+                                                                    })
+                                                                    .catch(function (err) {
+                                                                        console.error(err);
+                                                                    });
+                                                            }
+                                                        }
+                                                    })
+                                                    .catch(function (err) {
+                                                        console.error(err);
+                                                    });
 
                                                 return false;
                                             });
-
                                         });
                                     </script>
+
+
+
+
 
 
                                     <!-- <div class="card_area" style="margin-top: 40px;">
