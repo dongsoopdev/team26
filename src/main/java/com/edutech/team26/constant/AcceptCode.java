@@ -8,7 +8,7 @@ public class AcceptCode {
 
     /*
         ACCEPT_STATUS_REQ : 승인 요청
-        ACCEPT_STATUS_ING : 승인 완료
+        ACCEPT_STATUS_OK : 승인 완료
         ACCEPT_STATUS_REFUSE : 승인 거절
     */
 
