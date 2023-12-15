@@ -29,7 +29,4 @@ public class ErrorCtrl implements ErrorController {
     }
 
 }
-<<<<<<< HEAD
-=======
 */
->>>>>>> 6be27410ec8201a98006e59602ebd35b7278ee93
