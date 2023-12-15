@@ -30,6 +30,16 @@ public class NoticeServiceImpl implements NoticeService {
         return noticeList;
     }
 
+    //모든 공지사항 리스트
+    @Override
+    public List<NoticeDTO> findNoticeAll() {
+        List<Notice> lst = noticeRepository.findAll();
+        List<NoticeDTO> noticeList = lst.stream().map(notice
+                        -> modelMapper.map(notice, NoticeDTO.class))
+                .collect(Collectors.toList());
+        return noticeList;
+    }
+
     @Override
     public NoticeDTO findByNno(Long notice_no) {
         Optional<Notice> noti = noticeRepository.findById(notice_no);

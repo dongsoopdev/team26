@@ -57,13 +57,11 @@
 
                         <div class="my-4">
                             <div class="float-end">
-                                <button type="button" class="btn btn-primary listBtn">목록으로</button>
-                                <button type="submit" class="btn btn-secondary">수정하기</button>
+                                <a th:href="@{/notice/noticeList(lecture_no =0)}" class="btn btn-secondary">목록으로</a>
+                                <button type="submit" class="btn btn-primary">수정하기</button>
                             </div>
                         </div>
                     </form>
-
-
                 </div><!--end card body-->
             </div><!--end card-->
         </div><!-- end col-->
