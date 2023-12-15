@@ -6,6 +6,12 @@
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
     <title>관리자 페이지</title>
+    <style>
+        .text-danger {
+            color: red;
+        }
+
+    </style>
 </head>
 
 
@@ -31,6 +37,9 @@
                             <th class="text-center" style="vertical-align: middle">번호</th>
                             <th class="text-center" style="vertical-align: middle">강의명</th>
                             <th class="text-center" style="vertical-align: middle">강사명</th>
+                            <th class="text-center" style="vertical-align: middle">신청 인원</th>
+                            <th class="text-center" style="vertical-align: middle">최대 인원</th>
+                            <th class="text-center" style="vertical-align: middle">최소 인원</th>
                             <th class="text-center" style="vertical-align: middle">수강 신청 기간</th>
                             <th class="text-center" style="vertical-align: middle">강의 운영 기간</th>
                             <th class="text-center" style="vertical-align: middle">강의 상태</th>
@@ -48,11 +57,23 @@
                                 <p2 th:text="${lectureList.getLectureName()}"></p2>
                             </td>
 
-
                             <td>
                                 <!--<p2>임시 강사명</p2>-->
                                 <p2 th:text="${lectureList.getUserName()}"></p2>
                             </td>
+
+                            <td>
+                                <p2 th:text="${lectureList.getLectureCurnum()}"></p2>
+                            </td>
+
+                            <td>
+                                <p2 th:text="${lectureList.getLectureMaxnum()}"></p2>
+                            </td>
+
+                            <td>
+                                <p2 th:text="${lectureList.getLectureMinnum()}"></p2>
+                            </td>
+
 
 
                             <td>
@@ -67,8 +88,13 @@
                                 <p2 th:text="${lectureList.getEndStudyDate()}"></p2>
                             </td>
 
+                            <!--<td>
+                                <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정' : (lectureList.getLectureAct() == 2 ? '강의중' : (lectureList.getLectureAct() == 3 ? '강의종료' : '폐강'))}"></p2>
+                            </td>
+-->
                             <td>
-                                <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정' : (lectureList.getLectureAct() == 2 ? '강의중' : (lectureList.getLectureAct() == 3 ? '강의종료' : '오류'))}"></p2>
+                                <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정' : (lectureList.getLectureAct() == 2 ? '강의중' : (lectureList.getLectureAct() == 3 ? '강의종료' : (lectureList.getLectureAct() == 4 ? '폐강' : (lectureList.getLectureAct() == 5 ? '강의철회' : ''))))}"
+                                ></p2>
                             </td>
 
 
