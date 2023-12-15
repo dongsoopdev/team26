@@ -4,7 +4,7 @@
 <head>
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
-    <title>강좌 등록</title>
+    <title>강의 수정</title>
 </head>
 <body class="sb-nav-fixed">
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
@@ -18,10 +18,9 @@
             <div class="layout_contents">
 
 
-                <h2 class="page_tit"> 강좌 등록 </h2>
-
-                <div class="detail">
-                    <form th:action="@{/admin/save}" id="submitForm" method="post" enctype="multipart/form-data">
+                <h2 class="page_tit"> 강의 수정 </h2>
+                <div class="detail" th:with="lecture=${lecture}">
+                    <form th:action="@{'/admin/updateLecture/' + ${lecture.lectureNo}}" id="submitForm" method="post" enctype="multipart/form-data">
                         <table class="table">
                             <tbody>
                             <!--                        <tr>-->
@@ -38,7 +37,7 @@
                             <tr>
                                 <th>강좌명</th>
                                 <td colspan="2"><input type="text" name="lectureName" id="lectureName" class="input"
-                                                       placeholder="강좌명 입력" required></td>
+                                                       th:value="${lecture.getLectureName()}" required></td>
                             </tr>
 
 
@@ -51,26 +50,25 @@
                                 </td>
                             </tr>
 
-
                             <tr>
                                 <th>강좌 설명</th>
                                 <td colspan="2"><textarea name="lectureContent" id="lectureContent" cols="50"
                                                           class="textarea" rows="8" maxlength="2000" style="width: 100%"
-                                                          placeholder="강좌 설명 입력" required></textarea></td>
+                                                          th:text="${lecture.getLectureContent()}" required></textarea></td>
                             </tr>
 
 
                             <tr>
                                 <th>모집 수강 인원</th>
                                 <td colspan="2"><input type="number" name="lectureMaxnum" id="lectureMaxnum"
-                                                       class="input" placeholder="모집 인원 입력" style="width: 50%" required>
+                                                       class="input" th:value="${lecture.getLectureMaxnum()}"  style="width: 50%" required>
                                 </td>
                             </tr>
 
                             <tr>
                                 <th>최소 수강 인원</th>
                                 <td colspan="2"><input type="number" name="lectureMinnum" id="lectureMinnum"
-                                                       class="input" placeholder="최소 수강 인원 입력" style="width: 50%"
+                                                       class="input" th:value="${lecture.getLectureMinnum()}"  style="width: 50%"
                                                        required></td>
                             </tr>
                             <script>
@@ -104,16 +102,29 @@
                             </script>
 
 
-                            <tr>
-                                <th>수강 신청 기간</th>
-                                <td colspan="2">
-                                    <input type="date" name="startEnrolmentDate" id="startEnrolmentDate"
-                                           class="input" placeholder="수강 신청 시작일" required>
-                                    <strong>&nbsp;&nbsp;-&nbsp;&nbsp;</strong>
-                                    <input type="date" name="endEnrolmentDate" id="endEnrolmentDate"
-                                           class="input" placeholder="수강 신청 마감일" required>
-                                </td>
-                            </tr>
+
+                           <!-- <tr>
+                            <th>테스트</th>
+                               <td>
+                                   안녕
+                                <p th:text="${lecture.getLectureName()}"}></p>
+                                <p th:text="${lecture.lectureContent}"> </p>
+                               </td>
+                            </tr>-->
+
+
+
+                              <tr>
+                                    <th>수강 신청 기간</th>
+
+                                    <td colspan="2">
+                                        <input type="date" name="startEnrolmentDate" id="startEnrolmentDate"
+                                               class="input" th:value="${lecture.getStartEnrolmentDate()}"  required>
+                                        <strong>&nbsp;&nbsp;-&nbsp;&nbsp;</strong>
+                                        <input type="date" name="endEnrolmentDate" id="endEnrolmentDate"
+                                               class="input" th:value="${lecture.getEndEnrolmentDate()}" required>
+                                    </td>
+                                </tr>
 
                             <script>
                                 // 스크립트 부분
@@ -161,10 +172,10 @@
                                 <th>강의 운영 기간</th>
                                 <td colspan="2">
                                     <input type="date" name="startStudyDate" id="startStudyDate"
-                                           class="input" placeholder="강의 시작일" required>
+                                           class="input" th:value="${lecture.getStartStudyDate()}" required>
                                     <strong>&nbsp;&nbsp;-&nbsp;&nbsp;</strong>
                                     <input type="date" name="endStudyDate" id="endStudyDate" class="input"
-                                           placeholder="강의 종료일" required></td>
+                                           th:value="${lecture.getEndStudyDate()}" required></td>
                                 </td>
                             </tr>
 
@@ -194,18 +205,18 @@
                             <tr>
                                 <th>썸네일 이미지</th>
                                 <td colspan="2"><input type="file" name="file" id="lectureImg1" class="input"
-                                                       placeholder="썸네일 이미지" accept=".jpg, .png" required></td>
+                                                       th:value="${lecture.getLectureImg1()}" accept=".jpg, .png" required></td>
                             </tr>
 
                             <tr>
                                 <th>강좌소개 이미지</th>
                                 <td colspan="2"><input type="file" name="file" id="lectureImg2" class="input"
-                                                       placeholder="강좌 소개 이미지" accept=".jpg, .png" required></td>
+                                                       th:value="${lecture.getLectureImg2()}" accept=".jpg, .png" required></td>
                             </tr>
                             <tr>
                                 <th>샘플(OT) 영상</th>
                                 <td colspan="2"><input type="file" name="file" id="lectureVedio" class="input"
-                                                       placeholder="샘플 영상" accept=".mp4" required></td>
+                                                       th:value="${lecture.getLectureVedio()}"  accept=".mp4" required></td>
                             </tr>
 
 
@@ -215,13 +226,22 @@
                         <tr>
                             <td colspan="2">
                                 <input type="reset" value="취소" class="btn btn-danger" onclick="window.history.back();">
-                                <input type="submit" value="강의등록" class="btn btn-primary">
-                                <a th:href="@{admin/lectureList}" type="button" class="btn btn-secondary"
+                                <input type="submit" value="강의수정" class="btn btn-primary">
+                                <a th:href="@{/admin/lectureList}" type="button" class="btn btn-secondary"
                                    style="float: right;">강의목록</a>
                             </td>
                         </tr>
                     </form>
                 </div>
+                <script>
+                    function handleFormSubmission() {
+                        alert('강의 수정이 완료되었습니다.');
+                    }
+
+                    document.getElementById('submitForm').addEventListener('submit', function () {
+                        handleFormSubmission();
+                    });
+                </script>
 
                 <!--            <script type="text/javascript" src="/res/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>-->
 

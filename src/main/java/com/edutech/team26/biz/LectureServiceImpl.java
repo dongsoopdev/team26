@@ -7,8 +7,6 @@ import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.dto.StudentDTO;
 
-import com.edutech.team26.dto.TeacherVO;
-
 import com.edutech.team26.mapper.LectureMapper;
 import com.edutech.team26.model.LectureParam;
 import com.edutech.team26.model.ServiceResult;
@@ -17,7 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -44,6 +41,7 @@ public class LectureServiceImpl implements LectureService {
     private final MemberRepository memberRepository;
     private final LectureMapper lectureMapper;
     private final ModelMapper modelMapper;
+    private final TeacherRepository teacherRepository;
     private final VwCourseRepository vwCourseRepository;
     private final VwLectureRepository vwLectureRepository;
 
@@ -164,6 +162,65 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Override
+    public void updateLecture(LectureDTO lectureDTO, Long lecture_no, MultipartFile[] imgFiles) throws IOException {
+        Lecture update = lectureRepository.getById(lecture_no);
+        update.getLecture_no();
+        update.setStartEnrolmentDate(lectureDTO.getStartEnrolmentDate());
+        update.setEndEnrolmentDate(lectureDTO.getEndEnrolmentDate());
+        update.setStartStudyDate(lectureDTO.getStartStudyDate());
+        update.setEndStudyDate(lectureDTO.getEndEnrolmentDate());
+        update.setLectureAct(lectureDTO.getLectureAct());
+        update.setLectureContent(lectureDTO.getLectureContent());
+        update.setLectureCurnum(lectureDTO.getLectureCurnum());
+        update.setLectureMaxnum(lectureDTO.getLectureMaxnum());
+        update.setLectureMinnum(lectureDTO.getLectureMinnum());
+        update.setLectureName(lectureDTO.getLectureName());
+        update.setZoomUrl(lectureDTO.getZoomUrl());
+        update.setTeacher(teacherRepository.getById(lectureDTO.getTeacher_no()));
+
+
+        String uploadPath = "C:/upload/";
+        for (int i = 0; i < imgFiles.length; i++) {
+            MultipartFile imgFile = imgFiles[i];
+            String oriImgName = imgFile.getOriginalFilename();
+            String imgName = "";
+
+            // UUID 를 이용하여 파일명 새로 생성
+            UUID uuid = UUID.randomUUID();
+            String savedFileName = uuid + "_" + oriImgName;
+
+
+            imgName = savedFileName;
+
+            File saveFile = new File(uploadPath, imgName);
+            imgFile.transferTo(saveFile);
+
+            update.setFilePath(uploadPath);
+
+            // 각 이미지에 대한 처리 (imgsrc1, imgsrc2,vedio)
+            switch (i + 1) {
+                case 1:
+                    update.setLectureImg1(imgName);
+                    break;
+                case 2:
+                    update.setLectureImg2(imgName);
+                    break;
+                case 3:
+                    update.setLectureVedio(imgName);
+                    break;
+                // 추가적인 이미지 필요에 따라 계속해서 확장 가능
+
+            }
+        }
+
+        //lectureDTO.setLectureAct(1);
+       // Lecture lecture = modelMapper.map(update, Lecture.class);
+
+        lectureRepository.save(update);
+
+    }
+
+/*    @Override
     public boolean set(LectureDTO lectureDTO) {
 
         //LocalDate saleEndAt = getLocalDate(lectureDTO.getSaleEndAtText());
@@ -177,7 +234,7 @@ public class LectureServiceImpl implements LectureService {
 
 
         return true;
-    }
+    }*/
 
     @Override
     public List<LectureDTO> list(LectureParam lectureParam) {
@@ -202,6 +259,22 @@ public class LectureServiceImpl implements LectureService {
     public LectureDTO getById(long id) {
 
         return lectureRepository.findById(id).map(LectureDTO::of).orElse(null);
+    }
+
+    @Override
+    public void deleteLecture(long lectureNo) {
+        Lecture lecture = lectureRepository.getById(lectureNo);
+        lecture.updateLectureAct(5);
+        lectureRepository.save(lecture);
+
+    }
+
+    @Override
+    public void deleteCancleLecture(long lectureNo) {
+        Lecture lecture = lectureRepository.getById(lectureNo);
+        lecture.updateLectureAct(1);
+        lecture.setLectureCurnum(0); // 수강신청인원 초기화
+        lectureRepository.save(lecture);
     }
 
 
@@ -254,6 +327,7 @@ public class LectureServiceImpl implements LectureService {
 //	}
 
 
+    // 수강 신청
     @Override
     public ServiceResult apply(StudentDTO studentDTO) {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -280,7 +354,7 @@ public class LectureServiceImpl implements LectureService {
 
         Lecture lecture = optionalLecture.get();
 
-        String[] statusList = {Student.STATUS_REQ, Student.STATUS_COMPLETE};
+/*        String[] statusList = {Student.STATUS_REQ, Student.STATUS_COMPLETE};
         long count = studentRepository.countBylectureNoAndStudentNoAndStatusIn(
                 lecture.getLecture_no(), studentDTO.getMno(), Arrays.asList(statusList));
 
@@ -288,8 +362,9 @@ public class LectureServiceImpl implements LectureService {
             result.setResult(false);
             result.setMessage("이미 신청한 강좌 정보가 존재합니다.");
             return result;
-        }
+        }*/
 
+        // 수강 정보 인서트
         Student takeLecture = Student.builder()
                 .lectureNo(lecture.getLecture_no())
                 .mno(studentDTO.getMno())
@@ -298,8 +373,24 @@ public class LectureServiceImpl implements LectureService {
                 .regDate(LocalDateTime.now())
 
                 .build();
-
         studentRepository.save(takeLecture);
+
+
+        Lecture lec = lectureRepository.getById(studentDTO.getLectureNo());
+
+        // 수강인원 up
+        lec.setLectureCurnum(lec.getLectureCurnum() + 1);
+        lectureRepository.save(lec);
+
+
+/*        // 수강인원 up
+        Lecture updatedLecture = Lecture.builder()  // Lecture 엔터티를 새로운 빌더로 생성
+                .lecture_no(lec.getLecture_no())  // 현재 강의번호 설정
+                .lectureCurnum(lec.getLectureCurnum() + 1)  // 현재 수강인원에서 1 증가
+                .build();
+        lectureRepository.save(updatedLecture);  // 변경된 Lecture 엔터티 저장*/
+
+        System.out.println("=============인원테스트==============="+lec.getLectureCurnum());
 
         Member memberInfo = memberRepository.findByMno(member.getMno());
 

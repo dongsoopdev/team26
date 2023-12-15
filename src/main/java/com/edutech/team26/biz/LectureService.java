@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-public interface LectureService{
+public interface LectureService {
 
 
     /*
@@ -26,12 +26,14 @@ public interface LectureService{
     /*
      * 강좌 정보 수정
      */
-    boolean set(LectureDTO LectureDTO);
+
+    void updateLecture(LectureDTO lectureDTO, Long lecture_no, MultipartFile[] imgFiles) throws IOException;
 
     /*
      * 강좌 목록
      */
     List<LectureDTO> list(LectureParam lectureParam);
+
     List<VwLecture> findAll();
 
     List<VwLecture> vwFindAll();
@@ -42,38 +44,17 @@ public interface LectureService{
     LectureDTO getById(long id);
 
 
+    //강의 철회 (delelct x -> lecture_act 5번으로 변경)
+    void deleteLecture(long lectureNo);
 
-    ;
+    //강의 철회 취소
+    void deleteCancleLecture(long lectureNo);
 
-
-//    /*
-//     * 강좌 내용 삭제
-//     */
-//    boolean del(String idList);
-//
-//    /*
-//     * 프론트 강좌 목록
-//     */
-//    List<LectureDTO> frontList(LectureParam lecturePara;
-//
-//    /*
-//     * 프론트 강좌 상세 정보
-//     */
-//    LectureDTO frontDetail(long lecture_no);
-//
 
     //    /*
 //     * 수강 신청
 //     */
     ServiceResult apply(StudentDTO studentDTO);
-
-
-//
-//    /*
-//     * 전체 강좌 목록
-//     */
-//    List<LectureDTO> listAll();
-
 
 
 

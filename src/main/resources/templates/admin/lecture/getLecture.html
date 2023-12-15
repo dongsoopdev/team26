@@ -16,18 +16,98 @@
             <th:block layout:fragment="content"></th:block>
             <div class="layout_contents"> <!--margin 설정-->
 
-            <div class="page_wrap">
+            <div class="page_wrap" th:with="lecture=${lecture}">
                 <h2 class="page_tit"> 강좌 정보</h2>
 
 
-                <table class="table" style=" width: 70%; margin: 0 auto;}">
-                    <tr th:each="lecture, status: ${lecture}" style="vertical-align: middle;">
+                <table class="table" style=" width: 70%; margin: 0 auto; vertical-align: middle;}">
+                    <tr style="vertical-align: middle;">
 
+                    <!--<tr>
+                        <th>강의 수정 / 강의 철회 </th>
+                        <td>
+                            <a th:href="@{'/admin/updateLecture/' + ${lecture.getLectureNo()}}" class="btn btn-primary " style="width: 150px;" > 강의 수정 </a>
+                            <a th:href="@{'/admin/deleteLecture/' + ${lecture.getLectureNo()}}" class="btn btn-danger" style="width: 150px;"> 강의 철회 </a>
+                        </td>
+                    </tr>-->
+
+                    <tr th:if="${lecture.getLectureAct() != 5}">
+                        <th >강의 수정 / 강의 철회 </th>
+                        <td>
+                            <a th:href="@{'/admin/updateLecture/' + ${lecture.getLectureNo()}}" class="btn btn-primary" style="width: 150px;"> 강의 수정 </a>
+                            <button class="btn btn-danger"  style="width: 150px;" th:onclick="'confirmWithdraw(' + ${lecture.getLectureNo()} + ')'" > 강의 철회 </button>
+                        </td>
+                    </tr>
+
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+                        function confirmWithdraw(lectureNo) {
+                            var confirmation = confirm("정말 철회하시겠습니까?");
+
+                            if (confirmation) {
+                                alert("강의가 철회되었습니다.");
+                                window.location.href = '/admin/deleteLecture/' + lectureNo;
+                            } else {
+                                alert("강의 철회가 취소되었습니다.");
+                            }
+                        }
+                        /*]]>*/
+                    </script>
+
+                    <tr th:if="${lecture.getLectureAct() == 5}" >
+                        <th>강의 수정 / 강의 철회 </th>
+                        <td>
+                            <button class="btn btn-warning" style="width: 300px;" th:onclick="'confirmWithdraw2(' + ${lecture.getLectureNo()} + ')'" > 강의 철회 취소</button>
+                        </td>
+                    </tr>
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+                        function confirmWithdraw2(lectureNo) {
+                            var confirmation = confirm("철회을 취소하시겠습니까?");
+
+                            if (confirmation) {
+                                alert("강의가 철회가 취소되었습니다. [강의예정] 상태로 변경되었습니다.");
+                                window.location.href = '/admin/deleteCancleLecture/' + lectureNo;
+                            } else {
+                                alert("강의가 이미 철회된 상태입니다.");
+                            }
+                        }
+                        /*]]>*/
+                    </script>
+
+
+
+                    <!-- <tr>
+                         <th>강의 샘플 동영상</th>
+                         <td>  <img th:src="@{'/upload/' + ${lecture.getLectureVideo()}}" alt="" style="    width: 600px;"></td>
+                     </tr>
+ -->
 
                     <tr>
                         <th>강의 제목</th>
                         <td th:text="${lecture.getLectureName()}"></td>
                     </tr>
+
+                    <tr>
+                        <th>신청 현황</th>
+                        <td>
+                        <p2 th:text="${lecture.getLectureCurnum()}"></p2>
+                        <strong> / </strong>
+                        <p2 th:text="${lecture.getLectureMaxnum()}"></p2>
+                            <p2> 명 ( 최소수강인원 : <p2 th:text="${lecture.getLectureMinnum()}"></p2> ) </p2>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <th>강의 상태</th>
+                        <td>
+                            <p2 th:text="${lecture.getLectureAct() == 1 ? '강의예정' : (lecture.getLectureAct() == 2 ? '강의중' : (lecture.getLectureAct() == 3 ? '강의종료' : (lecture.getLectureAct() == 4 ? '폐강' : (lecture.getLectureAct() == 5 ? '강의철회' : ''))))}"
+                            ></p2>
+
+                        </td>
+                    </tr>
+
 
                     <tr>
                         <th>강좌 설명</th>
@@ -53,11 +133,18 @@
                     </tr>
 
                     <tr>
-                        <th>강의 상태</th>
-                        <td>
-                            <p2 th:text="${lecture.getLectureAct() == 1 ? '강의예정' : (lecture.getLectureAct() == 2 ? '강의중' : (lecture.getLectureAct() == 3 ? '강의종료' : '오류'))}"></p2>
-                        </td>
+                        <th>강의 썸네일</th>
+                        <td>  <img th:src="@{'/upload/' + ${lecture.getLectureImg1()}}" alt="" style="    width: 400px;"></td>
                     </tr>
+
+                    <tr>
+                        <th>강의 소개 이미지</th>
+                        <td>  <img th:src="@{'/upload/' + ${lecture.getLectureImg2()}}" alt="" style="    width: 400px;"></td>
+                    </tr>
+
+
+
+
 
 
                 </table>

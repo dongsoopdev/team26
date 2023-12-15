@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +32,7 @@ import java.util.List;
 @Log4j2
 @Controller
 @RequestMapping("/admin")
-public class AdminController extends lecBaseController{
+public class AdminController extends lecBaseController {
     @Autowired
     private ModelMapper mapper;
 
@@ -58,7 +60,6 @@ public class AdminController extends lecBaseController{
     private VwLectureRepository vwLectureRepository;
 
 
-
     /*@PreAuthorize("hasRole('ADMIN')")*/
     @GetMapping("/home")
     public String adminHome(Model model) {
@@ -67,7 +68,7 @@ public class AdminController extends lecBaseController{
 
 
     // ===========================================   [강의 관련 시작]  ============================================================
-    
+
     // 개설 강좌 전체 리스트
     @GetMapping("/lectureList")
     public String lecturelist(Model model, LectureParam lectureParam) {
@@ -96,18 +97,9 @@ public class AdminController extends lecBaseController{
         List<Lecture> lecList =  lectureRepository.findAll();
         System.out.println("강의 >>>>>" + lecList);
 
-
-
-
        */
-/* for(Lecture lecture : lecList){
-            lectureRepository.
-            lecture.updateLectureAct(lecture.getStartStudyDate(), lecture.getEndStudyDate());
-        }*//*
-
-
-        List<VwLecture> lectureList = vwLectureRepository.findAll();
-
+        List<VwLecture> lectureList = vwLectureRepository.findAllByOrderByLecRegDateDesc();
+        //List<VwLecture> lectureList = vwLectureRepository.findAll();
         System.out.println("전체 강좌" + lectureList.toString());
         model.addAttribute("lectureList", lectureList);
 
@@ -118,16 +110,14 @@ public class AdminController extends lecBaseController{
     @GetMapping("/getlecture/{lecture_no}")
     public String getProduct(@PathVariable("lecture_no") long lecture_no, Model model) {
 
-        //상품 정보
-        LectureDTO lectureDTO = lectureService.getById(lecture_no);
-        System.out.println(lectureDTO);
+        //강의 정보
+        VwLecture lecture = vwLectureRepository.getById(lecture_no);
+        System.out.println(lecture);
 
 
-        model.addAttribute("lecture", lectureDTO);
+        model.addAttribute("lecture", lecture);
         return "admin/lecture/getlecture";
     }
-
-
 
 
     // add form
@@ -151,18 +141,23 @@ public class AdminController extends lecBaseController{
         /*List<Teacher> teacherList = teacherRepository.findAll();
         System.out.println("강사리스트 : " + teacherList);*/
 
-        List<VwTeacher> teacherList =  vwTeacherRepository.findAll();
+        List<VwTeacher> teacherList = vwTeacherRepository.findAll();
         System.out.println("강사리스트 : " + teacherList);
 
-        model.addAttribute("teacherList", teacherList ); //선생님 이름 담은 객체
+        model.addAttribute("teacherList", teacherList); //선생님 이름 담은 객체
         model.addAttribute("category", categoryService.list());
         return "admin/lecture/addlecture";
     }
 
+    //강의 등록하기
+    @PostMapping(value = {"/save"})
+    public String saveSubmit(Model model, HttpServletRequest request, MultipartFile[] file, LectureDTO lectureDTO) throws IOException {
 
 
-
-
+        lectureDTO = updateLectureAct(lectureDTO);
+        lectureService.addLecture(lectureDTO, file, request);
+        return "redirect:/admin/lectureList";
+    }
 
 
     // 강의 상태 변경 (Entity에서 가져올때)
@@ -191,51 +186,55 @@ public class AdminController extends lecBaseController{
     }
 
 
-    //강의 등록하기
-    @PostMapping(value = {"/save"})
-    public String saveSubmit(Model model, HttpServletRequest request, MultipartFile[] file, LectureDTO lectureDTO) throws IOException {
+    //강의 수정 Form 이동
+    @GetMapping(value = {"/updateLecture/{lecture_no}"})
+    public String updateForm(Model model, HttpServletRequest request, @PathVariable("lecture_no") long lecture_no) {
 
+        //강의 정보
+        VwLecture lecture = vwLectureRepository.getById(lecture_no);
+        System.out.println(lecture);
+        model.addAttribute("lecture", lecture);
+
+        //선생님 정보
+        List<VwTeacher> teacherList = vwTeacherRepository.findAll();
+        System.out.println("강사리스트 : " + teacherList);
+        model.addAttribute("teacherList", teacherList); //선생님 이름 담은 객체
+
+        return "admin/lecture/updatelecture";
+    }
+
+    // 강의 수정 처리
+    @PostMapping(value = {"/updateLecture/{lecture_no}"})
+    public String updateSubmit(Model model, @PathVariable("lecture_no") long lecture_no, MultipartFile[] file, LectureDTO lectureDTO) throws IOException {
 
         lectureDTO = updateLectureAct(lectureDTO);
-        lectureService.addLecture(lectureDTO, file, request);
+        lectureService.updateLecture(lectureDTO, lecture_no, file);
         return "redirect:/admin/lectureList";
     }
 
-    //강의 수정하기
-    @GetMapping(value = {"/edit"})
-    public String add(Model model, HttpServletRequest request, LectureDTO lectureDTO) {
 
-   /*     model.addAttribute("category", categoryService.list());
+    //강의 철회하기(삭제 x)
+    @GetMapping("/deleteLecture/{lecture_no}")
+    public String deleteLecture(@PathVariable("lecture_no") long lecture_no, Model model) {
 
-        boolean editMode = request.getRequestURI().contains("/edit");
-        lectureDTO detail = new lectureDTO();
+        lectureService.deleteLecture(lecture_no);
 
-        if (editMode) {
-            long id = lectureDTO.getLecture_no();
+        return "redirect:/admin/lectureList";
 
-            lectureDTO existlecture = lectureService.getById(id);
-
-            if (existlecture == null) {
-                model.addAttribute("message", "강좌 정보가 존재하지 않습니다.");
-                return "common/error";
-            }
-            detail = existlecture;
-
-        }
-        model.addAttribute("editMode", editMode);
-        model.addAttribute("detail", detail);*/
-        return "lecture/addlecture";
     }
-    
-    
-    //강의 삭제하기
 
+    //강의 철회 취소하기
+    @GetMapping("/deleteCancleLecture/{lecture_no}")
+    public String deleteCancleLecture(@PathVariable("lecture_no") long lecture_no, Model model) {
+
+        lectureService.deleteCancleLecture(lecture_no);
+
+        return "redirect:/admin/lectureList";
+
+    }
 
 
     // ===========================================   [강의 관련 끝]  ============================================================
-
-
-
 
 
     // ===========================================   [수강생 관련 시작]  ============================================================

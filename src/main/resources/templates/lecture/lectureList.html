@@ -279,12 +279,12 @@
                             <!-- store products -->
                             <div class="row">
                                 <!-- product -->
-                                <div class="col-md-4 col-xs-6" th:each="lectureList: ${lectureList}">
+                                <div class="col-md-4 col-xs-6" th:each="lectureList: ${lectureList}" th:if="${lectureList.getLectureAct() != 5 }">
                                     <!--  <a th:href="@{/product/productDetail(pno=${product.pno})}" >-->
                                     <a th:href="@{'/lecture/getlecture/' + ${lectureList.getLectureNo()}}">
 
 
-                                        <div class="product">
+                                        <div class="product" >
                                             <div class="product-img">
                                                 <!--<img th:src="@{/upload/${product.getImgFile()}}" alt="">-->
 
@@ -299,7 +299,7 @@
                                                           th:text="${lectureList.lectureAct == 1 ? '강의예정' : (lectureList.lectureAct == 2 ? '강의중' : (lectureList.lectureAct == 3 ? '강의종료' : '오류'))}" ></span>-->
 
                                                     <span th:style="'color: ' + (${lectureList.LectureAct} == 1 ? 'orange' : (${lectureList.LectureAct} == 2 ? 'green' : (${lectureList.LectureAct} == 3 ? 'black' : 'red'))) "
-                                                          th:text="${lectureList.lectureAct == 1 ? '강의예정' : (lectureList.lectureAct == 2 ? '강의중' : (lectureList.lectureAct == 3 ? '강의종료' : '오류'))}"
+                                                          th:text="${lectureList.lectureAct == 1 ? '강의예정' : (lectureList.lectureAct == 2 ? '강의중' : (lectureList.lectureAct == 3 ? '강의종료' : '폐강'))}"
                                                           style="background-color: white;"></span>
 
 
