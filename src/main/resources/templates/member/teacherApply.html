@@ -1,47 +1,133 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:insert="~{layout/head :: head}"></th:block>
-    <title>EudTech LMS</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>EudTech LMS::선생님 신청</title>
+    <link rel="stylesheet" th:href="@{/css/sub.css}">
 </head>
 <body>
     <th:block th:insert="~{layout/header :: header}"></th:block>
 
-    <div class="container my-5">
-        <section id="applyTeacher">
-            <table class="table" th:if="${#lists.isEmpty(teacherList)}">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">제목</th>
-                    <th scope="col">신청자</th>
-                    <th scope="col">신청일자</th>
-                    <th scope="col">신청결과</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td colspan="5" class="text-center">선생님 신청 내역이 없습니다.</td>
-                </tr>
-                </tbody>
-            </table>
-            <table class="table" th:unless="${#lists.isEmpty(teacherList)}">
-                <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">제목</th>
-                    <th scope="col">신청일자</th>
-                    <th scope="col">신청결과</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="teacher, num : ${teacherList}">
-                    <th scope="row">[[${num}]]</th>
-                </tr>
-                </tbody>
-            </table>
-        </section>
+    <div class="container mb-5 my_page">
+        <div class="row">
+            <div class="col-lg-3 col-md-5 left_sidebar_area pe-5">
+                <div>
+                    <h2 class="text-center fw-bolder py-5 bg-primary text-white mb-2">마이페이지</h2>
+                    <ul class="nav nav-pills flex-column mb-auto my_menu">
+                        <li class="border-bottom"><a th:href="@{/myPage}" class="nav-link link-dark">마이페이지</a></li>
+                        <li class="border-bottom active"><a th:href="@{/myPage/teacherApply}" class="nav-link link-dark">선생님신청</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7 right_side mt-5">
+                <div class="row">
+                    <div class="position-relative ps-0 mb-5">
+                        <h3 class="mb-0">선생님 신청</h3>
+                        <nav class="position-absolute align-middle breadcrumb_area mb-0 lh-1" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a class="link-dark" th:href="@{/}">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">선생님 신청</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <section id="applyArea">
+                        <p>증빙서류를 제출해주시면 접수되어 서류를 검토합니다.<br />반드시 신청 및 결제 후 서류를 첨부하셔야 하며,<br /><strong class="text-danger">미신청 서류를 제출하시거나, 신청 내역과 맞지 않는 서류를 제출하시는 경우 검토가 지연될 수 있습니다.</strong></p>
+                        <form th:action="@{/teacherApply}" method="post" class="text-end" onsubmit="return applyTeacher()" enctype="multipart/form-data">
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <th class="text-center" style="vertical-align:top;">
+                                        <label class="form-label mb-0 middle">첨부파일<span class="d-inline pt-0 px-0" style="vertical-align: top;" onclick="addFile()">(<i class="fas fa-plus px-1"></i>)</span><br />(10MB 이하)</label>
+                                    </th>
+                                    <td class="file_area py-3">
+                                        <input class="form-control" name="uploadFiles" type="file" id="formFileMultiple1" multiple>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <button type="submit" class="btn btn-primary">서류 제출</button>
+                        </form>
+                    </section>
+                    <script>
+                        function addFile() {
+                            let num = document.getElementsByName("uploadFiles").length + 1;
+                            const temp = `<input class="form-control mt-2" name="uploadFiles" type="file" id="formFileMultiple${num}" multiple>`;
+                            $(".file_area").append(temp);
+                        }
+
+                        function applyTeacher() {
+                            let fileCheck = document.getElementById("formFileMultiple1").value;
+                            if(!fileCheck) {
+                                alert("파일 없음");
+                                return false;
+                            }
+                            return true;
+                        }
+                    </script>
+                    <section id="applyList" class="mt-5 pt-5 border-top">
+                        <table class="table" th:if="${#lists.isEmpty(teacherHistoryList)}">
+                            <colgroup>
+                                <col style="width:25%;">
+                                <col style="width:25%;">
+                                <col style="width:25%;">
+                                <col style="width:25%;">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">제목</th>
+                                <th scope="col">신청일자</th>
+                                <th scope="col">신청결과</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="4" class="text-center">신청 내역이 없습니다.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <table class="table" th:unless="${#lists.isEmpty(teacherHistoryList)}">
+                            <colgroup>
+                                <col style="width:6%;">
+                                <col style="width:auto;">
+                                <col style="width:25%;">
+                                <col style="width:25%;">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th class="text-center" scope="col">#</th>
+                                <th class="text-center" scope="col">제목</th>
+                                <th class="text-center" scope="col">신청일자</th>
+                                <th class="text-center" scope="col">신청결과</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="teacherHistory, num : ${teacherHistoryList}">
+                                <th class="text-center" scope="row" th:text="${num.count}"></th>
+                                <td class="text-start">
+                                    <th:block th:if="${teacherHistory.fileCnt > 0}">
+                                        <a th:href="@{/teacherApplyDetail}" th:text="|${teacherHistory.filesList[0].getFileOriginNm()} 외 ${teacherHistory.fileCnt}건|"></a>
+                                    </th:block>
+                                    <th:block th:if="${teacherHistory.fileCnt == 0}">
+                                        <a th:href="@{/teacherApplyDetail}" th:text="|${teacherHistory.filesList[0].getFileOriginNm()}|"></a>
+                                    </th:block>
+                                </td>
+                                <td class="text-center" th:text="${#temporals.format(teacherHistory.regDate, 'yyyy-MM-dd HH:mm')}"></td>
+                                <td class="text-center" th:text="${teacherHistory.status}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+                <!--<div class="text-center">
+                    <a href="#">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                </div>-->
+            </div>
+        </div>
     </div>
 
     <th:block th:insert="~{layout/footer :: footer}"></th:block>

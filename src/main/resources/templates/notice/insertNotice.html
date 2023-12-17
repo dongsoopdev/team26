@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>공지사항 작성</title>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <style>
+        .content {
+            width: 80%;
+            height: 100%;
+            margin: auto;
+            margin-top: 10%;
+        }
+    </style>
+</head>
+<body>
+<th:block th:insert="~{layout/header :: header}"></th:block>
+<div class="content">
+    <div class="row mt-3">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="title">공지사항 등록</h2>
+                </div>
+                <div class="card-body">
+                    <form action="/notice/insertNotice" method="post">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Title</span>
+                            <input type="text" name="title" class="form-control" placeholder="Title" required>
+                            <input type="hidden" name="mno" class="form-control" th:value="${1}">
+                            <input type="hidden" name="lecture_no" class="form-control" th:value="${0}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Content</span>
+                            <textarea class="form-control col-sm-5" name="content" placeholder="Content" required></textarea>
+                        </div>
+                        <div class="my-4">
+                            <div class="float-end">
+                                <button type="submit" class="btn btn-primary">등록</button>
+                                <button type="reset" class="btn btn-secondary">초기화</button>
+                                <a th:href="|@{/notice/noticeList(lecture_no =0)}|" class="btn btn-info">목록으로</a>
+                            </div>
+                        </div>
+                    </form>
+                </div><!--end card body-->
+
+            </div><!--end card-->
+        </div><!-- end col-->
+    </div><!-- end row-->
+</div>
+<script th:inline="javascript">
+    const errors = [[${errors}]]
+    console.log(errors)
+    let errorMsg = ''
+    if(errors){
+        for (let i = 0; i < errors.length; i++) {
+            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
+        }
+        alert(errorMsg)
+    }
+
+</script>
+<th:block th:insert="~{layout/footer :: footer}"></th:block>
+</body>
+</html>

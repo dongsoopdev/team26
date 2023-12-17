@@ -1,17 +1,97 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:insert="~{layout/head :: head}"></th:block>
-    <title>EudTech LMS</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>EudTech LMS::마이페이지</title>
+    <link rel="stylesheet" th:href="@{/css/sub.css}">
 </head>
 <body>
-    <th:block th:insert="~{layout/header :: header}"></th:block>
+<th:block th:insert="~{layout/header :: header}"></th:block>
 
-    <section id="myPage">
+<div class="container mb-5 my_page">
+    <div class="row">
+        <div class="col-lg-3 col-md-5 left_sidebar_area pe-5">
+            <div>
+                <h2 class="text-center fw-bolder py-5 bg-primary text-white mb-2">마이페이지</h2>
+                <ul class="nav nav-pills flex-column mb-auto my_menu">
+                    <li class="border-bottom active"><a th:href="@{/myPage}" class="nav-link link-dark">마이페이지</a></li>
+                    <li class="border-bottom"><a th:href="@{/myPage/teacherApply}" class="nav-link link-dark">선생님신청</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-7 right_side mt-5">
+            <div class="row">
+                <div class="position-relative ps-0 mb-5">
+                    <h3 class="mb-0">마이페이지</h3>
+                    <nav class="position-absolute align-middle breadcrumb_area mb-0 lh-1" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a class="link-dark" th:href="@{/}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">마이페이지</li>
+                        </ol>
+                    </nav>
+                </div>
+                <section id="myPage">
+                    <table class="table">
+                        <colgroup>
+                            <col>
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr class="profile_img">
+                            <th class="text-center">프로필 사진</th>
+                            <td>
+                                <img th:src="@{/images/common/basic_profile.png}" alt="기본 이미지" />
+                                <button class="btn btn-sm btn-primary ms-5">이미지 변경</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">이름</th>
+                            <td th:text="${memberDTO.userName}"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">이메일</th>
+                            <td th:text="${memberDTO.email}"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">비밀번호</th>
+                            <td><a class="btn btn-sm btn-primary" th:href="@{/myPage/resetPw}">비밀번호 변경</a></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">전화번호</th>
+                            <td th:text="${memberDTO.phone}"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">주소</th>
+                            <td th:text="|[${memberDTO.zipcode}]${memberDTO.addr}, ${memberDTO.addrDetail}|"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-center mt-5">
+                        <a th:href="@{/myPage/modifyInfo}" class="btn btn-primary">회원정보 수정</a>
+                        <button type="button" class="btn btn-danger" onclick="withdrawUser()">회원정보 탈퇴</button>
+                    </div>
+                    <script>
+                        function withdrawUser() {
+                            if(confirm("탈퇴하시겠습니까?")) {
+                                location.href = "/myPage/withdrawUser";
+                            }
+                        }
+                    </script>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
 
-    </section>
+<!--
+<div id="modalForm">
+    <div class="modal_detail">
+        삭제 하시겠습니까?
+    </div>
+</div>
+-->
 
-    <th:block th:insert="~{layout/footer :: footer}"></th:block>
+<th:block th:insert="~{layout/footer :: footer}"></th:block>
 </body>
 </html>

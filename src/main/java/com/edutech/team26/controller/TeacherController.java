@@ -65,6 +65,7 @@ public class TeacherController {
 
 
         model.addAttribute("lecture", lectureDTO);
+        model.addAttribute("lecture_no", lecture_no);
         return "teacher/lecture/getlecture";
     }
 

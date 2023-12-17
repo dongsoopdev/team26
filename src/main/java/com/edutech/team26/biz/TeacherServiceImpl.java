@@ -1,18 +1,11 @@
 package com.edutech.team26.biz;
 
 import com.edutech.team26.constant.AcceptCode;
-import com.edutech.team26.constant.MemberRole;
-import com.edutech.team26.domain.Member;
-import com.edutech.team26.domain.Teacher;
-import com.edutech.team26.domain.VwLecture;
+import com.edutech.team26.domain.*;
 
-import com.edutech.team26.domain.VwTeacher;
-import com.edutech.team26.dto.TeacherDTO;
-import com.edutech.team26.dto.TeacherVO;
-import com.edutech.team26.repository.MemberRepository;
-import com.edutech.team26.repository.TeacherRepository;
+import com.edutech.team26.dto.*;
+import com.edutech.team26.repository.*;
 
-import com.edutech.team26.repository.VwLectureRepository;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -41,62 +34,129 @@ public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherRepository teacherRepository;
 
+    private final TeacherHistoryRepository teacherHistoryRepository;
+
     private final VwLectureRepository vwlectureRepository;
 
+    private final FilesRepository filesRepository;
+
     @Override
-    public boolean updateGrade(Long mno, MultipartFile uploadFile, HttpServletRequest request) throws Exception {
+    public List<TeacherHistoryFilesVO> getHistoryList(Long mno) throws Exception {
+        List<TeacherHistory> teacherHistoryList = teacherHistoryRepository.findByMnoOrderByRegDateDesc(mno);
+
+        List<TeacherHistoryFilesVO> teacherHistoryDTOList = teacherHistoryList.stream()
+                .map(teacherHistory -> modelMapper.map(teacherHistory, TeacherHistoryFilesVO.class))
+                .collect(Collectors.toList());
+
+        int cnt = 0;
+        for(TeacherHistoryFilesVO teacherHistoryFilesVO : teacherHistoryDTOList) {
+            List<Files> filesList = filesRepository.findByPar(teacherHistoryFilesVO.getTeacherHistoryNo());
+            List<FilesDTO> filesDTOList = filesList.stream().map(files -> modelMapper.map(files, FilesDTO.class)).collect(Collectors.toList());
+            cnt = filesDTOList.size() - 1;
+            teacherHistoryFilesVO.setFilesList(filesDTOList);
+            teacherHistoryFilesVO.setFileCnt(cnt);
+            switch (teacherHistoryFilesVO.getStatus()) {
+                case AcceptCode.ACCEPT_STATUS_OK: 
+                    teacherHistoryFilesVO.setStatus("승인 완료");
+                    break;
+                case AcceptCode.ACCEPT_STATUS_REQ :
+                    teacherHistoryFilesVO.setStatus("신청 대기");
+                    break;
+                case AcceptCode.ACCEPT_STATUS_REFUSE:
+                    teacherHistoryFilesVO.setStatus("승인 거절");
+                    break;
+            }
+        }
+        return teacherHistoryDTOList;
+    }
+
+    @Override
+    public boolean applyGrade(Long mno, List<MultipartFile> uploadFiles, HttpServletRequest request) throws Exception {
 
         Optional<Member> member = memberRepository.findById(mno);
         if(member.isEmpty()){
             return false;
         }
 
-        Optional<Teacher> checkTeacher = teacherRepository.findByMno(mno);
-        if(checkTeacher.isPresent()) {
-            return false;
-        }
-
         String fileOriginNm = "";
         String fileUploadNm = "";
+        Long teacherNo = 0L;
 
-        if(uploadFile != null) {
+        Optional<Teacher> checkTeacher = teacherRepository.findByMno(mno);
 
-            MultipartFile multipartFile = uploadFile;
+        if(checkTeacher.isPresent()) {
+            teacherNo = checkTeacher.get().getTeacherNo();
+        } else {
+            // 선생님 테이블에 없을 경우
+            //realPath = application.getRealPath("/teacher");
+            
+            TeacherDTO teacherDTO = new TeacherDTO();
+            teacherDTO.setMno(mno);
+            teacherDTO.setFileOriginNm(fileOriginNm);
+            teacherDTO.setFileSaveNm(fileUploadNm);
+            teacherDTO.setActiveYn(false);
+            teacherDTO.setRegDate(LocalDateTime.now());
+            teacherDTO.setStatus(AcceptCode.ACCEPT_STATUS_REQ);
 
-            ServletContext application = request.getSession().getServletContext();
-            String realPath = application.getRealPath("/teacher");
+            Teacher teacher = modelMapper.map(teacherDTO, Teacher.class);
 
-            File uploadPath = new File(realPath);
-            if(!uploadPath.exists()) {uploadPath.mkdirs();}
+            teacherRepository.save(teacher);
 
-            String originalName = uploadFile.getOriginalFilename();
-            fileOriginNm = originalName;
-
-            String uuid = UUID.randomUUID().toString();
-            String uploadName = uuid + "_" + originalName;
-            fileUploadNm = uploadName;
-
-            multipartFile.transferTo(new File(uploadPath, uploadName));
+            Optional<Teacher> insertTeacher = teacherRepository.findByMno(mno);
+            teacherNo = insertTeacher.get().getTeacherNo();
 
         }
 
-        TeacherDTO teacherDTO = new TeacherDTO();
-        teacherDTO.setMno(mno);
-        teacherDTO.setFileOriginNm(fileOriginNm);
-        teacherDTO.setFileSaveNm(fileUploadNm);
-        teacherDTO.setActiveYn(false);  // 승인으로 변경 예정
-        teacherDTO.setRegDate(LocalDateTime.now());
-        teacherDTO.setStatus(AcceptCode.ACCEPT_STATUS_REQ);
+        TeacherHistoryDTO teacherHistoryDTO = new TeacherHistoryDTO();
+        teacherHistoryDTO.setMno(mno);
+        teacherHistoryDTO.setStatus(AcceptCode.ACCEPT_STATUS_REQ);
+        TeacherHistory teacherHistory = modelMapper.map(teacherHistoryDTO, TeacherHistory.class);
+        Long teacherHistoryNo = teacherHistoryRepository.save(teacherHistory).getTeacherHistoryNo();
 
-        Teacher teacher = modelMapper.map(teacherDTO, Teacher.class);
+        ServletContext application = request.getSession().getServletContext();
+        String realPath = application.getRealPath("/teacher/" + teacherNo);
 
-        teacherRepository.save(teacher);
+        if(uploadFiles != null) {
 
+            for(MultipartFile multipartFile : uploadFiles) {
+                File uploadPath = new File(realPath);
+                if(!uploadPath.exists()) {uploadPath.mkdirs();}
+
+                String originalName = multipartFile.getOriginalFilename();
+                fileOriginNm = originalName;
+
+                String uuid = UUID.randomUUID().toString();
+                String uploadName = uuid + "_" + originalName;
+                fileUploadNm = uploadName;
+
+                multipartFile.transferTo(new File(uploadPath, uploadName));
+
+                FilesDTO filesDTO = new FilesDTO();
+                filesDTO.setPar(teacherHistoryNo);
+                filesDTO.setToUse("teacherApplyFiles");
+                filesDTO.setFileOriginNm(fileOriginNm);
+                filesDTO.setFileSaveNm(fileUploadNm);
+                filesDTO.setFileSaveFolder(realPath);
+                Files files = modelMapper.map(filesDTO, Files.class);
+                filesRepository.save(files);
+            }
+
+        }
+
+        log.info(">>>>>>>>>>>>>>>>" + realPath);
+
+
+
+
+
+        /*
+        선생님 승인 이후에 권한 업데이트 작업
         Member memberInfo = memberRepository.findByMno(mno);
 
         Member memberUpgrade = modelMapper.map(memberInfo, Member.class);
         memberUpgrade.updateRole(MemberRole.TEACHER);
         memberRepository.save(memberUpgrade);
+        */
 
         return true;
     }

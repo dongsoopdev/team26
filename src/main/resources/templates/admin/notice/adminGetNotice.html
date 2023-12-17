@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>공지사항 상세보기</title>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
+    <style>
+        .content {
+            width: 80%;
+            margin: auto;
+            margin-top: 10%;
+        }
+    </style>
+</head>
+<body>
+<th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="~{layout/lmsMenuAdmin :: lmsMenu}"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+        <div class="content" >
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            공지사항 상세보기
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Nno</span>
+                                <input type="text" id="notice_no" class="form-control" th:value="${notice.notice_no}" readonly>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Title</span>
+                                <input type="text" class="form-control" th:value="${notice.title}" readonly>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Content</span>
+                                <textarea class="form-control col-sm-5" rows="5" readonly>[[${notice.content}]]</textarea>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Writer</span>
+                                <input type="text" class="form-control" th:value="${notice.mno}" readonly>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">RegDate</span>
+                                <input type="text" class="form-control" th:value="${#temporals.format(notice.regDate, 'yyyy-MM-dd')}" readonly>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">ModDate</span>
+                                <input type="text" class="form-control" th:value="${#temporals.format(notice.modDate, 'yyyy-MM-dd')}" readonly>
+                            </div>
+                            <div class="my-4">
+                                <div class="float-end">
+                                    <a th:href="@{/admin/noticeList}" class="btn btn-secondary">공지사항 목록</a>
+                                    <a sec:authorize="hasRole('ADMIN')" th:href="|@{/admin/updateNotice(notice_no=${notice.notice_no})}|" class="btn btn-primary">수정</a>
+                                    <a sec:authorize="hasRole('ADMIN')" th:href="|@{/admin/deleteNotice(notice_no=${notice.notice_no})}|" class="btn btn-danger">삭제</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </main>
+        <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
+    </div>
+</div>
+<script th:inline="javascript">
+</script>
+</body>
+</html>
