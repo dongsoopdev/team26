@@ -1,10 +1,14 @@
 package com.edutech.team26.biz;
 
+import com.edutech.team26.domain.Member;
 import com.edutech.team26.domain.Notice;
+import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.dto.NoticeDTO;
+import com.edutech.team26.repository.MemberRepository;
 import com.edutech.team26.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +22,7 @@ import java.util.stream.Collectors;
 public class NoticeServiceImpl implements NoticeService {
     private final NoticeRepository noticeRepository;
     private final ModelMapper modelMapper;
+    private final MemberRepository memberRepository;
 
     @Override
     public List<NoticeDTO> noticeList(Long lecture_no) {
@@ -49,6 +54,8 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public Long insertNotice(NoticeDTO noticeDTO) {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        noticeDTO.setMno(member.getMno());
         Notice notice = modelMapper.map(noticeDTO, Notice.class);
         Long notice_no = noticeRepository.save(notice).getNotice_no();
         return notice_no;

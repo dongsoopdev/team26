@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<th:block th:fragment="lmsMenu2">
+<th:block th:fragment="lmsMenu2(lecture_no)">
 
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
@@ -75,8 +75,7 @@
                             시험
                             <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
                         </a>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                           data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                        <a class="nav-link collapsed" th:href="@{/student/noticeList(lecture_no=${lecture_no})}">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                             공지사항
                             <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>

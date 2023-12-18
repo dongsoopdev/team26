@@ -63,6 +63,7 @@ public class StudentController {
 
         model.addAttribute("student_no", student_no);
         model.addAttribute("course", course);
+        model.addAttribute("lecture_no", course.getLectureNo());
         return "student/course/getCourse";
     }
 
