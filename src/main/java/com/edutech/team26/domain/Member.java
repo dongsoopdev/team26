@@ -1,6 +1,7 @@
 package com.edutech.team26.domain;
 
 import com.edutech.team26.constant.MemberRole;
+import com.edutech.team26.dto.MemberDTO;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
@@ -82,6 +83,13 @@ public class Member extends BaseEntity {
 
     public void changeEmailAuthTime(LocalDateTime emailAuthTime) {
         this.emailAuthTime = emailAuthTime;
+    }
+
+    public void changeModify(MemberDTO memberDTO) {
+        this.phone = memberDTO.getPhone();
+        this.addr = memberDTO.getAddr();
+        this.addrDetail = memberDTO.getAddrDetail();
+        this.zipcode = memberDTO.getZipcode();
     }
 
     public void changeUserStatus(String userStatus){

@@ -93,19 +93,87 @@ public class MemberController {
         return "member/joinEmailComplete";
     }
 
+    @GetMapping("/member/pw-auth/{id}")
+    public String resetPwAuth(@PathVariable(required = false) String id, Model model){
+        boolean result = memberService.emailAuth(id);
+        model.addAttribute("result", result);
+
+        return "redirect:/myPage";
+    }
+
     //@PreAuthorize("hasRole('USER')") // 권한 한개
-    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')") // 권한 여러개
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
     @GetMapping("/myPage")
     public String myPage(Model model) {
         MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         MemberDTO memberDTO = memberService.getMemberInfo(memberSecurityDTO.getMno());
         model.addAttribute("memberDTO", memberDTO);
         return "member/myPage";
     }
 
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
+    @GetMapping("/myPage/modifyInfo")
+    public String myPageInfo(Model model) {
+        MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MemberDTO memberDTO = memberService.getMemberInfo(memberSecurityDTO.getMno());
+        model.addAttribute("memberDTO", memberDTO);
+        return "member/myPageInfo";
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
+    @PostMapping("/myPage/modifyInfo")
+    public String myPageInfoPOST(@Valid MemberDTO memberDTO, BindingResult bindingResult, Model model) throws Exception {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(bindingResult.hasErrors()){
+            return "member/myPageInfo";
+        }
+        try {
+            memberService.modifyInfo(member.getMno(), memberDTO);
+        } catch (IllegalStateException e){
+            model.addAttribute("errorMessage", e.getMessage());
+            return "member/myPageInfo";
+        }
+        return "redirect:/myPage";
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
+    @GetMapping("/myPage/resetPw")
+    public String myPagePw(Model model) {
+        MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MemberDTO memberDTO = memberService.getMemberInfo(memberSecurityDTO.getMno());
+        MemberPwDTO memberPwDTO = new MemberPwDTO();
+        memberPwDTO.setPassword(memberDTO.getPassword());
+        model.addAttribute("memberPwDTO", memberPwDTO);
+        return "member/myPagePw";
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
+    @PostMapping("/myPage/resetPw")
+    public String myPagePwPro(@Valid MemberPwDTO memberPwDTO, BindingResult bindingResult, Model model) {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(bindingResult.hasErrors()){
+            return "member/myPagePw";
+        }
+
+        try {
+            //memberService.modifypw(member.getMno(), memberPwDTO);
+        } catch (IllegalStateException e){
+            model.addAttribute("errorMessage", e.getMessage());
+            return "member/myPagePw";
+        }
+        return "redirect:/myPage";
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
+    @GetMapping("/myPage/withdrawUser")
+    public String withdrawUser() throws Exception {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        memberService.withdraw(member.getMno());
+        return "redirect:/logout";
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER', 'USER')")
     @GetMapping("/myPage/teacherApply")
-    @PreAuthorize("hasAnyRole('TEACHER', 'USER')") // 권한 여러개
     public String teacherApply(Model model) throws Exception {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<TeacherHistoryFilesVO> teacherHistoryList = teacherService.getHistoryList(member.getMno());
