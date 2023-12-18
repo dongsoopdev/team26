@@ -9,9 +9,7 @@
     <style>
         .content {
             width: 80%;
-            height: 100%;
-            margin: auto;
-            margin-top: 10%;
+            margin: 10%;
         }
     </style>
 </head>
@@ -22,26 +20,22 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="title">공지사항 관리</h2>
+                    <h2 class="title" th:inline="text">[공지사항] [[${notice.title}]]</h2>
                 </div>
-                <div class="card-header">
-                    공지사항 상세보기
-                </div>
+<!--                <div class="card-header">-->
+<!--                    공지사항 상세보기-->
+<!--                </div>-->
                 <div class="card-body">
                     <div class="input-group mb-3">
                         <span class="input-group-text">Nno</span>
                         <input type="text" id="notice_no" class="form-control" th:value="${notice.notice_no}" readonly>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text">Title</span>
-                        <input type="text" class="form-control" th:value="${notice.title}" readonly>
-                    </div>
-                    <div class="input-group mb-3">
                         <span class="input-group-text">Content</span>
                         <textarea class="form-control col-sm-5" rows="5" readonly>[[${notice.content}]]</textarea>
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text">Writer</span>
+                        <span class="input-group-text">작성자</span>
                         <input type="text" class="form-control" th:value="${notice.mno}" readonly>
                     </div>
                     <div class="input-group mb-3">

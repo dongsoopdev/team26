@@ -3,6 +3,7 @@ package com.edutech.team26.controller;
 import com.edutech.team26.biz.MemberService;
 import com.edutech.team26.biz.NoticeService;
 import com.edutech.team26.domain.Member;
+import com.edutech.team26.dto.MemberDTO;
 import com.edutech.team26.dto.NoticeDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -117,8 +118,11 @@ public class NoticeController {
     public String teacherGetNotice( @RequestParam(name = "notice_no") Long notice_no, Model model) {
         NoticeDTO noticeDTO= noticeService.findByNno(notice_no);
         Long lecture_no = noticeDTO.getLecture_no();
+        MemberDTO memberDTO = memberService.getMemberInfo(noticeDTO.getMno());
+        String userName = memberDTO.getUserName();
         model.addAttribute("lecture_no",lecture_no);
         model.addAttribute("notice",noticeDTO);
+        model.addAttribute("userName",userName);
         return "teacher/notice/teacherGetNotice";
     }
 
@@ -170,6 +174,12 @@ public class NoticeController {
     public String studentGetNotice( @RequestParam(name = "notice_no") Long notice_no, Model model) {
         NoticeDTO noticeDTO= noticeService.findByNno(notice_no);
         Long lecture_no = noticeDTO.getLecture_no();
+        noticeService.updateVisited(notice_no);
+        MemberDTO memberDTO = memberService.getMemberInfo(noticeDTO.getMno());
+        String userName = memberDTO.getUserName();
+        model.addAttribute("lecture_no",lecture_no);
+        model.addAttribute("notice",noticeDTO);
+        model.addAttribute("userName",userName);
         model.addAttribute("lecture_no",lecture_no);
         model.addAttribute("notice",noticeDTO);
         return "student/notice/studentGetNotice";
