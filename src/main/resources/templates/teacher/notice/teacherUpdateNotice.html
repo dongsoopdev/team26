@@ -30,11 +30,11 @@
                                 공지사항 수정하기
                             </div>
                             <div class="card-body">
-                                <form th:action="@{/admin/updateNotice}" method="post">
+                                <form th:action="@{/teacher/updateNotice}" method="post">
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">Nno</span>
                                         <input type="text" class="form-control" th:value="${notice.notice_no}" name="notice_no" readonly>
-                                        <input type="hidden" name="lecture_no" class="form-control" th:value="${0}">
+                                        <input type="hidden" name="lecture_no" class="form-control" th:value="${lecture_no}">
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">Title</span>

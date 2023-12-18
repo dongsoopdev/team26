@@ -9,7 +9,7 @@
 <body class="sb-nav-fixed">
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
 <div id="layoutSidenav">
-    <th:block th:insert="~{layout/lmsMenuStuLec :: lmsMenu2}"></th:block>
+    <th:block th:insert="~{layout/lmsMenuStuLec :: lmsMenu2(${lecture_no})}"></th:block>
 
     <div id="layoutSidenav_content">
         <main>
@@ -83,7 +83,6 @@
         </main>
         <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
     </div>
-</div>
 </div>
 </body>
 </html>
