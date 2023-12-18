@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <title>EduTech::아이디 찾기</title>
+</head>
+<body>
+<section class="vh-100 bg-primary">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card shadow-2-strong" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+                        <form th:action="@{/findId}" id="loginForm" method="post">
+                            <!--<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
+
+                            <div class="form-outline mb-4 text-center fs-2 fw-bolder">
+                                <a class="text-black text-decoration-none" th:href="@{/}">EduTech</a>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <ul class="nav nav-tabs nav-justified">
+                                    <li class="nav-item">
+                                        <a class="nav-link fs-6 fw-bold active" aria-current="page">아이디 찾기</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link fs-6 fw-bold" th:href="@{/findPw}">비밀번호 찾기</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="text" id="userName" name="userName" class="form-control" placeholder="사용자 이름을 입력하세요." required />
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="text" id="phone" name="phone" placeholder="010-XXXX-XXXX" class="form-control" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required />
+                            </div>
+
+                            <!-- Submit button -->
+                            <button type="submit" class="btn btn-primary btn-block mb-4">로그인</button>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

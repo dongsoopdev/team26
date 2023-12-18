@@ -156,7 +156,12 @@
                             </div>
 
                             <div class="form-outline mb-4">
-                                <p th:if="${loginErrorMsg}" class="error" th:utext="${loginErrorMsg}">[[]]</p>
+                                <p th:if="${loginErrorMsg}" class="error" th:utext="${loginErrorMsg}"></p>
+                            </div>
+
+                            <div class="form-outline text-center mb-4">
+                                <a class="text-black text-decoration-none" th:href="@{/findId}">아이디 찾기</a>
+                                <a class="text-black text-decoration-none ms-2" th:href="@{/findPw}">비밀번호 찾기</a>
                             </div>
 
                             <div class="form-outline text-start mb-4">

@@ -26,6 +26,8 @@ public interface MemberService {
 
     MemberDTO getMemberInfo(Long mno);
 
+    MemberDTO findId(String email, String phone);
+
     /*MemberJoinDTO myinfo(String email);*/
 
 }

@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -91,6 +92,33 @@ public class MemberController {
         model.addAttribute("result", result);
 
         return "member/joinEmailComplete";
+    }
+
+    @GetMapping("/findId")
+    public String findIdGet(){
+        return "member/findId";
+    }
+
+    @PostMapping("/findId")
+    public String findIdPost(HttpServletRequest request, RedirectAttributes rttr, Model model){
+        String userName = request.getParameter("userName");
+        String phone = request.getParameter("phone");
+        MemberDTO memberDTO = memberService.findId(userName, phone);
+        log.info(">>>>>>>>>>>>>" + memberDTO);
+        /*if(memberDTO != null) {
+            rttr.addFlashAttribute("email", memberDTO.getEmail());
+            return "redirect:/findIdFinish";
+        } else {
+            rttr.addFlashAttribute("error", "다시 한번 확인해주세요.");
+            model.addAttribute("error", "다시 한번 확인해주세요.");
+            return "redirect:/findId";
+        }*/
+        return null;
+    }
+
+    @GetMapping("/findIdFinish")
+    public String findIdFinishGet(){
+        return "member/findIdFinish";
     }
 
     @GetMapping("/member/pw-auth/{id}")

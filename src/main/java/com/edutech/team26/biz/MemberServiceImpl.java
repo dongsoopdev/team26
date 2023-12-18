@@ -226,4 +226,15 @@ public class MemberServiceImpl implements MemberService {
         return memberDTO;
     }
 
+    @Override
+    public MemberDTO findId(String email, String phone) {
+        Optional<Member> member = memberRepository.findByEmailAndPhone(email, phone);
+        if(member.isPresent()) {
+            Member mem = member.get();
+            MemberDTO memberDTO = modelMapper.map(mem, MemberDTO.class);
+            return memberDTO;
+        }
+        return null;
+    }
+
 }
