@@ -1,9 +1,13 @@
 package com.edutech.team26.controller;
 
+import com.edutech.team26.biz.MemberService;
 import com.edutech.team26.biz.NoticeService;
+import com.edutech.team26.domain.Member;
 import com.edutech.team26.dto.NoticeDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoticeController {
     private final NoticeService noticeService;
+    private final MemberService memberService;
 
     @GetMapping("/notice/noticeList")
     public String noticeList(@RequestParam(name = "lecture_no") Long lecture_no, Model model) {
@@ -118,12 +123,13 @@ public class NoticeController {
     }
 
     @GetMapping("/teacher/insertNotice")
-    public String teacherInsertNotice(Model model) {
-        return "notice/insertNotice";
+    public String teacherInsertNotice(@RequestParam(name = "lecture_no") Long lecture_no,Model model) {
+        model.addAttribute("lecture_no",lecture_no);
+        return "teacher/notice/teacherInsertNotice";
     }
 
     @PostMapping("/teacher/insertNotice")
-    public String teacherInsertNoticePro (NoticeDTO noticeDTO) {
+    public String teacherInsertNoticePro ( NoticeDTO noticeDTO) {
         noticeService.insertNotice(noticeDTO);
         return "redirect:/teacher/noticeList?lecture_no="+ noticeDTO.getLecture_no();
     }
@@ -150,5 +156,22 @@ public class NoticeController {
         model.addAttribute("lecture_no",lecture_no);
         noticeService.deleteNotice(notice_no);
         return "redirect:/teacher/noticeList?lecture_no="+ lecture_no;
+    }
+
+    //학생의 공지사항
+    @GetMapping("/student/noticeList")
+    public String studentNoticeList(@RequestParam(name = "lecture_no") Long lecture_no, Model model) {
+        List<NoticeDTO> noticeList = noticeService.noticeList(lecture_no);
+        model.addAttribute("noticeList",noticeList);
+        model.addAttribute("lecture_no",lecture_no);
+        return "student/notice/studentNoticeList";
+    }
+    @GetMapping("/student/getNotice")
+    public String studentGetNotice( @RequestParam(name = "notice_no") Long notice_no, Model model) {
+        NoticeDTO noticeDTO= noticeService.findByNno(notice_no);
+        Long lecture_no = noticeDTO.getLecture_no();
+        model.addAttribute("lecture_no",lecture_no);
+        model.addAttribute("notice",noticeDTO);
+        return "student/notice/studentGetNotice";
     }
 }
