@@ -11,6 +11,10 @@ public interface MemberService {
 
     boolean join(MemberJoinDTO memberJoinDTO) throws Exception;
 
+    boolean modifyInfo(Long mno, MemberDTO memberDTO) throws Exception;
+
+    boolean withdraw(Long mno) throws Exception;
+
     boolean emailAuth(String uuid);
 
     boolean verifyRecaptcha(String recaptcha);

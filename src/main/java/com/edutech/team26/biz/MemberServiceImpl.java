@@ -103,6 +103,34 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public boolean modifyInfo(Long mno, MemberDTO memberDTO) throws Exception {
+        Optional<Member> optionalMember = memberRepository.findById(mno);
+        if (optionalMember.isEmpty()) {
+            return false;
+        }
+
+        Member member = optionalMember.get();
+        member.changeModify(memberDTO);
+        memberRepository.save(member);
+
+        return true;
+    }
+
+    @Override
+    public boolean withdraw(Long mno) throws Exception {
+        Optional<Member> optionalMember = memberRepository.findById(mno);
+        if (optionalMember.isEmpty()) {
+            return false;
+        }
+
+        Member member = optionalMember.get();
+        member.changeUserStatus(MemberCode.MEMBER_STATUS_WITHDRAW);
+        memberRepository.save(member);
+
+        return true;
+    }
+
+    @Override
     public boolean emailAuth(String uuid) {
         Optional<Member> optionalMember = memberRepository.findByEmailAuthKey(uuid);
         if (!optionalMember.isPresent()) {

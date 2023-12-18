@@ -14,10 +14,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @EntityGraph(attributePaths = "roleSet")
     @Query("select m from Member m where m.email = :email")
-    Optional<Member> getWithRoles(String email);
+    Optional<Member> getWithRoles(@Param("email") String email);
 
     @EntityGraph(attributePaths = "roleSet")
-    Member findByMno(Long mno);
+    Member findByMno(@Param("mno") Long mno);
 
     @Modifying
     @Transactional
@@ -32,8 +32,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("update Member m set m.lastLoginAt = CURRENT_TIMESTAMP() where m.mno = :mno")
     void updateLoginDate(@Param("mno") Long mno) throws Exception;
 
-    Optional<Member> findByEmailAuthKey(String emailAuthKey);
+    Optional<Member> findByEmailAuthKey(@Param("emailAuthKey") String emailAuthKey);
 
-    Optional<Member> findByEmail(String email);
+    Optional<Member> findByEmail(@Param("email") String email);
     
 }

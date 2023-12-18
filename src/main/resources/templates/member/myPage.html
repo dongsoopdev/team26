@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="position-relative ps-0 mb-5">
                     <h3 class="mb-0">마이페이지</h3>
-                    <nav class="position-absolute align-middle breadcrumb_area mb-0 lh-1" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <nav class="position-absolute align-middle breadcrumb_area mb-0 lh-1" aria-label="breadcrumb">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a class="link-dark" th:href="@{/}">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">마이페이지</li>
@@ -38,13 +38,13 @@
                             <col>
                         </colgroup>
                         <tbody>
-                        <tr class="profile_img">
+                        <!--<tr class="profile_img">
                             <th class="text-center">프로필 사진</th>
                             <td>
                                 <img th:src="@{/images/common/basic_profile.png}" alt="기본 이미지" />
                                 <button class="btn btn-sm btn-primary ms-5">이미지 변경</button>
                             </td>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <th class="text-center">이름</th>
                             <td th:text="${memberDTO.userName}"></td>
@@ -63,35 +63,51 @@
                         </tr>
                         <tr>
                             <th class="text-center">주소</th>
-                            <td th:text="|[${memberDTO.zipcode}]${memberDTO.addr}, ${memberDTO.addrDetail}|"></td>
+                            <td th:text="|[${memberDTO.zipcode}] ${memberDTO.addr}${memberDTO.addrDetail}|"></td>
                         </tr>
                         </tbody>
                     </table>
                     <div class="text-center mt-5">
                         <a th:href="@{/myPage/modifyInfo}" class="btn btn-primary">회원정보 수정</a>
-                        <button type="button" class="btn btn-danger" onclick="withdrawUser()">회원정보 탈퇴</button>
+                        <button type="button" class="btn btn-danger" onclick="openModal()">회원정보 탈퇴</button>
                     </div>
-                    <script>
-                        function withdrawUser() {
-                            if(confirm("탈퇴하시겠습니까?")) {
-                                location.href = "/myPage/withdrawUser";
-                            }
-                        }
-                    </script>
                 </section>
             </div>
         </div>
     </div>
 </div>
+<th:block th:insert="~{layout/footer :: footer}"></th:block>
 
-<!--
-<div id="modalForm">
+<div class="modal_form" id="withdrawModal">
     <div class="modal_detail">
-        삭제 하시겠습니까?
+        <div class="modal_con">
+            <div class="modal_detail_con text-center">
+                <div class="p-5">삭제 하시겠습니까?</div>
+                <div class="modal_btn">
+                    <button class="btn btn-primary" onclick="hideModel()">취소</button>
+                    <a class="btn btn-danger" th:href="@{/myPage/withdrawUser}">삭제</a>
+                </div>
+            </div>
+            <button onclick="hideModel()" class="modal_close btn btn-primary p-0">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
     </div>
 </div>
--->
 
-<th:block th:insert="~{layout/footer :: footer}"></th:block>
+<script>
+    function openModal() {
+        let modalForm = document.getElementById("withdrawModal");
+        if(modalForm.style.display != "block"){
+            modalForm.style.display = "block";
+        } else {
+            modalForm.style.display = "none";
+        }
+    }
+    function hideModel() {
+        document.getElementById("withdrawModal").style.display = "none";
+    }
+</script>
+
 </body>
 </html>

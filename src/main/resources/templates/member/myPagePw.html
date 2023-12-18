@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>EudTech LMS::마이페이지</title>
+    <link rel="stylesheet" th:href="@{/css/sub.css}">
+    <style>
+        .fieldError {color: #bd2130;}
+    </style>
+</head>
+<body>
+<th:block th:insert="~{layout/header :: header}"></th:block>
+
+<div class="container mb-5 my_page">
+    <div class="row">
+        <div class="col-lg-3 col-md-5 left_sidebar_area pe-5">
+            <div>
+                <h2 class="text-center fw-bolder py-5 bg-primary text-white mb-2">마이페이지</h2>
+                <ul class="nav nav-pills flex-column mb-auto my_menu">
+                    <li class="border-bottom active"><a th:href="@{/myPage}" class="nav-link link-dark">마이페이지</a></li>
+                    <li class="border-bottom"><a th:href="@{/myPage/teacherApply}" class="nav-link link-dark">선생님신청</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-7 right_side mt-5">
+            <div class="row">
+                <div class="position-relative ps-0 mb-5">
+                    <h3 class="mb-0">마이페이지</h3>
+                    <nav class="position-absolute align-middle breadcrumb_area mb-0 lh-1" aria-label="breadcrumb">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a class="link-dark" th:href="@{/}">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">마이페이지</li>
+                        </ol>
+                    </nav>
+                </div>
+                <form th:action="@{/myPage/resetPw}" id="modifyPwForm" th:object="${memberPwDTO}" method="post">
+                    <section id="myPage">
+                        <table class="table">
+                            <colgroup>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th class="text-center">현재 비밀번호</th>
+                                <td>
+                                    <input type="password" th:field="*{password}" placeholder="기존 비밀번호를 입력하세요." class="form-control" required />
+                                    <label th:if="${#fields.hasErrors('password')}" class="fieldError">기존 비밀번호가 맞지 않습니다.</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">새로운 비밀번호</th>
+                                <td>
+                                    <input type="password" th:field="*{newPassword}" placeholder="새로운 비밀번호을 입력하세요." class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$" maxlength="16" minlength="8" autocomplete="on" required />
+                                    <label th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}" class="fieldError">새로운 비밀번호</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">새로운 비밀번호 확인</th>
+                                <td>
+                                    <input type="password" th:field="*{newPasswordConfirm}" placeholder="새로운 비밀번호을 입력하세요." class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$" maxlength="16" minlength="8" autocomplete="on" required />
+                                    <label th:if="${#fields.hasErrors('newPasswordConfirm')}" th:errors="*{newPasswordConfirm}" class="fieldError">새로운 비밀번호</label>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-center mt-5">
+                            <a th:href="@{/myPage}" class="btn btn-danger">취소</a>
+                            <button type="button" onclick="modifyPw()" class="btn btn-primary">수정</button>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:insert="~{layout/footer :: footer}"></th:block>
+<script>
+    function modifyPw() {
+        let pw = $("#password").val();
+        let newPw = $("#newPassword").val();
+        let newPwConfirm = $("#newPasswordConfirm").val();
+
+        if(pw == "") {
+            alert("비밀번호를 입력해주세요.");
+            $("#password").focus();
+            return false;
+        }
+
+        if(newPw != newPwConfirm) {
+            alert("새로운 비밀번호와 새로운 비밀번호 확인이 일치하지 않습니다.");
+            return false;
+        }
+
+        $("#modifyPwForm").submit();
+    }
+</script>
+</body>
+</html>

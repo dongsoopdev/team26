@@ -9,3 +9,13 @@
 .my_page .profile_img th {vertical-align:middle}
 .my_page .profile_img button {vertical-align:bottom;}
 .my_page .profile_img img {width:80px;height:80px;border-radius:50%;}
+
+.breadcrumb_area {--bs-breadcrumb-divider: '>';}
+
+.modal_form {display:none;background-color:rgba(0,0,0,0.4);z-index:10;position:absolute;left:0;right:0;top:0;bottom:0;}
+.modal_detail {background-color:#fff;width:400px;height:200px;position:absolute;left:calc(50% - 200px);top:calc(50% - 100px);}
+.modal_con {position:relative;height:100%;width:100%;}
+.modal_detail_con {word-break:keep-all;}
+.modal_form .modal_btn {width:100%;position:absolute;bottom:3rem;z-index:20;}
+.modal_form .modal_close {position:absolute;right:-15px;top:-15px;width:30px;height:30px;text-align:center;border-radius:50%;z-index:50;}
+.modal_form .modal_close i {color:#fff;}
