@@ -1,4 +1,4 @@
-CREATE DATABASE edutech DEFAULT CHARACTER SET UTF8MB4;
+/*CREATE DATABASE edutech DEFAULT CHARACTER SET UTF8MB4;
 
 USE edutech;
 
@@ -121,3 +121,4 @@ FROM Lecture l
 JOIN Teacher t ON l.teacher_no = t.teacher_no
 JOIN Student s ON l.lecture_no = s.lecture_no
 JOIN Member m ON s.mno = m.mno;
+*/
