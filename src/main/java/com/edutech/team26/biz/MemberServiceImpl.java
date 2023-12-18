@@ -7,6 +7,7 @@ import com.edutech.team26.constant.MemberRole;
 import com.edutech.team26.domain.Member;
 import com.edutech.team26.dto.MemberDTO;
 import com.edutech.team26.dto.MemberJoinDTO;
+import com.edutech.team26.dto.MemberPwDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -111,6 +112,25 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = optionalMember.get();
         member.changeModify(memberDTO);
+        memberRepository.save(member);
+
+        return true;
+    }
+
+    @Override
+    public boolean modifyPw(Long mno, MemberPwDTO memberPwDTO) throws Exception {
+        Optional<Member> optionalMember = memberRepository.findById(mno);
+        if (optionalMember.isEmpty()) {
+            return false;
+        }
+
+        Member member = optionalMember.get();
+
+        if(!passwordEncoder.matches(memberPwDTO.getPassword(), member.getPassword())) {
+            return false;
+        }
+
+        member.changePassword(passwordEncoder.encode(memberPwDTO.getNewPassword()));
         memberRepository.save(member);
 
         return true;

@@ -143,12 +143,6 @@ public class TeacherServiceImpl implements TeacherService {
 
         }
 
-        log.info(">>>>>>>>>>>>>>>>" + realPath);
-
-
-
-
-
         /*
         선생님 승인 이후에 권한 업데이트 작업
         Member memberInfo = memberRepository.findByMno(mno);
