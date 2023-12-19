@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Log4j2
@@ -75,17 +76,30 @@ public class TeacherController {
     public String addZoomForm(Model model, @RequestParam("lecture_no") long lecture_no) {
         VwLecture vwLecture = vwLectureRepository.getBylectureNo(lecture_no);
         model.addAttribute("lecture", vwLecture);
+        model.addAttribute("lecture_no",lecture_no);
 
         return "teacher/lecture/addZoom";
     }
 
     //zoomurl추가
     @PostMapping("/addZoom")
-    public String addZoomSubmit(Model model, @RequestParam("zoomUrl") String zoomUrl, @RequestParam("lecture_no") long lecture_no){
+    public String addZoomSubmit(Model model, @RequestParam("zoomUrl") String zoomUrl, @RequestParam("lecture_no") long lecture_no, @RequestParam("zoomDate")LocalDateTime zoomDate){
         
-        lectureService.addZoomUrl(zoomUrl, lecture_no);
+        lectureService.addZoomUrl(zoomUrl, lecture_no, zoomDate);
+        model.addAttribute("lecture_no",lecture_no);
 
-        return "teacher/lecture/addZoom";
+        return "teacher/lecture/entranceZoom";
     }
+
+    // zoom강의 입장
+    @GetMapping("/entranceZoom")
+    public String entranceZoom(Model model, @RequestParam("lecture_no") long lecture_no) {
+        VwLecture vwLecture = vwLectureRepository.getBylectureNo(lecture_no);
+        model.addAttribute("lecture", vwLecture);
+        model.addAttribute("lecture_no",lecture_no);
+
+        return "teacher/lecture/entranceZoom";
+    }
+
 
 }

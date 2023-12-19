@@ -64,6 +64,8 @@ public class QLecture extends EntityPathBase<Lecture> {
 
     public final QTeacher teacher;
 
+    public final DateTimePath<java.time.LocalDateTime> zoomDate = createDateTime("zoomDate", java.time.LocalDateTime.class);
+
     public final StringPath zoomUrl = createString("zoomUrl");
 
     public QLecture(String variable) {

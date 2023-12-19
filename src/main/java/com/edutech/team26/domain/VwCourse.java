@@ -29,10 +29,10 @@ public class VwCourse {
     private long lectureNo;
     private String lectureName;
     private String lectureContent;
-    private String startEnrolmentDate;                  //수강신청일
-    private String endEnrolmentDate;                    //수강종료일
-    private String startStudyDate;                      //강의시작일
-    private String endStudyDate;                        //강의종료일
+    private LocalDateTime startEnrolmentDate;                  //수강신청일
+    private LocalDateTime endEnrolmentDate;                    //수강종료일
+    private LocalDateTime startStudyDate;                      //강의시작일
+    private LocalDateTime endStudyDate;                        //강의종료일
     private String lectureImg1;
     private String lectureImg2;
     private String lectureVedio;
@@ -41,6 +41,7 @@ public class VwCourse {
     private int lectureMaxnum;
     private int lectureAct;
     private String zoomUrl;
+    private LocalDateTime zoomDate;
 
     @Column(name="teacher_no")
     private Long teacherNo;

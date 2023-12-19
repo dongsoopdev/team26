@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
+    <title>LMS_선생님 페이지</title>
+    <style>
+        .text-danger {
+            color: red;
+        }
+
+        .name{
+            border: none;
+            position: relative;
+            width: 100%;
+            padding: 10px;
+            background-color: #0D4991;
+            color: #ffffff;
+            box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            font-weight: bold;
+            margin: 0 auto;
+        }
+
+        .date{
+
+            border: none;
+            position: relative;
+            width: 100%;
+            padding: 10px;
+            background-color: #ffffff;
+            color: black;
+            box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+
+            margin: 0 auto;
+        }
+        
+
+    </style>
+</head>
+
+
+<body class="sb-nav-fixed">
+<th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
+<div id="layoutSidenav">
+    <!--<th:block th:insert="~{layout/lmsMenuAdmin :: lmsMenu}"></th:block>-->
+    <th:block th:replace="~{layout/lmsMenuStuLec :: lmsMenu2(${lecture_no},${student_no})}"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+
+
+
+            <div class="layout_contents" th:with="lecture=${lecture}" style="text-align: center; margin-top: 150px;">
+                <!-- <div th:text="${lecture.getZoomUrl()}"></div>-->
+
+                <div class="name" th:text="${lecture.getLectureName()}" style="width: 50%;" ></div>
+                <br>
+
+                <div class="date" th:text="${#temporals.format(lecture.getZoomDate(), 'MM월 dd일 HH시 mm분') + ' 강의 시작'}" style="width: 50%;"></div>
+
+
+                <!--<div class="name" th:text="${lecture.getZoomDate()} + ' 시작합니다.'" style="width: 50%;"></div>-->
+                <br><br>
+
+                <button class="btn btn-primary btn-lg" th:onclick="load()">
+                    강의 입장하기
+                </button>
+                <script th:inline="javascript">
+
+
+                    function load() {
+                        /*var zoomUrl = "https://us05web.zoom.us/j/83037561107?pwd=zBN6YsjFIZXmWRGHbIBpugquOdkkQN.1";*/
+                        var zoomUrl = [[${lecture.getZoomUrl()}]];
+                        if (zoomUrl && zoomUrl.trim() !== '') {
+                            if (!zoomUrl.startsWith('http://') && !zoomUrl.startsWith('https://')) {
+                                zoomUrl = 'http://' + zoomUrl; // Add the protocol if missing
+                            }
+                            window.open(zoomUrl, '_blank');
+
+
+                            var student_no = [[${lecture.getStudent_no()}]];
+                            if (lectureId) {
+                                fetch('/student/entranceLecture?StudentNo=' + student_no)
+                                    .then(response => response.text())
+                                    .then(data => console.log(data))
+                                    .catch(error => console.error('Error:', error));
+                            }
+
+                        } else {
+                            alert('Zoom URL이 없습니다.');
+                        }
+                    }
+                </script>
+
+
+                <!--  <script th:inline="javascript">
+                      function load() {
+                          var zoomUrl = [[${lecture.getZoomUrl()}]];
+                          if (zoomUrl && zoomUrl.trim() !== '') {
+                              window.open(zoomUrl, '_blank');
+                          } else {
+                              alert('Zoom URL이 없습니다.');
+                          }
+                      }
+                  </script>
+  -->
+
+            </div>
+
+        </main>
+    </div>
+
+</div>
+<th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
+</div>
+</body>
+</html>
+
+
