@@ -9,98 +9,119 @@
 <body class="sb-nav-fixed">
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
 <div id="layoutSidenav">
-<!--    <th:block th:replace="layout/lmsMenuTeaLec :: lmsMenu2(~{::2})"></th:block>-->
+    <!--    <th:block th:replace="layout/lmsMenuTeaLec :: lmsMenu2(~{::2})"></th:block>-->
     <!--<th:block th:replace="~{layout/lmsMenuTeaLec :: lmsMenu2(lecture_no = ${lecture_no})}"></th:block>-->
 
     <th:block th:replace="~{layout/lmsMenuTeaLec :: lmsMenu2(${lecture_no})}"></th:block>
 
     <div id="layoutSidenav_content">
         <main>
-            <th:block layout:fragment="content"></th:block>
+
             <div class="layout_contents"> <!--margin 설정-->
 
-                <div class="page_wrap">
-                    <h2 class="page_tit"> 강좌 정보</h2>
+                <div class="content">
+
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="title">강의 정보</h2>
+                                </div>
+                                <div class="card-body">
 
 
-                    <table class="table" th:each="lecture, status: ${lecture}" style="vertical-align: middle;width: 70%; margin: 0 auto;">
+                                    <table class="table" th:each="lecture, status: ${lecture}"
+                                           style="vertical-align: middle;width: 70%; margin: 0 auto;">
 
 
-                        <!--강의 예정일 시에만 수정 요청 가능-->
-                        <tr th:if="${lecture.getLectureAct() == 1}">
-                            <th> 관리자 문의 </th>
-                            <td>
-                                <a th:href="@{'/teacher/requestLecture/' + ${lecture.getLectureNo()}}" class="btn btn-primary" style="width: 150px;"> 수정 요청</a>
-                            </td>
-                        </tr>
+                                        <!--강의 예정일 시에만 수정 요청 가능-->
+                                        <tr th:if="${lecture.getLectureAct() == 1}">
+                                            <th> 관리자 문의</th>
+                                            <td>
+                                                <a th:href="@{'/teacher/requestLecture/' + ${lecture.getLectureNo()}}"
+                                                   class="btn btn-primary" style="width: 150px;"> 수정 요청</a>
+                                            </td>
+                                        </tr>
 
 
-                        <tr>
-                            <th>강의 제목</th>
-                            <td th:text="${lecture.getLectureName()}"></td>
-                        </tr>
+                                        <tr>
+                                            <th>강의 제목</th>
+                                            <td th:text="${lecture.getLectureName()}"></td>
+                                        </tr>
 
-                        <tr>
-                            <th>신청 현황</th>
-                            <td>
-                                <p2 th:text="${lecture.getLectureCurnum()}"></p2>
-                                <strong> / </strong>
-                                <p2 th:text="${lecture.getLectureMaxnum()}"></p2>
-                                <p2> 명 ( 최소수강인원 : <p2 th:text="${lecture.getLectureMinnum()}"></p2> ) </p2>
-                            </td>
-                        </tr>
-
-
-                        <tr>
-                            <th>강의 상태</th>
-                            <td>
-                                <p2 th:text="${lecture.getLectureAct() == 1 ? '강의예정' : (lecture.getLectureAct() == 2 ? '강의중' : (lecture.getLectureAct() == 3 ? '강의종료' : '폐강'))}"></p2>
-                            </td>
-                        </tr>
+                                        <tr>
+                                            <th>신청 현황</th>
+                                            <td>
+                                                <p2 th:text="${lecture.getLectureCurnum()}"></p2>
+                                                <strong> / </strong>
+                                                <p2 th:text="${lecture.getLectureMaxnum()}"></p2>
+                                                <p2> 명 ( 최소수강인원 :
+                                                    <p2 th:text="${lecture.getLectureMinnum()}"></p2>
+                                                    )
+                                                </p2>
+                                            </td>
+                                        </tr>
 
 
-                        <tr>
-                            <th>강좌 설명</th>
-                            <td th:text="${lecture.getLectureContent()}"></td>
-                        </tr>
-
-                        <tr>
-                            <th>수강 신청 기간</th>
-                            <td>
-                                <p2 th:text="${lecture.getStartEnrolmentDate()}"></p2>
-                                <strong> - </strong>
-                                <p2 th:text="${lecture.getEndEnrolmentDate()}"></p2>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>강의 운영 기간</th>
-                            <td>
-                                <p2 th:text="${lecture.getStartStudyDate()}"></p2>
-                                <strong> - </strong>
-                                <p2 th:text="${lecture.getEndStudyDate()}"></p2>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <th>강의 썸네일</th>
-                            <td>  <img th:src="@{'/upload/' + ${lecture.getLectureImg1()}}" alt="" style="    width: 400px;"></td>
-                        </tr>
-
-                        <tr>
-                            <th>강의 소개 이미지</th>
-                            <td>  <img th:src="@{'/upload/' + ${lecture.getLectureImg2()}}" alt="" style="    width: 400px;"></td>
-                        </tr>
+                                        <tr>
+                                            <th>강의 상태</th>
+                                            <td>
+                                                <p2 th:text="${lecture.getLectureAct() == 1 ? '강의예정' : (lecture.getLectureAct() == 2 ? '강의중' : (lecture.getLectureAct() == 3 ? '강의종료' : '폐강'))}"></p2>
+                                            </td>
+                                        </tr>
 
 
+                                        <tr>
+                                            <th>강좌 설명</th>
+                                            <td th:text="${lecture.getLectureContent()}"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>수강 신청 기간</th>
+                                            <td>
+                                                <p2 th:text="${lecture.getStartEnrolmentDate()}"></p2>
+                                                <strong> - </strong>
+                                                <p2 th:text="${lecture.getEndEnrolmentDate()}"></p2>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>강의 운영 기간</th>
+                                            <td>
+                                                <p2 th:text="${lecture.getStartStudyDate()}"></p2>
+                                                <strong> - </strong>
+                                                <p2 th:text="${lecture.getEndStudyDate()}"></p2>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>강의 썸네일</th>
+                                            <td><img th:src="@{'/upload/' + ${lecture.getLectureImg1()}}" alt=""
+                                                     style="    width: 400px;"></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>강의 소개 이미지</th>
+                                            <td><img th:src="@{'/upload/' + ${lecture.getLectureImg2()}}" alt=""
+                                                     style="    width: 400px;"></td>
+                                        </tr>
 
 
-                    </table>
-                </div>
+                                    </table>
+                                </div>
+
+
+                            </div><!--end card body-->
+
+                        </div><!--end card-->
+                    </div><!-- end col-->
+                </div><!-- end row-->
             </div>
-        </main>
 
     </div>
+    </main>
+
+</div>
 
 </div>
 <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>

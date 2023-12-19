@@ -35,7 +35,7 @@ FROM
 
 
 
--- 등록된 강의view (예진 view)   수정.231215 (lecture 관련 컬럼추가)
+-- 등록된 강의view (예진 view)   수정.231219
 drop VIEW lecturelist;
 CREATE VIEW lecturelist AS
 SELECT
@@ -75,7 +75,7 @@ FROM Lecture l
 
 
 
--- 수강신청한 강의view (예진 view)   생성.231213
+-- 수강신청한 강의view (예진 view)   수정.231219
 drop VIEW courselist;
 CREATE VIEW courselist AS
 SELECT
@@ -100,6 +100,7 @@ SELECT
     l.lecture_curnum AS lecture_curnum,
     l.lecture_act AS lecture_act,
     l.zoom_url AS zoom_url,
+    l.zoom_date AS zoom_date,
 
     t.teacher_no AS teacher_no,
     t.mno AS teacher_mno,

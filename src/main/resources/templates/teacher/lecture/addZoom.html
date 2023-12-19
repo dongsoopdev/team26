@@ -12,7 +12,7 @@
         }
 
 
-        .name{
+        .name {
             border: none;
             position: relative;
             width: 100%;
@@ -20,7 +20,7 @@
             background-color: #0D4991;
             color: #ffffff;
             box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.2);
-             border-radius: 8px;
+            border-radius: 8px;
             text-align: center;
             font-size: 1.25rem;
             margin-bottom: 20px;
@@ -35,9 +35,9 @@
             /*padding: 10px;*/
             background-color: #FFFFFF;
             /*box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.2);*/
-           /* border-radius: 8px;*/
+            /* border-radius: 8px;*/
             text-align: center;
-           /* font-size: 100%;*/
+            /* font-size: 100%;*/
             margin-bottom: 20px;
 
 
@@ -80,51 +80,69 @@
     <th:block th:replace="~{layout/lmsMenuTeaLec :: lmsMenu2(${lecture_no})}"></th:block>
     <div id="layoutSidenav_content">
         <main>
-            <div class="layout_contents" th:with="lecture=${lecture}" style="text-align: center; margin-top: 150px;">
+            <div class="layout_contents" th:with="lecture=${lecture}" >
+                <div class="content">
+
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h2 class="title">ZOOM 등록</h2>
+                                </div>
+                                <div class="card-body" style="text-align: center; margin: 100px 0px;">
 
 
-            <!--    <input class="form-control-lg name" th:value="${lecture.getLectureName()}" style="width: 50%;" disabled readonly>-->
+                                    <!--    <input class="form-control-lg name" th:value="${lecture.getLectureName()}" style="width: 50%;" disabled readonly>-->
 
-                <div class="name" th:text="${lecture.getLectureName()}" style="width: 50%;" ></div>
-                <br>
-                <form th:action="@{/teacher/addZoom}" id="submitForm" method="post" onsubmit="return checkZoomUrl()">
-
-
-                    <input type="hidden" name="lecture_no" th:value="${lecture.getLectureNo()}" />
+                                    <div class="name" th:text="${lecture.getLectureName()}" style="width: 50%;"></div>
+                                    <br>
+                                    <form th:action="@{/teacher/addZoom}" id="submitForm" method="post"
+                                          onsubmit="return checkZoomUrl()">
 
 
-                    <!-- 나중에 현재 시간으로 th:value값 설정-->
-
-                    <input type="datetime-local"
-                           placeholder="줌 시작 시간을 선택해주세요."
-                           required
-                           name="zoomDate"
-                           id="zoomDate"
-                           th:min="${lecture.getStartStudyDate()}"
-                           th:max="${lecture.getEndStudyDate()}"
-                           style="width: 50%;"
-                    >
+                                        <input type="hidden" name="lecture_no" th:value="${lecture.getLectureNo()}"/>
 
 
-                    <br>
+                                        <!-- 나중에 현재 시간으로 th:value값 설정-->
 
-                    <input type="text" name="zoomUrl" id="zoomUrl" class="input form-control-lg"
-                           placeholder="Zoom URL 입력" style="width: 50%;     text-align: center;" required>
+                                        <input type="datetime-local"
+                                               placeholder="줌 시작 시간을 선택해주세요."
+                                               required
+                                               name="zoomDate"
+                                               id="zoomDate"
+                                               th:min="${lecture.getStartStudyDate()}"
+                                               th:max="${lecture.getEndStudyDate()}"
+                                               style="width: 50%;"
+                                        >
 
-                    <br><br>
-                    <input type="submit" value="zoom 등록" class="btn btn-primary btn-lg">
-                </form>
 
-                <script>
-                    function handleFormSubmission() {
-                        alert('Zoom 등록이 완료되었습니다.');
-                    }
+                                        <br>
 
-                    document.getElementById('submitForm').addEventListener('submit', function () {
-                        handleFormSubmission();
-                    });
-                </script>
+                                        <input type="text" name="zoomUrl" id="zoomUrl" class="input form-control-lg"
+                                               placeholder="Zoom URL 입력" style="width: 50%;     text-align: center;"
+                                               required>
 
+                                        <br><br>
+                                        <input type="submit" value="zoom 등록" class="btn btn-primary btn-lg">
+                                    </form>
+
+                                    <script>
+                                        function handleFormSubmission() {
+                                            alert('Zoom 등록이 완료되었습니다.');
+                                        }
+
+                                        document.getElementById('submitForm').addEventListener('submit', function () {
+                                            handleFormSubmission();
+                                        });
+                                    </script>
+
+
+                                </div><!--end card body-->
+
+                            </div><!--end card-->
+                        </div><!-- end col-->
+                    </div><!-- end row-->
+                </div>
 
             </div>
         </main>
