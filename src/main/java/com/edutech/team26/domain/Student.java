@@ -38,4 +38,9 @@ public class Student implements TakeCourseCode {
     @Column(updatable = false)
     private LocalDateTime regDate;
 
+
+    public void updateEntranceYn(long student_no){
+        this.entranceYn=entranceYn;
+    }
+
 }

@@ -71,6 +71,8 @@ public class QVwLecture extends EntityPathBase<VwLecture> {
 
     public final StringPath userStatus = createString("userStatus");
 
+    public final DateTimePath<java.time.LocalDateTime> zoomDate = createDateTime("zoomDate", java.time.LocalDateTime.class);
+
     public final StringPath zoomUrl = createString("zoomUrl");
 
     public QVwLecture(String variable) {

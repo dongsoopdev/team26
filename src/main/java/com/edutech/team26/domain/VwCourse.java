@@ -40,6 +40,7 @@ public class VwCourse {
     private int lectureMaxnum;
     private int lectureAct;
     private String zoomUrl;
+    private LocalDateTime zoomDate;
 
     @Column(name="teacher_no")
     private Long teacherNo;

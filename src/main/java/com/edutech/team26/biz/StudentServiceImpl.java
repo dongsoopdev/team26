@@ -123,4 +123,12 @@ public class StudentServiceImpl implements StudentService {
         studentRepository.save(student);
     }
 
+    @Override
+    public void updateEntranceStatus(Long studentNo) {
+        Student student = studentRepository.getById(studentNo);
+        student.updateEntranceYn(1);
+
+        studentRepository.save(student);
+    }
+
 }

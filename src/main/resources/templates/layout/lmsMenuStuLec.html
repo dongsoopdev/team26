@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<th:block th:fragment="lmsMenu2(lecture_no, student_no)">
-
+<th:block th:fragment="lmsMenu2(lecture_no,student_no)">
     <div id="layoutSidenav">
         <div id="layoutSidenav_nav">
             <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
@@ -26,41 +25,47 @@
                                 <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
                             </nav>
                         </div>-->
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
+
+                        <a class="nav-link collapsed" th:href="@{/student/entranceZoom(lecture_no=${lecture_no})}" >
+                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                            실시간 강의
+                            <div class="sb-sidenav-collapse-arrow"></div>
+                        </a>
+                        <!--<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
                            aria-expanded="false" aria-controls="collapsePages">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                             실시간 강의
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                        </a>
-                        <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                        </a>-->
+                       <!-- <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
                              data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                               <!--<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                               &lt;!&ndash;<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                    data-bs-target="#pagesCollapseAuth" aria-expanded="false"
                                    aria-controls="pagesCollapseAuth">
                                     ZOOM 등록
                                     <div class="sb-sidenav-collapse-arrow">
                                         &lt;!&ndash;<i class="fas fa-angle-down">&ndash;&gt;</i></div>
                                 </a>
--->
+&ndash;&gt;
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
                                    data-bs-target="#pagesCollapseError" aria-expanded="false"
                                    aria-controls="pagesCollapseError">
                                     강의 입장
                                     <div class="sb-sidenav-collapse-arrow">
-                                        <!--<i class="fas fa-angle-down">--></i></div>
+                                        &lt;!&ndash;<i class="fas fa-angle-down">&ndash;&gt;</i></div>
                                 </a>
-                                <!-- <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                &lt;!&ndash; <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
                                       data-bs-parent="#sidenavAccordionPages">
                                      <nav class="sb-sidenav-menu-nested nav">
                                          <a class="nav-link" href="401.html">401 Page</a>
                                          <a class="nav-link" href="404.html">404 Page</a>
                                          <a class="nav-link" href="500.html">500 Page</a>
                                      </nav>
-                                 </div>-->
+                                 </div>&ndash;&gt;
 
                             </nav>
-                        </div>
+                        </div>-->
 
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"

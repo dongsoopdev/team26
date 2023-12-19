@@ -77,6 +77,8 @@ public class QVwCourse extends EntityPathBase<VwCourse> {
 
     public final StringPath userStatus = createString("userStatus");
 
+    public final DateTimePath<java.time.LocalDateTime> zoomDate = createDateTime("zoomDate", java.time.LocalDateTime.class);
+
     public final StringPath zoomUrl = createString("zoomUrl");
 
     public QVwCourse(String variable) {
