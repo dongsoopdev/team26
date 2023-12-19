@@ -3,13 +3,10 @@ package com.edutech.team26.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +47,8 @@ public class Lecture extends BaseEntity{
     private String lectureVedio;
     private String filePath;
 
-    private String zoomUrl;
+    private String zoomUrl;  // 줌 URL (매일 갱신)
+    private LocalDateTime zoomDate; // 줌 실행시간 (매일 갱신)
 
     @Column(columnDefinition = "INT DEFAULT 0")
     private int lectureCurnum;
@@ -70,34 +68,43 @@ public class Lecture extends BaseEntity{
 
 
 
+    public void updateZoomUrl(String zoomUrl, LocalDateTime zoomDate){
+        this.zoomUrl = zoomUrl;
+        this.zoomDate = zoomDate;
+    }
 
-    public void updateLectureAct(int type) {
-        // Get the current date
-        //LocalDate currentDate = LocalDate.now();
 
-        // Parse the start and end study dates
-//        LocalDate startStudyLocalDate = LocalDate.parse(this.startStudyDate, DateTimeFormatter.ISO_LOCAL_DATE);
-//        LocalDate endStudyLocalDate = LocalDate.parse(this.endStudyDate, DateTimeFormatter.ISO_LOCAL_DATE);
-        //LocalDate startStudyLocalDate = LocalDate.parse(startStudyDate, DateTimeFormatter.ISO_LOCAL_DATE);
-       //LocalDate endStudyLocalDate = LocalDate.parse(endEnrolmentDate, DateTimeFormatter.ISO_LOCAL_DATE);
-
-        // Update lectureAct based on the conditions
-        /*if (startStudyLocalDate.isAfter(currentDate)) {
-            this.lectureAct=1;// 강의예정
-        } else if (startStudyLocalDate.isBefore(currentDate) && endStudyLocalDate.isAfter(currentDate)) {
-            this.lectureAct = 2; // 강의진행중
-        } else if (endStudyLocalDate.isBefore(currentDate)) {
-            this.lectureAct = 3; // 강의종료
-        }*/
-
-        this.lectureAct = type; // 강의종료
+    // 줌등록
+    public void updateLectureCurnum(int lectureCurnum){
+        this.lectureCurnum =lectureCurnum;
     }
 
 
 
 
+    public void updateLectureAct(int type) {
+        this.lectureAct = type;
+    }
 
 
 
-
+    public void updateLecture(long lecture_no, Teacher teacher, List<Category> categorys, String lectureName, String lectureContent, String lectureImg1, String lectureImg2, String lectureVedio, String filePath, String zoomUrl, int lectureCurnum, int lectureMinnum, int lectureMaxnum, String startEnrolmentDate, String endEnrolmentDate, String startStudyDate, String endStudyDate, int lectureAct) {
+        this.teacher = teacher;
+        this.categorys = categorys;
+        this.lectureName = lectureName;
+        this.lectureContent = lectureContent;
+        this.lectureImg1 = lectureImg1;
+        this.lectureImg2 = lectureImg2;
+        this.lectureVedio = lectureVedio;
+        this.filePath = filePath;
+        this.zoomUrl = zoomUrl;
+        this.lectureCurnum = lectureCurnum;
+        this.lectureMinnum = lectureMinnum;
+        this.lectureMaxnum = lectureMaxnum;
+        this.startEnrolmentDate = startEnrolmentDate;
+        this.endEnrolmentDate = endEnrolmentDate;
+        this.startStudyDate = startStudyDate;
+        this.endStudyDate = endStudyDate;
+        this.lectureAct = lectureAct;
+    }
 }

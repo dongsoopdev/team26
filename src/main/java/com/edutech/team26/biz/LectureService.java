@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface LectureService {
@@ -63,5 +64,7 @@ public interface LectureService {
 
 
     //zoom url emdfhr
-    void addZoomUrl(String zoomUrl, long lectureNo);
+    void addZoomUrl(String zoomUrl, long lectureNo, LocalDateTime zoomDate);
+
+
 }

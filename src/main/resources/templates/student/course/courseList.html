@@ -62,15 +62,16 @@
 
 
                             <td>
-                                <p2 th:utext="${#temporals.format(lectureList.getStartEnrolmentDate(), 'yy.MM.dd')}"></p2>
+                                <p2 th:utext="${#temporals.format(courseList.getStartEnrolmentDate(), 'yy.MM.dd')}"></p2>
                                 <strong> - </strong>
-                                <p2 th:utext="${#temporals.format(lectureList.getEndEnrolmentDate(), 'yy.MM.dd')}"></p2>
+                                <p2 th:utext="${#temporals.format(courseList.getEndEnrolmentDate(), 'yy.MM.dd')}"></p2>
                             </td>
 
                             <td>
-                                <p2 th:utext="${#temporals.format(lectureList.getStartStudyDate(), 'yy.MM.dd')}"></p2>
+
+                                <p2 th:utext="${#temporals.format(courseList.getStartStudyDate(), 'yy.MM.dd')}"></p2>
                                 <strong> - </strong>
-                                <p2 th:utext="${#temporals.format(lectureList.getEndStudyDate(), 'yy.MM.dd')}"></p2>
+                                <p2 th:utext="${#temporals.format(courseList.getEndStudyDate(), 'yy.MM.dd')}"></p2>
                             </td>
 
 

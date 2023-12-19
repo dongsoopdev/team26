@@ -210,7 +210,11 @@ public class LectureServiceImpl implements LectureService {
                     break;
                 // 추가적인 이미지 필요에 따라 계속해서 확장 가능
 
-            }
+
+
+
+
+                    }
         }
 
         //lectureDTO.setLectureAct(1);
@@ -273,7 +277,7 @@ public class LectureServiceImpl implements LectureService {
     public void deleteCancleLecture(long lectureNo) {
         Lecture lecture = lectureRepository.getById(lectureNo);
         lecture.updateLectureAct(1);
-        lecture.setLectureCurnum(0); // 수강신청인원 초기화
+        lecture.updateLectureCurnum(0); // 수강신청인원 초기화
         lectureRepository.save(lecture);
     }
 
@@ -281,11 +285,9 @@ public class LectureServiceImpl implements LectureService {
     @Override
     public void deleteCourse(long lectureNo) {
         Lecture lecture = lectureRepository.getById(lectureNo);
-        lecture.setLectureCurnum(lecture.getLectureCurnum() - 1); // 수강신청인원 한명빼기
+        lecture.updateLectureCurnum(lecture.getLectureCurnum() - 1); // 수강신청인원 한명빼기
         lectureRepository.save(lecture);
     }
-
-
 
 
 
@@ -341,7 +343,7 @@ public class LectureServiceImpl implements LectureService {
         Lecture lec = lectureRepository.getById(studentDTO.getLectureNo());
 
         // 수강인원 up
-        lec.setLectureCurnum(lec.getLectureCurnum() + 1);
+        lec.updateLectureCurnum(lec.getLectureCurnum() + 1);
         lectureRepository.save(lec);
 
 
@@ -380,14 +382,16 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Override
-    public void addZoomUrl(String zoomUrl, long lectureNo) {
-
-
-   /* Lecture lecture = lectureRepository.getById(lectureDTO.getLecture_no());
-    lecture.setZoomUrl(zoomUrl);
-    lectureRepository.save(lecture);*/
+    public void addZoomUrl(String zoomUrl, long lectureNo, LocalDateTime zoomDate) {
+        System.out.println("줌!!!!!!!!!!!!" + zoomUrl + "  " + zoomDate);
+        Lecture lecture = lectureRepository.findById(lectureNo).orElseThrow(
+                ()-> new NoSuchElementException());
+        lecture.updateZoomUrl(zoomUrl, zoomDate);
+        lectureRepository.save(lecture);
 
     }
+
+
 
 
 }

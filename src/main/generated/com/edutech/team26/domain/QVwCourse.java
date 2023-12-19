@@ -23,9 +23,9 @@ public class QVwCourse extends EntityPathBase<VwCourse> {
 
     public final BooleanPath activeYn = createBoolean("activeYn");
 
-    public final StringPath endEnrolmentDate = createString("endEnrolmentDate");
+    public final DateTimePath<java.time.LocalDateTime> endEnrolmentDate = createDateTime("endEnrolmentDate", java.time.LocalDateTime.class);
 
-    public final StringPath endStudyDate = createString("endStudyDate");
+    public final DateTimePath<java.time.LocalDateTime> endStudyDate = createDateTime("endStudyDate", java.time.LocalDateTime.class);
 
     public final BooleanPath entranceYn = createBoolean("entranceYn");
 
@@ -53,9 +53,9 @@ public class QVwCourse extends EntityPathBase<VwCourse> {
 
     public final NumberPath<Long> mno = createNumber("mno", Long.class);
 
-    public final StringPath startEnrolmentDate = createString("startEnrolmentDate");
+    public final DateTimePath<java.time.LocalDateTime> startEnrolmentDate = createDateTime("startEnrolmentDate", java.time.LocalDateTime.class);
 
-    public final StringPath startStudyDate = createString("startStudyDate");
+    public final DateTimePath<java.time.LocalDateTime> startStudyDate = createDateTime("startStudyDate", java.time.LocalDateTime.class);
 
     public final NumberPath<Long> studentMno = createNumber("studentMno", Long.class);
 
@@ -76,6 +76,8 @@ public class QVwCourse extends EntityPathBase<VwCourse> {
     public final StringPath userName = createString("userName");
 
     public final StringPath userStatus = createString("userStatus");
+
+    public final DateTimePath<java.time.LocalDateTime> zoomDate = createDateTime("zoomDate", java.time.LocalDateTime.class);
 
     public final StringPath zoomUrl = createString("zoomUrl");
 

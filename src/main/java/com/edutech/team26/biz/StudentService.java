@@ -6,4 +6,6 @@ public interface StudentService {
 
     //수강신청 취소 (delelct x -> status 'CANCEL'으로 변경)
     void deleteCourse(long lectureNo);
+
+    void updateEntranceStatus(Long studentNo);
 }

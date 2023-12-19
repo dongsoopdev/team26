@@ -54,6 +54,7 @@ SELECT
     l.lecture_curnum AS lecture_curnum,
     l.lecture_act AS lecture_act,
     l.zoom_url AS zoom_url,
+    l.zoom_date AS zoom_date,
     l.reg_date AS lec_reg_date,
     l.mod_date AS lec_mod_date,
 
