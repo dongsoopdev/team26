@@ -13,7 +13,7 @@
                 <li class="breadcrumb-item">선생님 신청 상세 내역</li>
                 <li class="breadcrumb-item active">선생님 신청 상세 파일 내역</li>
             </ol>
-            <div class="row" th:if="${teacherHistoryFilesVO.status eq 'ING'}">
+            <div class="row" th:if="${teacherHistoryFilesVO.status eq '신청 대기'}">
                 <div class="col">
                     <div class="card mb-4">
                         <div class="card-header"><i class="fas fa-edit"></i>신청 설정</div>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" th:unless="${teacherHistoryFilesVO.status eq 'ING'}">
+            <div class="row" th:unless="${teacherHistoryFilesVO.status eq '신청 대기'}">
                 <div class="col">
                     <div class="card mb-4">
                         <div class="card-header"><i class="fas fa-edit"></i>신청 설정</div>
