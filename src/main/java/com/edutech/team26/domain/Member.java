@@ -96,6 +96,11 @@ public class Member extends BaseEntity {
         this.userStatus = userStatus;
     }
 
+    public void changeResetPw(String resetPasswordKey, LocalDateTime resetPasswordLimitTime) {
+        this.resetPasswordKey = resetPasswordKey;
+        this.resetPasswordLimitTime = resetPasswordLimitTime;
+    }
+
     public void addRole(MemberRole memberRole){
         this.roleSet.add(memberRole);
     }
