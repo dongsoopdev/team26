@@ -65,6 +65,7 @@
                 <div class="name" th:text="${lecture.getLectureName()}" style="width: 50%;" ></div>
                 <br>
 
+
                 <div class="date" th:text="${#temporals.format(lecture.getZoomDate(), 'MM월 dd일 HH시 mm분') + ' 강의 시작'}" style="width: 50%;"></div>
 
 
@@ -87,7 +88,7 @@
                             window.open(zoomUrl, '_blank');
 
 
-                            var student_no = [[${lecture.getStudent_no()}]];
+                            var student_no = [[${lecture.getStudentNo()}]];
                             if (lectureId) {
                                 fetch('/student/entranceLecture?StudentNo=' + student_no)
                                     .then(response => response.text())

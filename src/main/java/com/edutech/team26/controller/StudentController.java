@@ -103,6 +103,7 @@ public class StudentController {
 
        VwLecture vwLecture =vwLectureRepository.getBylectureNo(lecture_no);
         VwCourse vwCourse = vwCourseRepository.findByLectureNo(vwLecture.getLectureNo());
+
         model.addAttribute("lecture", vwCourse);
         model.addAttribute("lecture_no",lecture_no);
 
