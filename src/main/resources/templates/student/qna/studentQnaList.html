@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QNA</title>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
+    <style>
+        .content {
+            width: 80%;
+            margin: 10%;
+        }
+    </style>
+</head>
+<body>
+<th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
+<div id="layoutSidenav">
+    <th:block th:replace="~{layout/lmsMenuStuLec :: lmsMenu2(${lecture_no})}"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+        <div class="content" >
+            <div class="row mt-3">
+            <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="title">QNA</h2>
+                </div>
+                <div class="card-body" >
+                    <h5 class="card-title">QNA 목록</h5>
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">번호</th>
+                            <th scope="col">강좌명</th>
+                            <th scope="col">제목</th>
+                            <th scope="col">등록일</th>
+                            <th scope="col">조회수</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="qna:${qnaList}"  >
+                            <td>[[${qna.qna_no}]]</td>
+                            <td>강좌명</td>
+                            <td>
+                                <a th:href="|@{/student/getQna(qna_no =${qna.qna_no})}|" class="text-decoration-none"> [[${qna.title}]] </a>
+                            </td>
+                            <td>[[${#temporals.format(qna.regDate, 'yyyy-MM-dd')}]]</td>
+                            <td>[[${qna.visited}]]</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div><!--end card body-->
+            </div><!--end card-->
+            </div><!-- end col-->
+            </div><!-- end row-->
+        </div>
+        </main>
+        <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    const errors = [[${errors}]]
+    console.log(errors)
+    let errorMsg = ''
+    if(errors){
+        for (let i = 0; i < errors.length; i++) {
+            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
+        }
+        alert(errorMsg)
+    }
+
+</script>
+</body>
+</html>
