@@ -35,5 +35,11 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmailAuthKey(@Param("emailAuthKey") String emailAuthKey);
 
     Optional<Member> findByEmail(@Param("email") String email);
+
+    Optional<Member> findByUserNameAndPhone(@Param("username") String username, @Param("phone") String phone);
+
+    Optional<Member> findByEmailAndPhoneAndUserName(@Param("email") String email, @Param("phone") String phone, @Param("username") String username);
+
+    Optional<Member> findByMnoAndResetPasswordKey(@Param("mno") Long mno, @Param("key") String resetPasswordKey);
     
 }

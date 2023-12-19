@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
+    <title>LMS_선생님 페이지</title>
+    <style>
+        .text-danger {
+            color: red;
+        }
+
+    </style>
+</head>
+
+
+<body class="sb-nav-fixed">
+<th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
+<div id="layoutSidenav">
+    <!--<th:block th:insert="~{layout/lmsMenuAdmin :: lmsMenu}"></th:block>-->
+    <th:block th:replace="~{layout/lmsMenuTeaLec :: lmsMenu2(${lecture_no})}"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+
+            <div class="layout_contents" th:with="lecture=${lecture}" style="    text-align: center;
+    margin-top: 150px;">
+
+                <form th:action="@{/teacher/addZoom}" id="submitForm" method="post" >
+
+
+                    <div th:text="${lecture.getLectureNo()}"></div>
+
+                    <input type="hidden" name="lecture_no" th:value="${lecture.getLectureNo()}"/>
+                    <input type="text" name="zoomUrl" id="zoomUrl" class="input form-control-lg"
+                           placeholder="Zoom URL 입력" style=" width: 50%;" required>
+
+                    <input type="submit" value="zoomUrl등록" class="btn btn-primary btn-lg">
+
+                </form>
+
+
+            </div>
+        </main>
+    </div>
+
+</div>
+<th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
+</div>
+</body>
+</html>
+
+

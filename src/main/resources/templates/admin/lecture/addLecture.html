@@ -4,7 +4,7 @@
 <head>
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
-    <title>강좌 등록</title>
+    <title>LMS_관리자 페이지</title>
 </head>
 <body class="sb-nav-fixed">
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
@@ -38,8 +38,39 @@
                             <tr>
                                 <th>강좌명</th>
                                 <td colspan="2"><input type="text" name="lectureName" id="lectureName" class="input"
-                                                       placeholder="강좌명 입력" required></td>
+                                                       placeholder="강좌명 입력" required>
+                               <!-- <p th:each="lectureList : ${lectureList}" th:text="${lectureList.getLectureName()}"></p>-->
+                                    <div id="duplicateWarning" style="color: red;"></div>
+                                </td>
                             </tr>
+                            <script>
+                                $(document).ready(function () {
+                                    // 포커스 아웃 이벤트 발생 시 중복 강의 제목을 확인
+                                    $('#lectureName').on('blur', function () {
+                                        var inputVal = $(this).val();
+
+                                        // AJAX를 통해 서버에 중복 여부 확인 요청
+                                        $.ajax({
+                                            url: '/admin/checkDuplicate',
+                                            method: 'POST',
+                                            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+                                            data: { lectureName: inputVal },
+                                            success: function (response) {
+                                                var duplicateWarning = $('#duplicateWarning');
+                                                if (response.duplicate) {
+                                                    duplicateWarning.text('중복된 강의 제목입니다. 다른 제목을 입력해주세요.').css('color', 'red');
+                                                } else {
+                                                    duplicateWarning.text('입력이 가능합니다.').css('color', 'blue');
+                                                }
+                                            },
+                                            error: function () {
+                                                console.error('Error checking duplicate lecture name.');
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
+
 
 
                             <tr>

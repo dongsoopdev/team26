@@ -34,7 +34,8 @@ FROM
     teacher t ON m.mno = t.mno;
 
 
--- 등록된 강의view (예진 view)   수정.231213
+
+-- 등록된 강의view (예진 view)   수정.231215 (lecture 관련 컬럼추가)
 drop VIEW lecturelist;
 CREATE VIEW lecturelist AS
 SELECT
@@ -53,6 +54,8 @@ SELECT
     l.lecture_curnum AS lecture_curnum,
     l.lecture_act AS lecture_act,
     l.zoom_url AS zoom_url,
+    l.reg_date AS lec_reg_date,
+    l.mod_date AS lec_mod_date,
 
     t.teacher_no AS teacher_no,
     t.active_date AS active_date,

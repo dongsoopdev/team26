@@ -26,6 +26,12 @@ public interface MemberService {
 
     MemberDTO getMemberInfo(Long mno);
 
-    /*MemberJoinDTO myinfo(String email);*/
+    MemberDTO findId(String username, String phone);
+
+    boolean findPw(String email, String phone, String username);
+
+    boolean resetPwAuth(Long mno, String key);
+
+    boolean resetPwAuthPro(Long mno, String key, String Password);
 
 }

@@ -1,6 +1,7 @@
 package com.edutech.team26.biz;
 
 import com.edutech.team26.constant.MemberRole;
+import com.edutech.team26.domain.Lecture;
 import com.edutech.team26.domain.Member;
 import com.edutech.team26.domain.Student;
 import com.edutech.team26.dto.StudentDTO;
@@ -109,6 +110,17 @@ public class StudentServiceImpl implements StudentService {
         SecurityContextHolder.getContext().setAuthentication(newAuth);
 
         return true;
+    }
+
+
+    //수강신청 취소
+    @Override
+    public void deleteCourse(long studentNo) {
+        Student student =studentRepository.getById(studentNo);
+
+        // 기존 학생 엔터티의 상태를 "CANCEL"로 변경
+        student.setStatus("CANCEL");
+        studentRepository.save(student);
     }
 
 }

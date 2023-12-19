@@ -32,6 +32,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Slf4j
@@ -87,7 +88,9 @@ public class LectureController extends lecBaseController {
         //강의 정보 가져오기
         LectureDTO lecture = lectureService.getById(lecture_no);
         System.out.println(lecture);
+        VwLecture vwLecture = vwLectureRepository.getBylectureNo(lecture_no);
 
+        model.addAttribute("vwLecture",vwLecture);
         model.addAttribute("lecture", lecture);
 
         return "lecture/lectureDetail";
@@ -147,8 +150,10 @@ public class LectureController extends lecBaseController {
     public ResponseEntity<Map<String, Object>> checkEnrollment(@RequestParam long lectureNo) {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+       // Optional<Student> student = studentRepository.findByMnoAndLectureNo(member.getMno(),lectureNo);
+
         Map<String, Object> response = new HashMap<>();
-        boolean isEnrolled = vwCourseRepository.countByLectureNoAndMno(lectureNo,member.getMno()) > 0; // yourStudentId를 실제 사용하는 ID로 변경해야 합니다.
+        boolean isEnrolled = vwCourseRepository.countByLectureNoAndMnoAndStudentStatus(lectureNo,member.getMno(), "REQ") > 0; // yourStudentId를 실제 사용하는 ID로 변경해야 합니다.
 
         Map<String, Object> header = new HashMap<>();
         if (isEnrolled) {

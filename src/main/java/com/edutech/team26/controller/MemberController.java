@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -93,12 +94,69 @@ public class MemberController {
         return "member/joinEmailComplete";
     }
 
-    @GetMapping("/member/pw-auth/{id}")
-    public String resetPwAuth(@PathVariable(required = false) String id, Model model){
-        boolean result = memberService.emailAuth(id);
+    @GetMapping("/findId")
+    public String findIdGet(){
+        return "member/findId";
+    }
+
+    @PostMapping("/findId")
+    public String findIdPost(HttpServletRequest request, RedirectAttributes rttr, Model model){
+        String username = request.getParameter("username");
+        String phone = request.getParameter("phone");
+        MemberDTO memberDTO = memberService.findId(username, phone);
+        if(memberDTO != null) {
+            rttr.addFlashAttribute("email", memberDTO.getEmail());
+            return "redirect:/findIdFinish";
+        } else {
+            rttr.addFlashAttribute("error", "다시 한번 확인해주세요.");
+            return "redirect:/findId";
+        }
+    }
+
+    @GetMapping("/findIdFinish")
+    public String findIdFinishGet(){
+        return "member/findIdFinish";
+    }
+
+    @GetMapping("/findPw")
+    public String findPwGet(){
+        return "member/findPw";
+    }
+
+    @PostMapping("/findPw")
+    public String findPwPost(HttpServletRequest request, RedirectAttributes rttr){
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String username = request.getParameter("username");
+        memberService.findPw(email, phone, username);
+        return "redirect:/findPw";
+    }
+
+    @GetMapping("/member/resetPassword")
+    public String resetPwAuth(@RequestParam("userId") Long id, @RequestParam("key") String key, Model model){
+        boolean result = memberService.resetPwAuth(id, key);
+
+        if(result) {
+            model.addAttribute("userId", id);
+            model.addAttribute("key", key);
+        }
         model.addAttribute("result", result);
 
-        return "redirect:/myPage";
+        return "member/resetPw";
+    }
+
+    @PostMapping("/member/resetPassword")
+    public String resetPwAuthPro(HttpServletRequest request, Model model){
+        Long id = Long.valueOf(request.getParameter("userId"));
+        String key = request.getParameter("key");
+        String password = request.getParameter("password");
+        boolean result = memberService.resetPwAuthPro(id, key, password);
+        if(result) {
+            return "redirect:/login";
+        } else {
+            return "redirect:/member/resetPassword?userId=" + id + "&key=" + key;
+        }
+
     }
 
     //@PreAuthorize("hasRole('USER')") // 권한 한개
