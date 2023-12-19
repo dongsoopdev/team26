@@ -1,4 +1,3 @@
-
 package com.edutech.team26.domain;
 
 import jakarta.persistence.Column;
@@ -49,9 +48,9 @@ public class VwCourse {
     private LocalDateTime activeDate;
     private Boolean activeYn;
     private String intro;
-    private String  teacherStatus;           
+    private String  teacherStatus;
     private String teacherName;               //강사이름
- 
+
     private Long mno;
     private String userName;                 //수강생이름
     private String userStatus;

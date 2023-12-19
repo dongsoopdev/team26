@@ -11,15 +11,14 @@
     <style>
         .content {
             width: 80%;
-            margin: auto;
-            margin-top: 10%;
+            margin: 10%;
         }
     </style>
 </head>
 <body>
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
 <div id="layoutSidenav">
-    <th:block th:replace="~{layout/lmsMenuStuLec :: lmsMenu2(${lecture_no})}"></th:block>
+    <th:block th:replace="~{layout/lmsMenuStuLec :: lmsMenu2(${lecture_no},${student_no})}"></th:block>
     <div id="layoutSidenav_content">
         <main>
         <div class="content" >
@@ -43,8 +42,8 @@
                                 <textarea class="form-control col-sm-5" rows="5" readonly>[[${notice.content}]]</textarea>
                             </div>
                             <div class="input-group mb-3">
-                                <span class="input-group-text">Writer</span>
-                                <input type="text" class="form-control" th:value="${notice.mno}" readonly>
+                                <span class="input-group-text">작성자</span>
+                                <input type="text" class="form-control" th:value="${userName}" readonly>
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">RegDate</span>

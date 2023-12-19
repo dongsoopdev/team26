@@ -2,6 +2,7 @@ package com.edutech.team26.biz;
 
 import com.edutech.team26.domain.Member;
 import com.edutech.team26.domain.Notice;
+import com.edutech.team26.dto.MemberDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.dto.NoticeDTO;
 import com.edutech.team26.repository.MemberRepository;
@@ -24,6 +25,7 @@ public class NoticeServiceImpl implements NoticeService {
     private final ModelMapper modelMapper;
     private final MemberRepository memberRepository;
 
+    //특정 강의 공지사항 리스트
     @Override
     public List<NoticeDTO> noticeList(Long lecture_no) {
         List<Notice> list = noticeRepository.findAll();

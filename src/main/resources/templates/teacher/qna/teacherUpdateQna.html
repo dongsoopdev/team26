@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공지사항 수정하기</title>
+    <title>QNA 수정하기</title>
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
     <style>
@@ -26,42 +26,42 @@
                     <div class="col">
                         <div class="card">
                             <div class="card-header">
-                                공지사항 수정하기
+                                QNA 수정하기
                             </div>
                             <div class="card-body">
-                                <form th:action="@{/teacher/updateNotice}" method="post">
+                                <form th:action="@{/teacher/updateQna}" method="post">
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">Nno</span>
-                                        <input type="text" class="form-control" th:value="${notice.notice_no}" name="notice_no" readonly>
+                                        <input type="text" class="form-control" th:value="${qna.qna_no}" name="qna_no" readonly>
                                         <input type="hidden" name="lecture_no" class="form-control" th:value="${lecture_no}">
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">Title</span>
-                                        <input type="text" class="form-control" name="title" th:value="${notice.title}" required>
+                                        <input type="text" class="form-control" name="title" th:value="${qna.title}" required>
                                     </div>
 
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">Content</span>
-                                        <textarea class="form-control col-sm-5" rows="5" name="content" required>[[${notice.content}]]</textarea>
+                                        <textarea class="form-control col-sm-5" rows="5" name="content" required>[[${qna.content}]]</textarea>
                                     </div>
 
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">Writer</span>
-                                        <input type="number" class="form-control" th:value="${notice.mno}" readonly required>
+                                        <input type="number" class="form-control" th:value="${qna.mno}" readonly required>
                                     </div>
 
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">RegDate</span>
-                                        <input type="text" class="form-control" th:value="${#temporals.format(notice.regDate, 'yyyy-MM-dd')}" readonly>
+                                        <input type="text" class="form-control" th:value="${#temporals.format(qna.regDate, 'yyyy-MM-dd')}" readonly>
                                     </div>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">ModDate</span>
-                                        <input type="text" class="form-control" th:value="${#temporals.format(notice.modDate, 'yyyy-MM-dd')}" readonly>
+                                        <input type="text" class="form-control" th:value="${#temporals.format(qna.modDate, 'yyyy-MM-dd')}" readonly>
                                     </div>
 
                                     <div class="my-4">
                                         <div class="float-end">
-                                            <a th:href="@{/teacher/noticeList(lecture_no=${lecture_no})}" class="btn btn-secondary">목록으로</a>
+                                            <a th:href="@{/teacher/qnaList(lecture_no=${lecture_no})}" class="btn btn-secondary">목록으로</a>
                                             <button type="submit" class="btn btn-primary">수정하기</button>
                                         </div>
                                     </div>
