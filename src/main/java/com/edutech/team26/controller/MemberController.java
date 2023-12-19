@@ -3,6 +3,7 @@ package com.edutech.team26.controller;
 import com.edutech.team26.biz.MemberService;
 import com.edutech.team26.biz.StudentService;
 import com.edutech.team26.biz.TeacherService;
+import com.edutech.team26.constant.AcceptCode;
 import com.edutech.team26.dto.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -159,7 +160,6 @@ public class MemberController {
 
     }
 
-    //@PreAuthorize("hasRole('USER')") // 권한 한개
     @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
     @GetMapping("/myPage")
     public String myPage(Model model) {
@@ -245,6 +245,14 @@ public class MemberController {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<TeacherHistoryFilesVO> teacherHistoryList = teacherService.getHistoryList(member.getMno());
         model.addAttribute("teacherHistoryList", teacherHistoryList);
+        boolean canApply = true;
+        for(TeacherHistoryFilesVO teacherHistoryFilesVO : teacherHistoryList) {
+            if(teacherHistoryFilesVO.getStatus().equals("신청 대기")) {
+                canApply = false;
+                break;
+            }
+        }
+        model.addAttribute("canApply", canApply);
         return "member/teacherApply";
     }
 
@@ -270,6 +278,64 @@ public class MemberController {
         return result;
     }
 
+    // 관리자 페이지
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/teacherApplyList")
+    public String adminTeacherApplyList(Model model) throws Exception {
+        List<TeacherHistoryVO> teacherHistoryList = teacherService.getHistoryAllList();
+        model.addAttribute("teacherHistoryList", teacherHistoryList);
+        return "admin/member/teacherApplyList";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/teacherApplyDetail/{id}")
+    public String adminTeacherApplyDetail(@PathVariable(required = false) Long id, Model model) throws Exception {
+        List<TeacherHistoryFilesVO> teacherHistoryList = teacherService.getHistoryList(id);
+        model.addAttribute("teacherHistoryList", teacherHistoryList);
+        return "admin/member/teacherApplyDetail";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/teacherApplyFileDetail/{id}")
+    public String adminTeacherApplyFileDetail(@PathVariable(required = false) Long id, Model model) throws Exception {
+        TeacherHistoryFilesVO teacherHistoryFilesVO = teacherService.getHistoryDetail(id);
+        model.addAttribute("teacherHistoryFilesVO", teacherHistoryFilesVO);
+        model.addAttribute("mno", teacherHistoryFilesVO.getMno());
+        return "admin/member/teacherApplyFileDetail";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/admin/teacherApplyFileDetail")
+    public String adminTeacherApplyFileDetailPro(HttpServletRequest request, Model model) throws Exception {
+
+        Integer statusNum = Integer.parseInt(request.getParameter("status"));
+        Long teacherHistoryNo = Long.parseLong(request.getParameter("teacherHistoryNo"));
+        Long mno = Long.parseLong(request.getParameter("mno"));
+        String reason = request.getParameter("reason") != null ? request.getParameter("reason") : "";
+
+        String status = "";
+        switch (statusNum) {
+            case 1:
+                status = AcceptCode.ACCEPT_STATUS_OK;
+                break;
+            case 2:
+                status = AcceptCode.ACCEPT_STATUS_REFUSE;
+                break;
+        }
+
+        if(status.equals("")){
+            return "redirect:/admin/teacherApplyFileDetail/" + teacherHistoryNo;
+        }
+
+        boolean result = teacherService.upgradeGrade(teacherHistoryNo, status, reason);
+
+        if(result) {
+            return "redirect:/admin/teacherApplyFileDetail/" + teacherHistoryNo;
+        } else {
+            return "redirect:/admin/teacherApplyDetail/" + mno;
+        }
+    }
+
     // Teacher
 
     @GetMapping("/upgradeTeacher")
@@ -277,10 +343,10 @@ public class MemberController {
         return "teacher/upgrade";
     }
 
-    @GetMapping("/stateTeacher")
+    /*@GetMapping("/stateTeacher")
     public String stateTeacher(@Param("type") int type, @Param("mno") Long teacherNo) throws Exception {
         teacherService.changeActive(teacherNo, type);
         return "redirect:/";
-    }
+    }*/
 
 }

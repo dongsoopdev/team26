@@ -38,4 +38,10 @@ public class TeacherHistory {
     @Column
     private LocalDateTime activeDate;
 
+    public void changeStatus(String status, String reason, LocalDateTime activeDate){
+        this.status = status;
+        this.reason = reason;
+        this.activeDate = activeDate;
+    }
+
 }

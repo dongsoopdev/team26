@@ -1,6 +1,7 @@
 package com.edutech.team26.repository;
 
 import com.edutech.team26.domain.Member;
+import com.edutech.team26.dto.MemberDTO;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,6 +19,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @EntityGraph(attributePaths = "roleSet")
     Member findByMno(@Param("mno") Long mno);
+
+    @Query("select m from Member m where m.mno = :mno")
+    Member getMemberByMno(@Param("mno") Long mno);
 
     @Modifying
     @Transactional

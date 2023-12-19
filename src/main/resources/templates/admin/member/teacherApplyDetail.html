@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/lmsLayoutAdmin">
+    <th:block layout:fragment="content">
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">선생님 신청 상세 내역</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item">회원관리</li>
+                <li class="breadcrumb-item">선생님 신청</li>
+                <li class="breadcrumb-item active">선생님 신청 상세 내역</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-header"><i class="fas fa-table me-1"></i>선생님 신청 상세 내역</div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>제목</th>
+                                <th>신청일자</th>
+                                <th>신청결과</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="teacherHistory, num : ${teacherHistoryList}">
+                                <th scope="row" th:text="${num.count}"></th>
+                                <td>
+                                    <th:block th:if="${teacherHistory.fileCnt > 0}">
+                                        <a th:href="|@{/admin/teacherApplyFileDetail/}${teacherHistory.teacherHistoryNo}|" th:text="|${teacherHistory.filesList[0].getFileOriginNm()} 외 ${teacherHistory.fileCnt}건|"></a>
+                                    </th:block>
+                                    <th:block th:if="${teacherHistory.fileCnt == 0}">
+                                        <a th:href="|@{/admin/teacherApplyFileDetail/}${teacherHistory.teacherHistoryNo}|" th:text="|${teacherHistory.filesList[0].getFileOriginNm()}|"></a>
+                                    </th:block>
+                                </td>
+                                <td th:text="${#temporals.format(teacherHistory.regDate, 'yyyy-MM-dd HH:mm')}"></td>
+                                <td th:text="${teacherHistory.status}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="btn-group mx-4 position-absolute end-0">
+                <a th:href="@{/admin/teacherApplyList}" class="btn btn-primary">목록</a>
+            </div>
+        </div>
+    </th:block>
+</html>

@@ -6,6 +6,7 @@ import com.edutech.team26.domain.*;
 import com.edutech.team26.dto.*;
 import com.edutech.team26.repository.*;
 
+import com.querydsl.jpa.JPQLQuery;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -71,6 +72,64 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public List<TeacherHistoryVO> getHistoryAllList() throws Exception {
+
+        List<TeacherHistory> teacherHistoryList = teacherHistoryRepository.findAllTeacherHistory();
+        List<TeacherHistoryVO> teacherHistoryDTOList = teacherHistoryList.stream()
+                .map(teacherHistory -> modelMapper.map(teacherHistory, TeacherHistoryVO.class))
+                .collect(Collectors.toList());
+
+        Member member;
+        for(TeacherHistoryVO teacherHistoryVO : teacherHistoryDTOList) {
+
+            member = memberRepository.getMemberByMno(teacherHistoryVO.getMno());
+            teacherHistoryVO.setEmail(member.getEmail());
+            teacherHistoryVO.setUserName(member.getUserName());
+            teacherHistoryVO.setPhone(member.getPhone());
+            teacherHistoryVO.setUserStatus(member.getUserStatus());
+
+            switch (teacherHistoryVO.getStatus()) {
+                case AcceptCode.ACCEPT_STATUS_OK:
+                    teacherHistoryVO.setStatus("승인 완료");
+                    break;
+                case AcceptCode.ACCEPT_STATUS_REQ :
+                    teacherHistoryVO.setStatus("신청 대기");
+                    break;
+                case AcceptCode.ACCEPT_STATUS_REFUSE:
+                    teacherHistoryVO.setStatus("승인 거절");
+                    break;
+            }
+        }
+
+        return teacherHistoryDTOList;
+    }
+
+    @Override
+    public TeacherHistoryFilesVO getHistoryDetail(Long teacherHistoryNo) throws Exception {
+
+        TeacherHistory teacherHistory = teacherHistoryRepository.findByTeacherHistoryNo(teacherHistoryNo);
+        TeacherHistoryFilesVO teacherHistoryFilesVO = modelMapper.map(teacherHistory, TeacherHistoryFilesVO.class);
+
+        List<Files> filesList = filesRepository.findByPar(teacherHistoryFilesVO.getTeacherHistoryNo());
+        List<FilesDTO> filesDTOList = filesList.stream().map(files -> modelMapper.map(files, FilesDTO.class)).collect(Collectors.toList());
+        teacherHistoryFilesVO.setFilesList(filesDTOList);
+
+        switch (teacherHistoryFilesVO.getStatus()) {
+            case AcceptCode.ACCEPT_STATUS_OK:
+                teacherHistoryFilesVO.setStatus("승인 완료");
+                break;
+            case AcceptCode.ACCEPT_STATUS_REQ :
+                teacherHistoryFilesVO.setStatus("신청 대기");
+                break;
+            case AcceptCode.ACCEPT_STATUS_REFUSE:
+                teacherHistoryFilesVO.setStatus("승인 거절");
+                break;
+        }
+
+        return teacherHistoryFilesVO;
+    }
+
+    @Override
     public boolean applyGrade(Long mno, List<MultipartFile> uploadFiles, HttpServletRequest request) throws Exception {
 
         Optional<Member> member = memberRepository.findById(mno);
@@ -92,8 +151,8 @@ public class TeacherServiceImpl implements TeacherService {
             
             TeacherDTO teacherDTO = new TeacherDTO();
             teacherDTO.setMno(mno);
-            teacherDTO.setFileOriginNm(fileOriginNm);
-            teacherDTO.setFileSaveNm(fileUploadNm);
+            //teacherDTO.setFileOriginNm(fileOriginNm);
+            //teacherDTO.setFileSaveNm(fileUploadNm);
             teacherDTO.setActiveYn(false);
             teacherDTO.setRegDate(LocalDateTime.now());
             teacherDTO.setStatus(AcceptCode.ACCEPT_STATUS_REQ);
@@ -169,8 +228,8 @@ public class TeacherServiceImpl implements TeacherService {
         TeacherDTO teacherDTO = new TeacherDTO();
         teacherDTO.setTeacherNo(teacherNo);
         teacherDTO.setMno(result.get().getMno());
-        teacherDTO.setFileOriginNm(result.get().getFileOriginNm());
-        teacherDTO.setFileSaveNm(result.get().getFileSaveNm());
+        //teacherDTO.setFileOriginNm(result.get().getFileOriginNm());
+        //teacherDTO.setFileSaveNm(result.get().getFileSaveNm());
         teacherDTO.setIntro(result.get().getIntro());
         teacherDTO.setRegDate(result.get().getRegDate());
 
@@ -191,6 +250,47 @@ public class TeacherServiceImpl implements TeacherService {
 
         Teacher teacher = modelMapper.map(teacherDTO, Teacher.class);
         teacherRepository.save(teacher);
+
+        return true;
+    }
+
+    @Override
+    public boolean upgradeGrade(Long teacherHistoryNo, String status, String reason) throws Exception {
+
+        Optional<TeacherHistory> optionalTeacherHistory = teacherHistoryRepository.findById(teacherHistoryNo);
+        if(optionalTeacherHistory.isEmpty()) {
+            return false;
+        }
+
+        if(status.equals(AcceptCode.ACCEPT_STATUS_OK)) {
+            // 승일일때
+            // teacherHistory
+            LocalDateTime now = LocalDateTime.now();
+
+            TeacherHistory teacherHistory = optionalTeacherHistory.get();
+            teacherHistory.changeStatus(AcceptCode.ACCEPT_STATUS_OK, reason, now);
+            Long saveTeacherHistoryNo = teacherHistoryRepository.save(teacherHistory).getTeacherHistoryNo();
+
+            TeacherHistory saveTeacherHistory = teacherHistoryRepository.findByTeacherHistoryNo(saveTeacherHistoryNo);
+
+            Files files = filesRepository.findByParAndToUse(saveTeacherHistoryNo, "teacherApplyFiles");
+
+            // teacher
+            Optional<Teacher> optionalTeacher = teacherRepository.findByMno(saveTeacherHistory.getMno());
+            if(optionalTeacher.isEmpty()) {
+                return false;
+            }
+            Teacher teacher = optionalTeacher.get();
+            teacher.upgradeStatus(true, files.getFileNo(), AcceptCode.ACCEPT_STATUS_OK, now);
+            teacherRepository.save(teacher);
+        } else {
+            // 거절일때
+            // teacherHistory
+            // status = REFUSE
+            TeacherHistory teacherHistory = optionalTeacherHistory.get();
+            teacherHistory.changeStatus(AcceptCode.ACCEPT_STATUS_REFUSE, reason, null);
+            teacherHistoryRepository.save(teacherHistory);
+        }
 
         return true;
     }
