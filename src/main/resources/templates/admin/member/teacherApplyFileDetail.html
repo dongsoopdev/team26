@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/lmsLayoutAdmin">
+    <th:block layout:fragment="content">
+        <link rel="stylesheet" th:href="@{/clEditor/jquery.cleditor.css}">
+        <script type="text/javascript" th:src="@{/clEditor/jquery.cleditor.js}"></script>
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">선생님 신청 상세 파일 내역</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item">회원관리</li>
+                <li class="breadcrumb-item">선생님 신청</li>
+                <li class="breadcrumb-item">선생님 신청 상세 내역</li>
+                <li class="breadcrumb-item active">선생님 신청 상세 파일 내역</li>
+            </ol>
+            <div class="row" th:if="${teacherHistoryFilesVO.status eq 'ING'}">
+                <div class="col">
+                    <div class="card mb-4">
+                        <div class="card-header"><i class="fas fa-edit"></i>신청 설정</div>
+                        <div class="card-body">
+                            <form th:action="@{/admin/teacherApplyFileDetail}" method="post" onsubmit="return changeVal();">
+                                <input type="hidden" name="mno" th:value="${teacherHistoryFilesVO.mno}">
+                                <input type="hidden" name="teacherHistoryNo" th:value="${teacherHistoryFilesVO.teacherHistoryNo}">
+                                <div class="row" id="radioBtnArea">
+                                    <div class="col pt-2">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="status" id="status1" value="1">
+                                            <label class="form-check-label" for="status1">승인</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="status" id="status2" value="2">
+                                            <label class="form-check-label" for="status2">거절</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 text-end">
+                                        <button type="submit" class="btn btn-primary">등록하기</button>
+                                    </div>
+                                </div>
+                                <textarea name="reason" id="reason" class="form-control" rows="8" cols="100" maxlength="1400"></textarea>
+                            </form>
+                            <script>
+                                $(document).ready(function() {
+                                    $("#reason").cleditor();
+
+                                    $(".cleditorMain").hide();
+
+                                    $("input[name='status']").change(function(){
+                                        if($("input[name='status']:checked").val() == 2){
+                                            $(".cleditorMain").show();
+                                            $("#radioBtnArea").addClass("mb-3");
+                                        } else {
+                                            $(".cleditorMain").hide();
+                                            $("#radioBtnArea").removeClass("mb-3");
+                                        }
+                                    });
+                                });
+
+                                function changeVal() {
+                                    let val = $("input[name='status']:checked").val();
+
+                                    if(val == undefined) {
+                                        alert("상태를 선택해 주세요.");
+                                        return false;
+                                    }
+
+                                    if($("input[name='status']:checked").val() == 2 && $("#reason").val() == "") {
+                                        alert("거절 사유를 입력해주세요.");
+                                        return false;
+                                    }
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" th:unless="${teacherHistoryFilesVO.status eq 'ING'}">
+                <div class="col">
+                    <div class="card mb-4">
+                        <div class="card-header"><i class="fas fa-edit"></i>신청 설정</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col pt-2">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" onclick="return false;" th:checked="${teacherHistoryFilesVO.status eq '승인 완료'}">
+                                        <label class="form-check-label">승인</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" onclick="return false;" th:checked="${teacherHistoryFilesVO.status eq '승인 거절'}">
+                                        <label class="form-check-label">거절</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <th:block th:if="${teacherHistoryFilesVO.status eq '승인 거절'}">
+                                <hr/>
+                                <p class="mt-3 ps-3 fw-bold">승인 거절 사유 :</p>
+                                <div th:text="${teacherHistoryFilesVO.reason}" class="p-3 pt-0"></div>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header"><i class="fas fa-table me-1"></i>선생님 신청 상세 파일 내역</div>
+                <div class="card-body">
+                    <table id="datatablesSimple">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>제목</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="files, num : ${teacherHistoryFilesVO.getFilesList()}">
+                                <th scope="row" th:text="${num.count}"></th>
+                                <td th:text="${files.fileOriginNm}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="btn-group mx-4 position-absolute end-0">
+                <a th:href="|@{/admin/teacherApplyDetail/}${mno}|" class="btn btn-primary">신청 상세 내역 돌아가기</a>
+            </div>
+        </div>
+    </th:block>
+</html>

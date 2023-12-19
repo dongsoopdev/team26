@@ -10934,6 +10934,36 @@ body {
   top: 56px;
 }
 
+.sb-nav-fixed #layoutSidenav #layoutSidenav_nav.forLecture {
+  width: 50px;
+}
+
+.forLecture .sb-sidenav .sb-sidenav-menu .nav .sb-sidenav-menu-heading {
+  display:none;
+}
+
+.forLecture .sb-sidenav .sb-sidenav-menu .nav .nav-link {
+  font-size:0;
+  padding-left:0;
+  padding-right:0;
+  text-align: center;
+  width: 100%;
+  display: block;
+}
+
+.forLecture .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-nav-link-icon {
+  font-size:1.5rem;
+  margin-right:0;
+}
+
+.sb-nav-fixed #layoutSidenav #layoutSidenav_nav.forLecture .sb-sidenav .sb-sidenav-menu {
+  overflow-x:hidden;
+}
+
+.sb-nav-fixed #layoutSidenav #layoutSidenav_content.forLecture {
+  padding-left: 50px;
+}
+
 #layoutError {
   display: flex;
   flex-direction: column;

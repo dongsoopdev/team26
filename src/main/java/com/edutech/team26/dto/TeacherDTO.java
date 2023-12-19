@@ -9,8 +9,7 @@ public class TeacherDTO {
 
     private Long teacherNo;
     private Long mno;
-    private String fileOriginNm;
-    private String fileSaveNm;
+    private Long filesNo;
     private Boolean activeYn;
     private String status;
     private String intro;

@@ -170,7 +170,7 @@
                             </div>
 
                             <div class="form-outline mb-1">
-                                <input type="text" th:field="*{addr}" placeholder="기본주소" id="address1" class="form-control bg-light" required readonly/>
+                                <input type="text" name="addr" placeholder="기본주소" id="address1" class="form-control bg-light" required readonly/>
                                 <label th:if="${#fields.hasErrors('addr')}" th:errors="*{addr}" class="fieldError">기본주소</label>
                             </div>
 
@@ -179,7 +179,7 @@
                             </div>
 
                             <div class="form-outline mb-4">
-                                <input type="text" th:field="*{zipcode}" placeholder="우편번호" id="postcode" class="form-control bg-light" style="width:65%;display:inline-block;vertical-align:top;" required readonly/>
+                                <input type="text" name="zipcode" placeholder="우편번호" id="postcode" class="form-control bg-light" style="width:65%;display:inline-block;vertical-align:top;" required readonly/>
                                 <button type="button" id="post_btn" onclick="findAddr()" class="btn btn-outline-primary" style="width:calc(35% - 17px);margin-left:10px;display:inline-block;vertical-align:top;">우편번호 검색</button>
                             </div>
 
