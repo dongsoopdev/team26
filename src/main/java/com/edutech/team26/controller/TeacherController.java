@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,7 +39,7 @@ public class TeacherController {
     // ===========================================   [강의 관련 시작]  ============================================================
 
     // 개설 강좌 전체 리스트
-   @GetMapping("lectureList")
+   @GetMapping("/lectureList")
     public String list(Model model, LectureParam lectureParam) {
        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
        System.out.println(member.getMno());
@@ -63,10 +60,32 @@ public class TeacherController {
         LectureDTO lectureDTO = lectureService.getById(lecture_no);
         System.out.println(lectureDTO);
 
+        VwLecture vwLecture = vwLectureRepository.getBylectureNo(lecture_no);
 
-        model.addAttribute("lecture", lectureDTO);
+        model.addAttribute("lecture", vwLecture);
+        //model.addAttribute("lecture", lectureDTO);
         model.addAttribute("lecture_no", lecture_no);
         return "teacher/lecture/getlecture";
+    }
+
+
+
+    // addform 불러오기
+    @GetMapping("/addZoom")
+    public String addZoomForm(Model model, @RequestParam("lecture_no") long lecture_no) {
+        VwLecture vwLecture = vwLectureRepository.getBylectureNo(lecture_no);
+        model.addAttribute("lecture", vwLecture);
+
+        return "teacher/lecture/addZoom";
+    }
+
+    //zoomurl추가
+    @PostMapping("/addZoom")
+    public String addZoomSubmit(Model model, @RequestParam("zoomUrl") String zoomUrl, @RequestParam("lecture_no") long lecture_no){
+        
+        lectureService.addZoomUrl(zoomUrl, lecture_no);
+
+        return "teacher/lecture/addZoom";
     }
 
 }

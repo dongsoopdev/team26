@@ -14,8 +14,5 @@ public interface VwLectureRepository extends JpaRepository<VwLecture, Long> {
     List<VwLecture> findAllByOrderByLecRegDateDesc();// 최신 등록순
 
 
-
-
-
-
+    List<VwLecture> findByLectureAct(int lectureAct);
 }

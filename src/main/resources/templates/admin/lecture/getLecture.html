@@ -4,7 +4,7 @@
 <head>
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
-    <title>LMS</title>
+    <title>LMS_관리자 페이지</title>
 </head>
 <body class="sb-nav-fixed">
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
@@ -31,7 +31,7 @@
                         </td>
                     </tr>-->
 
-                    <tr th:if="${lecture.getLectureAct() != 5}">
+                    <tr th:if="${lecture.getLectureAct() == 1}">
                         <th >강의 수정 / 강의 철회 </th>
                         <td>
                             <a th:href="@{'/admin/updateLecture/' + ${lecture.getLectureNo()}}" class="btn btn-primary" style="width: 150px;"> 강의 수정 </a>

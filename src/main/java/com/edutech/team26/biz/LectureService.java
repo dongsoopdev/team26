@@ -50,12 +50,18 @@ public interface LectureService {
     //강의 철회 취소
     void deleteCancleLecture(long lectureNo);
 
+    // 수강취소시 수강인원 변경
+    void deleteCourse(long lectureNo);
 
-    //    /*
-//     * 수강 신청
-//     */
+
+    // 수강 신청
     ServiceResult apply(StudentDTO studentDTO);
 
 
+    // 강의 이름 중복 확인
+    boolean isLectureNameDuplicate(String lectureName);
 
+
+    //zoom url emdfhr
+    void addZoomUrl(String zoomUrl, long lectureNo);
 }

@@ -4107,12 +4107,12 @@ h6 {
     border-color: #0D4991
 }
 
-.product_description_area .tab-content {
+/*.product_description_area .tab-content {
     border-left: 1px solid #eee;
     border-right: 1px solid #eee;
     border-bottom: 1px solid #eee;
     padding: 30px
-}
+}*/
 
 .product_description_area .tab-content p {
     color: #797979
@@ -4175,8 +4175,8 @@ h6 {
 }
 
 .product_description_area .tab-content .table tbody tr td {
-    padding-left: 65px;
-    padding-right: 65px;
+    padding-left: 30px;
+    padding-right: 30px;
     padding-top: 14px;
     padding-bottom: 14px
 }

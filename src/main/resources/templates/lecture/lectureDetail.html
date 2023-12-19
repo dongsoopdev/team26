@@ -17,6 +17,7 @@
     <!-- main css -->
     <link rel="stylesheet" th:href="@{/css/lecture/detail/style.css}"/>
     <link rel="stylesheet" th:href="@{/css/lecture/detail/responsive.css}"/>
+    <link rel="stylesheet" th:href="@{/css/lecture/detail/video.css}"/>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -86,18 +87,18 @@
 
 
                                         <li>
-                                                <span style="font-size: 15px;font-weight: bold;">신청 기간</span>
-                                                <p2 th:text="${lecture.getStartEnrolmentDate()}"></p2>
-                                                <strong> - </strong>
-                                                <p2 th:text="${lecture.getEndEnrolmentDate()}"></p2>
+                                            <span style="font-size: 15px;font-weight: bold;">신청 기간</span>
+                                            <p2 th:text="${lecture.getStartEnrolmentDate()}"></p2>
+                                            <strong> - </strong>
+                                            <p2 th:text="${lecture.getEndEnrolmentDate()}"></p2>
 
                                             </a>
                                         </li>
                                         <li>
-                                        <span style=" font-size: 15px; font-weight: bold;">학습 기간</span>
-                                                <p2 th:text="${lecture.getStartStudyDate()}"></p2>
-                                                <strong> - </strong>
-                                                <p2 th:text="${lecture.getEndStudyDate()}"></p2>
+                                            <span style=" font-size: 15px; font-weight: bold;">학습 기간</span>
+                                            <p2 th:text="${lecture.getStartStudyDate()}"></p2>
+                                            <strong> - </strong>
+                                            <p2 th:text="${lecture.getEndStudyDate()}"></p2>
 
 
                                         </li>
@@ -105,10 +106,10 @@
 
                                         <li>
 
-                                                <span style="font-size: 15px;font-weight: bold;">신청 현황</span>
-                                                 <strong><p2 style="color: #002a80" th:text="${lecture.getLectureCurnum()}" ></p2></strong>
-                                                 <strong> / </strong>
-                                                <p2 th:text="${lecture.getLectureMaxnum()}"></p2>
+                                            <span style="font-size: 15px;font-weight: bold;">신청 현황</span>
+                                            <strong><p2 style="color: #002a80" th:text="${lecture.getLectureCurnum()}" ></p2></strong>
+                                            <strong> / </strong>
+                                            <p2 th:text="${lecture.getLectureMaxnum()}"></p2>
 
 
                                         </li>
@@ -257,20 +258,20 @@
 <!--================Product Description Area =================-->
 <section class="product_description_area">
     <div class="container">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
+        <ul class="nav nav-tabs" id="myTab" role="tablist" style="padding: 1px 0px;">
+          <!-- <li class="nav-item" >
                 <a
-                        class="nav-link"
+                        class="nav-link "
                         id="home-tab"
                         data-toggle="tab"
                         href="#home"
                         role="tab"
                         aria-controls="home"
                         aria-selected="true"
-                >Description</a
-                >
+                        style="background-color: #0D4991;color: #ffffff;">샘플강의
+                </a>
             </li>
-            <li class="nav-item">
+          &lt;!&ndash;  <li class="nav-item">
                 <a
                         class="nav-link"
                         id="profile-tab"
@@ -293,20 +294,25 @@
                         aria-selected="false"
                 >Comments</a
                 >
-            </li>
-            <li class="nav-item">
+            </li>&ndash;&gt;
+            <li class="nav-item" >
                 <a
-                        class="nav-link active"
+                        class="nav-link"
                         id="review-tab"
                         data-toggle="tab"
                         href="#review"
                         role="tab"
-                        aria-controls="review"
-                        aria-selected="false"
-                >Reviews</a
+                        aria-controls="home"
+                        aria-selected="true"
+                        style="background-color: #0D4991;color: #ffffff;"
+                >강의 정보</a
                 >
-            </li>
+            </li>-->
         </ul>
+
+
+
+
         <div class="tab-content" id="myTabContent">
             <div
                     class="tab-pane fade"
@@ -544,238 +550,147 @@
                     aria-labelledby="review-tab"
             >
                 <div class="row">
-                    <div class="col-lg-6">
-                        <div class="row total_rate">
-                            <div class="col-6">
-                                <div class="box_total">
-                                    <h5>Overall</h5>
-                                    <h4>4.0</h4>
-                                    <h6>(03 Reviews)</h6>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="rating_list">
-                                    <h3>Based on 3 Reviews</h3>
-                                    <ul class="list">
-                                        <li>
-                                            <a href="#"
-                                            >5 Star
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> 01</a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                            >4 Star
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> 01</a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                            >3 Star
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> 01</a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                            >2 Star
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> 01</a
-                                            >
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                            >1 Star
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> 01</a
-                                            >
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="review_list">
-                            <div class="review_item">
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img
-                                                src="img/product/single-product/review-1.png"
-                                                alt=""
-                                        />
-                                    </div>
-                                    <div class="media-body">
-                                        <h4>Blake Ruiz</h4>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna
+                    <div class="col-lg-7">
 
-                                </p>
-                            </div>
-                            <div class="review_item">
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img
-                                                src="img/product/single-product/review-2.png"
-                                                alt=""
-                                        />
-                                    </div>
-                                    <div class="media-body">
-                                        <h4>Blake Ruiz</h4>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna
 
-                                </p>
-                            </div>
-                            <div class="review_item">
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img
-                                                src="img/product/single-product/review-3.png"
-                                                alt=""
-                                        />
-                                    </div>
-                                    <div class="media-body">
-                                        <h4>Blake Ruiz</h4>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna
 
-                                </p>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" >
+                                <a
+                                        class="nav-link "
+                                        id="home-tab"
+                                        data-toggle="tab"
+                                        href="#home"
+                                        role="tab"
+                                        aria-controls="home"
+                                        aria-selected="true"
+                                        style="background-color: #0D4991;color: #ffffff;">샘플강의
+                                </a>
+                            </li>
+                        </ul>
+
+
+
+                        <!--<h4>샘플 강의</h4>-->
+
+
+                            <!--<table class="tb1">
+                                <thead>
+                                <tr class="title">
+                                    <th colspan="5">시범 강의</th>
+                                </tr>
+                                </thead>
+                            </table>-->
+
+                            <div class="player">
+                                <div class="vdo_fr">
+                                    <video id="video">
+                                        <source th:src="@{'/upload/' + ${lecture.getLectureVedio()}}" type="video/mp4" />
+                                    </video>
+                                </div>
+                                <div id="timebar">
+                                    <span id="currentTime"></span>
+                                </div>
+                                <div id="buttonbar">
+                                    <button id="restart" class="player_btn"></button>
+                                    <button id="rew" class="player_btn"></button>
+                                    <button id="play" class="player_btn"></button>
+                                    <button id="pause" class="player_btn"></button>
+                                    <button id="stop" class="player_btn"></button>
+                                    <button id="fastFwd" class="player_btn"></button>
+                                    <button id="mute" class="player_btn"></button>
+                                    <button id="unmute" class="player_btn"></button>
+                                    <input id="vol" type="range" value="500" min="0" max="1000">
+                                    <button id="vmup" class="player_btn"></button>
+                                    <button id="vmdown" class="player_btn"></button>
+                                    <button id="volTxt">100%</button>
+                                    <button id="sizeup" class="player_btn"></button>
+                                    <button id="sizedown" class="player_btn"></button>
+                                    <button id="full" class="player_btn"></button>
+                                    <button id="original" class="player_btn"></button>
+                                </div>
+                                <div id="progress">
+                                    <div id="progressBar"></div>
+                                </div>
                             </div>
-                        </div>
+                              <script th:src="@{/js/lecture/vdo.js}"/></script>
+
+
+
+
                     </div>
-                    <div class="col-lg-6">
-                        <div class="review_box">
-                            <h4>Add a Review</h4>
-                            <p>Your Rating:</p>
-                            <ul class="list">
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-star"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-star"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-star"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-star"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-star"></i>
-                                    </a>
+                    <div class="col-lg-5" >
+
+
+                        <div class="review_box" >
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" >
+                                    <a
+                                            class="nav-link"
+                                            id="review-tab"
+                                            data-toggle="tab"
+                                            href="#review"
+                                            role="tab"
+                                            aria-controls="home"
+                                            aria-selected="true"
+                                            style="background-color: #0D4991;color: #ffffff;"
+                                    >강의 정보</a
+                                    >
                                 </li>
                             </ul>
-                            <p>Outstanding</p>
-                            <form
-                                    class="row contact_form"
-                                    action="contact_process.php"
-                                    method="post"
-                                    id="contactForm"
-                                    novalidate="novalidate"
-                            >
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input
-                                                type="text"
-                                                class="form-control"
-                                                id="name"
-                                                name="name"
-                                                placeholder="Your Full name"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input
-                                                type="email"
-                                                class="form-control"
-                                                id="email"
-                                                name="email"
-                                                placeholder="Email Address"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input
-                                                type="text"
-                                                class="form-control"
-                                                id="number"
-                                                name="number"
-                                                placeholder="Phone Number"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                        <textarea
-                                class="form-control"
-                                name="message"
-                                id="message"
-                                rows="1"
-                                placeholder="Review"
-                        ></textarea>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 text-right">
-                                    <button
-                                            type="submit"
-                                            value="submit"
-                                            class="btn submit_btn"
-                                    >
-                                        Submit Now
-                                    </button>
-                                </div>
-                            </form>
+
+
+
+                            <table class="table">
+                            <tr>
+                                <th style="width: 22%;">강의 제목</th>
+                                <td th:text="${lecture.getLectureName()}" style="border-top: 1px solid #dee2e6;"></td>
+                            </tr>
+
+                                <tr>
+                                    <th th:each="vwLecture: ${vwLecture}">당담 강사</th>
+                                    <td th:text="${vwLecture.getUserName()}"></td>
+                                </tr>
+
+
+
+
+                                <tr>
+                                <th style="width: 22%;">강의 상태</th>
+                                <td>
+                                    <p2 th:text="${lecture.getLectureAct() == 1 ? '강의예정' : (lecture.getLectureAct() == 2 ? '강의중' : (lecture.getLectureAct() == 3 ? '강의종료' : (lecture.getLectureAct() == 4 ? '폐강' : (lecture.getLectureAct() == 5 ? '강의철회' : ''))))}"
+                                    ></p2>
+
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <th style="width: 22%;">강좌 설명</th>
+                                <td th:text="${lecture.getLectureContent()}"></td>
+                            </tr>
+
+                            <tr>
+                                <th style="width: 22%;">수강 신청 기간</th>
+                                <td>
+                                    <p2 th:text="${lecture.getStartEnrolmentDate()}"></p2>
+                                    <strong> - </strong>
+                                    <p2 th:text="${lecture.getEndEnrolmentDate()}"></p2>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th style="width: 22%;">강의 운영 기간</th>
+                                <td>
+                                    <p2 th:text="${lecture.getStartStudyDate()}"></p2>
+                                    <strong> - </strong>
+                                    <p2 th:text="${lecture.getEndStudyDate()}"></p2>
+                                </td>
+                            </tr>
+
+                            </table>
+
+
                         </div>
                     </div>
                 </div>

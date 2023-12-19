@@ -277,54 +277,16 @@ public class LectureServiceImpl implements LectureService {
         lectureRepository.save(lecture);
     }
 
+    // 수강취소
+    @Override
+    public void deleteCourse(long lectureNo) {
+        Lecture lecture = lectureRepository.getById(lectureNo);
+        lecture.setLectureCurnum(lecture.getLectureCurnum() - 1); // 수강신청인원 한명빼기
+        lectureRepository.save(lecture);
+    }
 
-//	@Override
-//	public boolean del(String idList) {
-//
-//		if (idList != null && idList.length() > 0) {
-//
-//			String[] ids = idList.split(",");
-//			for(String x: ids) {
-//				long id = 0L;
-//				try {
-//					id = Long.parseLong(x);
-//				} catch (Exception e) {
-//
-//				}
-//
-//				if (id > 0) {
-//					lectureRepository.deleteById(id);
-//				}
-//			}
-//		}
-//		return true;
-//	}
 
-//	@Override
-//	public List<LectureDTO> frontList(LectureParam lectureParam) {
-//
-//		if (lectureParam.getCategoryId() < 1) {
-//			List<Lecture> lectureList = lectureRepository.findAll();
-//			return LectureDTO.of(lectureList);
-//		}
-//
-//		Optional<List<Lecture>> optionalLectureList =
-//					lectureRepository.findByCategoryId(lectureParam.getCategoryId());
-//		if (optionalLectureList.isPresent()) {
-//			return LectureDTO.of(optionalLectureList.get());
-//		}
-//		return null;
-//	}
-//
-//	@Override
-//	public LectureDTO frontDetail(long id) {
-//
-//		Optional<Lecture> optionalLecture = lectureRepository.findById(id);
-//		if (optionalLecture.isPresent()) {
-//			return LectureDTO.of(optionalLecture.get());
-//		}
-//		return null;
-//	}
+
 
 
     // 수강 신청
@@ -411,64 +373,21 @@ public class LectureServiceImpl implements LectureService {
         return result;
     }
 
+    @Override
+    public boolean isLectureNameDuplicate(String lectureName) {
+        // 강의 제목이 이미 데이터베이스에 존재하는지 확인
+        return lectureRepository.existsByLectureName(lectureName);
+    }
 
-    // 수강신청
-//    @Override
-//    public ServiceResult apply(StudentDTO studentDTO) {
-//
-//
-//        ServiceResult result = new ServiceResult();
-//
-//        Optional<Lecture> optionalLecture = lectureRepository.findById(studentDTO.getLectureNo());
-//        if (!optionalLecture.isPresent()) {
-//            result.setResult(false);
-//            result.setMessage("강좌 정보가 존재하지 않습니다.");
-//            return result;
-//        }
-//
-//        Lecture lecture = optionalLecture.get();
-//
-//        String[] statusList = {Student.STATUS_REQ, Student.STATUS_COMPLETE};
-//        long count = studentRepository.countByLectureNoAndStudentNoAndStatusIn(
-//                lecture.getLecture_no(), studentDTO.getMno(), Arrays.asList(statusList));
-//
-//        if (count > 0) {
-//            result.setResult(false);
-//            result.setMessage("이미 신청한 강좌 정보가 존재합니다.");
-//            return result;
-//        }
-//
-//        Student takeLecture = Student.builder()
-//                .lectureNo(lecture.getLecture_no())
-//                .mno(studentDTO.getMno())
-//                .entranceYn(false)
-//                .status(Student.STATUS_REQ)
-//                .regDate(LocalDateTime.now())
-//
-//                .build();
-//
-//        studentRepository.save(takeLecture);
-//
-//        // user -> student로 권한변경
-//        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        Member memberInfo = memberRepository.findByMno(member.getMno());
-//        Member memberUpgrade = modelMapper.map(memberInfo, Member.class);
-//        memberUpgrade.updateRole(MemberRole.STUDENT);
-//        memberRepository.save(memberUpgrade);
-//
-//
-//        result.setResult(true);
-//        result.setMessage("");
-//
-//        return result;
-//    }
-//
-//	@Override
-//	public List<LectureDTO> listAll() {
-//
-//		List<Lecture> lectureList = lectureRepository.findAll();
-//
-//		return LectureDTO.of(lectureList);
-//	}
-//}
+    @Override
+    public void addZoomUrl(String zoomUrl, long lectureNo) {
+
+
+   /* Lecture lecture = lectureRepository.getById(lectureDTO.getLecture_no());
+    lecture.setZoomUrl(zoomUrl);
+    lectureRepository.save(lecture);*/
+
+    }
+
+
 }

@@ -62,16 +62,17 @@
 
 
                             <td>
-                                <p2 th:text="${courseList.getStartEnrolmentDate()}"></p2>
+                                <p2 th:utext="${#temporals.format(lectureList.getStartEnrolmentDate(), 'yy.MM.dd')}"></p2>
                                 <strong> - </strong>
-                                <p2 th:text="${courseList.getEndEnrolmentDate()}"></p2>
+                                <p2 th:utext="${#temporals.format(lectureList.getEndEnrolmentDate(), 'yy.MM.dd')}"></p2>
                             </td>
 
                             <td>
-                                <p2 th:text="${courseList.getStartStudyDate()}"></p2>
+                                <p2 th:utext="${#temporals.format(lectureList.getStartStudyDate(), 'yy.MM.dd')}"></p2>
                                 <strong> - </strong>
-                                <p2 th:text="${courseList.getEndStudyDate()}"></p2>
+                                <p2 th:utext="${#temporals.format(lectureList.getEndStudyDate(), 'yy.MM.dd')}"></p2>
                             </td>
+
 
                             <td>
                                 <p2 th:text="${courseList.getLectureAct() == 1 ? '강의예정' : (courseList.getLectureAct() == 2 ? '강의중' : (courseList.getLectureAct() == 3 ? '강의종료' : '폐강'))}"></p2>
@@ -80,9 +81,14 @@
 
                             <td>
                                 <div class="btn_group">
-                                    <a th:href="@{'/student/getCourse/'+${courseList.getStudentNo()}}"
+                                    <a th:href="@{'/student/getCourse/'+${courseList.getStudentNo()}}" th:if="${courseList.getStudentStatus() ne 'CANCEL'}"
                                        class="btn btn-primary">상세보기</a>
+
+                                    <p2 class="" style="color: red;"
+                                       th:if="${courseList.getStudentStatus() eq 'CANCEL'}">수강 취소된 강의</p2><br>
+
                                 </div>
+
                             </td>
 
                         </tr>

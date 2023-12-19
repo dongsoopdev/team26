@@ -277,7 +277,7 @@ public class MemberController {
         return "teacher/upgrade";
     }
 
-    @GetMapping("/stateTeacher")
+    @GetMapping("e")
     public String stateTeacher(@Param("type") int type, @Param("mno") Long teacherNo) throws Exception {
         teacherService.changeActive(teacherNo, type);
         return "redirect:/";
