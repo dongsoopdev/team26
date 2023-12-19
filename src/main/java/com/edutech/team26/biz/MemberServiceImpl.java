@@ -92,12 +92,11 @@ public class MemberServiceImpl implements MemberService {
 
         memberRepository.save(member);
 
-        // 회원가입 후 키 인증 메일 보내기
-        /*String subject = "[LMS] 회원이 되신 것을 환영합니다.";
+        String subject = "[LMS] 회원이 되신 것을 환영합니다.";
         String text = "<h2>LMS 회원가입을 축하드립니다.</h2><br /><hr /><br />";
         text += "<p>" + memberJoinDTO.getUserName() + "님의 아래 링크를 클릭하셔서 가입을 완료 하세요.</p>";
         text += "<div><a target='_blank' href='http://localhost:" + serverPost + "/member/email-auth/" + uuid + "'>가입 완료</a></div>";
-        mailComponent.sendMail(memberJoinDTO.getEmail(), subject, text);*/
+        mailComponent.sendMail(memberJoinDTO.getEmail(), subject, text);
 
         return true;
 
@@ -224,6 +223,103 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findByMno(mno);
         MemberDTO memberDTO = modelMapper.map(member, MemberDTO.class);
         return memberDTO;
+    }
+
+    @Override
+    public MemberDTO findId(String username, String phone) {
+        Optional<Member> member = memberRepository.findByUserNameAndPhone(username, phone);
+        if(member.isPresent()) {
+            Member mem = member.get();
+            MemberDTO memberDTO = modelMapper.map(mem, MemberDTO.class);
+
+            String email = memberDTO.getEmail();
+            String[] strArr = email.split("@");
+            for(int i = 0; i < strArr.length; i++) {
+                int k = 2;
+                if(i == 1) {
+                    k = 1;
+                }
+                String tempStr = strArr[i].substring(0, k);
+                for(int j = 0; j < strArr[i].length() - k; j++) {
+                    tempStr += "*";
+                }
+                strArr[i] = tempStr;
+                if(i == 1) {
+                    email = strArr[0] + "@" + strArr[1];
+                }
+            }
+
+            memberDTO.setEmail(email);
+
+            return memberDTO;
+        }
+        return null;
+    }
+
+    @Override
+    public boolean findPw(String email, String phone, String username) {
+        Optional<Member> optionalMember = memberRepository.findByEmailAndPhoneAndUserName(email, phone, username);
+        if(optionalMember.isEmpty()) {
+            return false;
+        }
+
+        Member member = optionalMember.get();
+
+        if(member.getResetPasswordLimitTime() != null) {
+            LocalDateTime resetPwTime = member.getResetPasswordLimitTime().plusMinutes(30);
+            LocalDateTime now = LocalDateTime.now();
+
+            if(now.isBefore(resetPwTime)) {
+                return false;
+            }
+        }
+
+        String uuid = UUID.randomUUID().toString();
+        LocalDateTime dateTime = LocalDateTime.now();
+        member.changeResetPw(uuid, dateTime);
+        memberRepository.save(member);
+
+        String subject = "[LMS] 비밀번호 초기화 안내 메일입니다.";
+        String text = "<h2>LMS 비밀번호 초기화 안내 메일입니다.</h2><br /><hr /><br />";
+        text += "<p>" + member.getUserName() + "님의 아래 링크를 클릭하시면 비밀번호 초기화 과정이 진행됩니다.</p>";
+        text += "<div><a target='_blank' href='http://localhost:" + serverPost + "/member/resetPassword?userId=" + member.getMno() + "&key=" + uuid + "'>비밀번호 초기화</a></div>";
+        mailComponent.sendMail(member.getEmail(), subject, text);
+
+        return true;
+    }
+
+    @Override
+    public boolean resetPwAuth(Long mno, String key) {
+        Optional<Member> optionalMember = memberRepository.findByMnoAndResetPasswordKey(mno, key);
+        if (optionalMember.isEmpty()) {
+            return false;
+        }
+
+        Member member = optionalMember.get();
+
+        LocalDateTime resetPwTime = member.getResetPasswordLimitTime().plusMinutes(30);
+        LocalDateTime now = LocalDateTime.now();
+
+        if (member.getResetPasswordLimitTime() == null || !(now.isBefore(resetPwTime))) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean resetPwAuthPro(Long mno, String key, String Password) {
+        Optional<Member> optionalMember = memberRepository.findByMnoAndResetPasswordKey(mno, key);
+        if (optionalMember.isEmpty()) {
+            return false;
+        }
+
+        Member member = optionalMember.get();
+        member.changePassword(passwordEncoder.encode(Password));
+        member.changeResetPw("", null);
+        memberRepository.save(member);
+
+        return true;
     }
 
 }
