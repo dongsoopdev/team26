@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>공지사항 작성</title>
+    <title>QNA 작성</title>
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
     <style>
@@ -26,13 +26,14 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            <h2 class="title">공지사항 등록</h2>
+                            <h2 class="title">QNA 등록</h2>
                         </div>
                         <div class="card-body">
-                            <form action="/teacher/insertNotice" method="post">
+                            <form action="/teacher/insertQna" method="post">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Title</span>
                                     <input type="text" name="title" class="form-control" placeholder="Title" required>
+                                    <input type="hidden" name="mno" class="form-control" th:value="${2}">
                                     <input type="hidden" name="lecture_no" class="form-control" th:value="${lecture_no}">
                                 </div>
                                 <div class="input-group mb-3">
@@ -43,7 +44,7 @@
                                     <div class="float-end">
                                         <button type="submit" class="btn btn-primary">등록</button>
                                         <button type="reset" class="btn btn-secondary">초기화</button>
-                                        <a th:href="|@{/teacher/noticeList(lecture_no=${lecture_no})}|" class="btn btn-info">목록으로</a>
+                                        <a th:href="|@{/teacher/qnaList(lecture_no=${lecture_no})}|" class="btn btn-info">목록으로</a>
                                     </div>
                                 </div>
                             </form>

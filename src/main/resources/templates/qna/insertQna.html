@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>공지사항 작성</title>
+    <title>QNA 작성</title>
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <style>
         .content {
@@ -20,10 +20,10 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="title">공지사항 등록</h2>
-                </div>
+                    <h2 class="title">QNA 등록</h2>
+                </div> 
                 <div class="card-body">
-                    <form action="/notice/insertNotice" method="post">
+                    <form action="/qna/insertQna" method="post">
                         <div class="input-group mb-3">
                             <span class="input-group-text">Title</span>
                             <input type="text" name="title" class="form-control" placeholder="Title" required>
@@ -37,7 +37,7 @@
                             <div class="float-end">
                                 <button type="submit" class="btn btn-primary">등록</button>
                                 <button type="reset" class="btn btn-secondary">초기화</button>
-                                <a th:href="|@{/notice/noticeList(lecture_no =0)}|" class="btn btn-info">목록으로</a>
+                                <a th:href="|@{/qna/qnaList(lecture_no =0)}|" class="btn btn-info">목록으로</a>
                             </div>
                         </div>
                     </form>
