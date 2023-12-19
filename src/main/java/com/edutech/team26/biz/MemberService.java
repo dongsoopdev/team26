@@ -3,6 +3,7 @@ package com.edutech.team26.biz;
 import com.edutech.team26.domain.Member;
 import com.edutech.team26.dto.MemberDTO;
 import com.edutech.team26.dto.MemberJoinDTO;
+import com.edutech.team26.dto.MemberPwDTO;
 
 public interface MemberService {
     //static class MidExistException extends Exception {}
@@ -12,6 +13,8 @@ public interface MemberService {
     boolean join(MemberJoinDTO memberJoinDTO) throws Exception;
 
     boolean modifyInfo(Long mno, MemberDTO memberDTO) throws Exception;
+
+    boolean modifyPw(Long mno, MemberPwDTO memberPwDTO) throws Exception;
 
     boolean withdraw(Long mno) throws Exception;
 

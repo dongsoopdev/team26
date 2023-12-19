@@ -156,11 +156,20 @@ public class MemberController {
         }
 
         try {
-            //memberService.modifypw(member.getMno(), memberPwDTO);
-        } catch (IllegalStateException e){
+            if(!memberPwDTO.getNewPassword().equals(memberPwDTO.getNewPasswordConfirm())) {
+                model.addAttribute("errorMessage", "새로운 비밀번호와 새로운 비밀번호 확인이 일치하지 않습니다");
+            } else {
+                boolean modifyPwCheck = memberService.modifyPw(member.getMno(), memberPwDTO);
+                if(!modifyPwCheck) {
+                    model.addAttribute("errorMessage", "기존 비밀번호가 다릅니다.");
+                    return "member/myPagePw";
+                }
+            }
+        } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "member/myPagePw";
         }
+
         return "redirect:/myPage";
     }
 
