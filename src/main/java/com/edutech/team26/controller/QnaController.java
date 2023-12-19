@@ -2,11 +2,16 @@ package com.edutech.team26.controller;
 
 import com.edutech.team26.biz.MemberService;
 import com.edutech.team26.biz.QnaService;
+import com.edutech.team26.biz.StudentService;
+import com.edutech.team26.domain.Student;
 import com.edutech.team26.dto.MemberDTO;
+import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.dto.QnaDTO;
 import com.edutech.team26.dto.QnaDTO;
+import com.edutech.team26.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Log4j2
@@ -21,6 +27,7 @@ import java.util.List;
 public class QnaController {
     private final QnaService qnaService;
     private final MemberService memberService;
+    private final StudentRepository studentRepository;
 
     @GetMapping("/qna/qnaList")
     public String qnaList(@RequestParam(name = "lecture_no") Long lecture_no, Model model) {
@@ -166,6 +173,10 @@ public class QnaController {
         List<QnaDTO> qnaList = qnaService.qnaListByLec(lecture_no);
         model.addAttribute("qnaList",qnaList);
         model.addAttribute("lecture_no",lecture_no);
+
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
+        model.addAttribute("student_no",student.get().getStudentNo());
         return "student/qna/studentQnaList";
     }
     @GetMapping("/student/getQna")
@@ -180,6 +191,58 @@ public class QnaController {
         model.addAttribute("userName",userName);
         model.addAttribute("lecture_no",lecture_no);
         model.addAttribute("qna",qnaDTO);
+
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
+        model.addAttribute("student_no",student.get().getStudentNo());
         return "student/qna/studentGetQna";
+    }
+
+    @GetMapping("/student/insertQna")
+    public String studentInsertQna(@RequestParam(name = "lecture_no") Long lecture_no,Model model) {
+        model.addAttribute("lecture_no",lecture_no);
+
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
+        model.addAttribute("student_no",student.get().getStudentNo());
+        return "student/qna/studentInsertQna";
+    }
+
+    @PostMapping("/student/insertQna")
+    public String studentInsertQnaPro ( QnaDTO qnaDTO) {
+        qnaService.insertQna(qnaDTO);
+        return "redirect:/student/qnaList?lecture_no="+ qnaDTO.getLecture_no();
+    }
+
+    @GetMapping("/student/updateQna")
+    public String studentUpdateQna(@RequestParam(name = "qna_no") Long qna_no, Model model) {
+        QnaDTO qnaDTO= qnaService.findByQno(qna_no);
+        Long lecture_no = qnaDTO.getLecture_no();
+        model.addAttribute("lecture_no",lecture_no);
+        model.addAttribute("qna", qnaDTO);
+
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
+        model.addAttribute("student_no",student.get().getStudentNo());
+        return "student/qna/studentUpdateQna";
+    }
+
+    @PostMapping("/student/updateQna")
+    public String studentUpdateQnaPro (QnaDTO qnaDTO) {
+        qnaService.updateQna(qnaDTO);
+        return "redirect:/student/qnaList?lecture_no="+ qnaDTO.getLecture_no();
+    }
+
+    @GetMapping("/student/deleteQna")
+    public String studentDelete(@RequestParam(name = "qna_no") Long qna_no, Model model) {
+        QnaDTO qnaDTO= qnaService.findByQno(qna_no);
+        Long lecture_no = qnaDTO.getLecture_no();
+        model.addAttribute("lecture_no",lecture_no);
+        qnaService.deleteQna(qna_no);
+
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
+        model.addAttribute("student_no",student.get().getStudentNo());
+        return "redirect:/student/qnaList?lecture_no="+ lecture_no;
     }
 }

@@ -2,9 +2,13 @@ package com.edutech.team26.controller;
 
 import com.edutech.team26.biz.MemberService;
 import com.edutech.team26.biz.NoticeService;
+import com.edutech.team26.biz.StudentService;
 import com.edutech.team26.domain.Member;
+import com.edutech.team26.domain.Student;
 import com.edutech.team26.dto.MemberDTO;
+import com.edutech.team26.dto.MemberSecurityDTO;
 import com.edutech.team26.dto.NoticeDTO;
+import com.edutech.team26.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Log4j2
@@ -23,6 +28,7 @@ import java.util.List;
 public class NoticeController {
     private final NoticeService noticeService;
     private final MemberService memberService;
+    private final StudentRepository studentRepository;
 
     @GetMapping("/notice/noticeList")
     public String noticeList(@RequestParam(name = "lecture_no") Long lecture_no, Model model) {
@@ -166,6 +172,10 @@ public class NoticeController {
     @GetMapping("/student/noticeList")
     public String studentNoticeList(@RequestParam(name = "lecture_no") Long lecture_no, Model model) {
         List<NoticeDTO> noticeList = noticeService.noticeList(lecture_no);
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
+        model.addAttribute("student_no",student.get().getStudentNo());
+
         model.addAttribute("noticeList",noticeList);
         model.addAttribute("lecture_no",lecture_no);
         return "student/notice/studentNoticeList";
@@ -177,6 +187,10 @@ public class NoticeController {
         noticeService.updateVisited(notice_no);
         MemberDTO memberDTO = memberService.getMemberInfo(noticeDTO.getMno());
         String userName = memberDTO.getUserName();
+
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
+        model.addAttribute("student_no",student.get().getStudentNo());
         model.addAttribute("lecture_no",lecture_no);
         model.addAttribute("notice",noticeDTO);
         model.addAttribute("userName",userName);

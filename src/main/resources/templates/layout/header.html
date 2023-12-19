@@ -14,7 +14,7 @@
                             <div class="navbar-nav ms-auto">
                                 <a th:href="@{/notice/noticeList(lecture_no =0)}" class="nav-item text-black nav-link">공지사항</a>
                                 <a th:href="@{/lecture/lectureList}" class="nav-item text-black nav-link">개설강좌</a>
-                                <a th:href="@{/}" class="nav-item text-black nav-link">QnA</a>
+                                <a th:href="@{/qna/qnaList(lecture_no =0)}" class="nav-item text-black nav-link">QNA</a>
                                 <th:block sec:authorize="isAuthenticated()">
                                     <a th:href="@{/logout}" class="btn btn-primary" style="margin-left: 20px;">로그아웃</a>
                                 </th:block>

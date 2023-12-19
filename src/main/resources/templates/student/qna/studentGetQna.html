@@ -18,7 +18,7 @@
 <body>
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
 <div id="layoutSidenav">
-    <th:block th:replace="~{layout/lmsMenuStuLec :: lmsMenu2(${lecture_no})}"></th:block>
+    <th:block th:replace="~{layout/lmsMenuStuLec :: lmsMenu2(${lecture_no},${student_no})}"></th:block>
     <div id="layoutSidenav_content">
         <main>
         <div class="content" >
@@ -56,6 +56,8 @@
                             <div class="my-4">
                                 <div class="float-end">
                                     <a th:href="@{/student/qnaList(lecture_no=${lecture_no})}" class="btn btn-secondary">QNA 목록</a>
+                                    <a sec:authorize="hasAnyRole('ADMIN', 'TEACHER')" th:href="|@{/teacher/updateQna(qna_no=${qna.qna_no})}|" class="btn btn-primary">수정</a>
+                                    <a sec:authorize="hasAnyRole('ADMIN', 'TEACHER')" th:href="|@{/teacher/deleteQna(qna_no=${qna.qna_no})}|" class="btn btn-danger">삭제</a>
                                 </div>
                             </div>
                         </div>

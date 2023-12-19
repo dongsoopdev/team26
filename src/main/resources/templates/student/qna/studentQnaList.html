@@ -19,7 +19,7 @@
 <body>
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
 <div id="layoutSidenav">
-    <th:block th:replace="~{layout/lmsMenuStuLec :: lmsMenu2(${lecture_no})}"></th:block>
+    <th:block th:replace="~{layout/lmsMenuStuLec :: lmsMenu2(${lecture_no},${student_no})}"></th:block>
     <div id="layoutSidenav_content">
         <main>
         <div class="content" >
@@ -56,6 +56,13 @@
                         </tbody>
                     </table>
                 </div><!--end card body-->
+                <div class="my-4">
+                    <div class="float-end">
+                        <a sec:authorize="hasRole('STUDENT')" th:href="|@{/student/insertQna(lecture_no=${lecture_no})}|" class="btn btn-secondary">
+                            등록
+                        </a>
+                    </div>
+                </div>
             </div><!--end card-->
             </div><!-- end col-->
             </div><!-- end row-->

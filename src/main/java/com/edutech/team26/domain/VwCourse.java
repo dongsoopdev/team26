@@ -1,4 +1,3 @@
-
 package com.edutech.team26.domain;
 
 import jakarta.persistence.Column;
@@ -29,10 +28,10 @@ public class VwCourse {
     private long lectureNo;
     private String lectureName;
     private String lectureContent;
-    private String startEnrolmentDate;                  //수강신청일
-    private String endEnrolmentDate;                    //수강종료일
-    private String startStudyDate;                      //강의시작일
-    private String endStudyDate;                        //강의종료일
+    private LocalDateTime startEnrolmentDate;                  //수강신청일
+    private LocalDateTime endEnrolmentDate;                    //수강종료일
+    private LocalDateTime startStudyDate;                      //강의시작일
+    private LocalDateTime endStudyDate;                        //강의종료일
     private String lectureImg1;
     private String lectureImg2;
     private String lectureVedio;
@@ -48,9 +47,9 @@ public class VwCourse {
     private LocalDateTime activeDate;
     private Boolean activeYn;
     private String intro;
-    private String  teacherStatus;           
+    private String  teacherStatus;
     private String teacherName;               //강사이름
- 
+
     private Long mno;
     private String userName;                 //수강생이름
     private String userStatus;
