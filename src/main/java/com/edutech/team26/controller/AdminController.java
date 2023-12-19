@@ -18,16 +18,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Log4j2
 @Controller
@@ -69,9 +68,31 @@ public class AdminController extends lecBaseController {
 
     // ===========================================   [강의 관련 시작]  ============================================================
 
+
+    @GetMapping("/filteredLectureList")
+    public String filteredLectureList(Model model, @RequestParam(name = "status", defaultValue = "0") int status) {
+        System.out.println("Status: " + status);
+        List<VwLecture> filteredList;
+
+        if (status == 0) {
+            // Return all lectures if status is 0 or not provided
+            filteredList = vwLectureRepository.findAllByOrderByLecRegDateDesc();
+        } else {
+            // Otherwise, filter by status
+            filteredList = vwLectureRepository.findByLectureAct(status);
+        }
+        System.out.println("상태별 >>>>>>>>>> " + filteredList);
+        model.addAttribute("lectureList", filteredList);
+
+        // Return only the fragment (table)
+        return "admin/lecture/lectureList :: #lectureTableFragment";
+    }
+
+
+
     // 개설 강좌 전체 리스트
     @GetMapping("/lectureList")
-    public String lecturelist(Model model, LectureParam lectureParam) {
+    public String lecturelist(Model model, @RequestParam(name = "status", defaultValue = "0") int status, LectureParam lectureParam) {
 
 //        lectureParam.init();
 //        List<lectureDTO> lectureList = lectureService.list(lectureParam);
@@ -98,6 +119,9 @@ public class AdminController extends lecBaseController {
         System.out.println("강의 >>>>>" + lecList);
 
        */
+
+
+
         List<VwLecture> lectureList = vwLectureRepository.findAllByOrderByLecRegDateDesc();
         //List<VwLecture> lectureList = vwLectureRepository.findAll();
         System.out.println("전체 강좌" + lectureList.toString());
@@ -105,6 +129,10 @@ public class AdminController extends lecBaseController {
 
         return "admin/lecture/lectureList";
     }
+
+
+
+
 
     // 선택한 강의 상세보기
     @GetMapping("/getlecture/{lecture_no}")
@@ -141,6 +169,10 @@ public class AdminController extends lecBaseController {
         /*List<Teacher> teacherList = teacherRepository.findAll();
         System.out.println("강사리스트 : " + teacherList);*/
 
+        List<VwLecture> lectureList = vwLectureRepository.findAllByOrderByLecRegDateDesc(); //최신등록순
+        //List<VwLecture> lectureList = vwLectureRepository.findAll();
+        model.addAttribute("lectureList", lectureList);
+
         List<VwTeacher> teacherList = vwTeacherRepository.findAll();
         System.out.println("강사리스트 : " + teacherList);
 
@@ -148,6 +180,22 @@ public class AdminController extends lecBaseController {
         model.addAttribute("category", categoryService.list());
         return "admin/lecture/addlecture";
     }
+
+
+    // 강의 이름 중복 확인
+    @ResponseBody
+    @PostMapping("/checkDuplicate")
+    public Map<String, Boolean> checkDuplicateLectureName(@RequestParam("lectureName") String lectureName) {
+        // Assuming lectureService.isLectureNameDuplicate returns a boolean indicating whether the name is duplicate
+        boolean isDuplicate = lectureService.isLectureNameDuplicate(lectureName);
+
+        // Prepare a JSON response
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("duplicate", isDuplicate);
+
+        return response;
+    }
+
 
     //강의 등록하기
     @PostMapping(value = {"/save"})

@@ -258,20 +258,20 @@
 <!--================Product Description Area =================-->
 <section class="product_description_area">
     <div class="container">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-           <!-- <li class="nav-item">
+        <ul class="nav nav-tabs" id="myTab" role="tablist" style="padding: 1px 0px;">
+          <!-- <li class="nav-item" >
                 <a
-                        class="nav-link"
+                        class="nav-link "
                         id="home-tab"
                         data-toggle="tab"
                         href="#home"
                         role="tab"
                         aria-controls="home"
                         aria-selected="true"
-                >Description</a
-                >
+                        style="background-color: #0D4991;color: #ffffff;">샘플강의
+                </a>
             </li>
-            <li class="nav-item">
+          &lt;!&ndash;  <li class="nav-item">
                 <a
                         class="nav-link"
                         id="profile-tab"
@@ -294,17 +294,18 @@
                         aria-selected="false"
                 >Comments</a
                 >
-            </li>
-            <li class="nav-item">
+            </li>&ndash;&gt;
+            <li class="nav-item" >
                 <a
-                        class="nav-link active"
+                        class="nav-link"
                         id="review-tab"
                         data-toggle="tab"
                         href="#review"
                         role="tab"
-                        aria-controls="review"
-                        aria-selected="false"
-                >Reviews</a
+                        aria-controls="home"
+                        aria-selected="true"
+                        style="background-color: #0D4991;color: #ffffff;"
+                >강의 정보</a
                 >
             </li>-->
         </ul>
@@ -552,7 +553,25 @@
                     <div class="col-lg-7">
 
 
-                        <h4>샘플 강의</h4>
+
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" >
+                                <a
+                                        class="nav-link "
+                                        id="home-tab"
+                                        data-toggle="tab"
+                                        href="#home"
+                                        role="tab"
+                                        aria-controls="home"
+                                        aria-selected="true"
+                                        style="background-color: #0D4991;color: #ffffff;">샘플강의
+                                </a>
+                            </li>
+                        </ul>
+
+
+
+                        <!--<h4>샘플 강의</h4>-->
 
 
                             <!--<table class="tb1">
@@ -600,22 +619,44 @@
 
 
                     </div>
-                    <div class="col-lg-5">
-                        <div class="review_box">
-                          <!--  <h4>강의 정보</h4>-->
+                    <div class="col-lg-5" >
+
+
+                        <div class="review_box" >
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" >
+                                    <a
+                                            class="nav-link"
+                                            id="review-tab"
+                                            data-toggle="tab"
+                                            href="#review"
+                                            role="tab"
+                                            aria-controls="home"
+                                            aria-selected="true"
+                                            style="background-color: #0D4991;color: #ffffff;"
+                                    >강의 정보</a
+                                    >
+                                </li>
+                            </ul>
+
 
 
                             <table class="table">
                             <tr>
-                                <th>강의 제목</th>
-                                <td th:text="${lecture.getLectureName()}"></td>
+                                <th style="width: 22%;">강의 제목</th>
+                                <td th:text="${lecture.getLectureName()}" style="border-top: 1px solid #dee2e6;"></td>
                             </tr>
 
+                                <tr>
+                                    <th th:each="vwLecture: ${vwLecture}">당담 강사</th>
+                                    <td th:text="${vwLecture.getUserName()}"></td>
+                                </tr>
 
 
 
-                            <tr>
-                                <th>강의 상태</th>
+
+                                <tr>
+                                <th style="width: 22%;">강의 상태</th>
                                 <td>
                                     <p2 th:text="${lecture.getLectureAct() == 1 ? '강의예정' : (lecture.getLectureAct() == 2 ? '강의중' : (lecture.getLectureAct() == 3 ? '강의종료' : (lecture.getLectureAct() == 4 ? '폐강' : (lecture.getLectureAct() == 5 ? '강의철회' : ''))))}"
                                     ></p2>
@@ -625,12 +666,12 @@
 
 
                             <tr>
-                                <th>강좌 설명</th>
+                                <th style="width: 22%;">강좌 설명</th>
                                 <td th:text="${lecture.getLectureContent()}"></td>
                             </tr>
 
                             <tr>
-                                <th>수강 신청 기간</th>
+                                <th style="width: 22%;">수강 신청 기간</th>
                                 <td>
                                     <p2 th:text="${lecture.getStartEnrolmentDate()}"></p2>
                                     <strong> - </strong>
@@ -639,7 +680,7 @@
                             </tr>
 
                             <tr>
-                                <th>강의 운영 기간</th>
+                                <th style="width: 22%;">강의 운영 기간</th>
                                 <td>
                                     <p2 th:text="${lecture.getStartStudyDate()}"></p2>
                                     <strong> - </strong>

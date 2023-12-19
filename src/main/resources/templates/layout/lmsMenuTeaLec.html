@@ -8,14 +8,15 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <!--<div class="sb-sidenav-menu-heading">Core</div>-->
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link" th:href="@{/teacher/lectureList}">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            개설 강좌 관리
+                            개설 강좌 목록
                         </a>
                         <div class="sb-sidenav-menu-heading">Interface</div>
-                        <a class="nav-link collapsed" th:href="@{/teacher/lectureList}">
+                        <a>
+                        <a class="nav-link collapsed" th:href="@{'/teacher/getlecture/'+${lecture_no}}">
                             <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                            강좌목록
+                            강좌 정보
                             <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
                         </a>
                         <!--<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
@@ -34,11 +35,9 @@
                         <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
                              data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
-                                   data-bs-target="#pagesCollapseAuth" aria-expanded="false"
-                                   aria-controls="pagesCollapseAuth">
+
+                                <a class="nav-link collapsed" th:href="@{/teacher/addZoom(lecture_no=${lecture_no})}" >
                                     ZOOM 등록
-                                    <!--<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>-->
                                 </a>
 
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"

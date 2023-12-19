@@ -2,17 +2,16 @@ package com.edutech.team26.domain;
 
 import com.edutech.team26.constant.TakeCourseCode;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Student implements TakeCourseCode {

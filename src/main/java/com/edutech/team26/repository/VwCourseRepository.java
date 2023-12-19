@@ -18,5 +18,12 @@ public interface VwCourseRepository extends JpaRepository<VwCourse, Long> {
 
 
     //학생이 이미 수강한 강의 인지 체크
-    int countByLectureNoAndMno(long lectureno, long mno);
+    //int countByLectureNoAndMno(long lectureno, long mno);
+
+
+
+    // 학생이 이미 수강한 강의 중 'REQ' 상태인 강의 수 카운트
+    int countByLectureNoAndMnoAndStudentStatus(long lectureno, long mno, String studentStatus);
+
+
 }
