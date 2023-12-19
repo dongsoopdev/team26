@@ -83,20 +83,22 @@ public class MemberServiceImpl implements MemberService {
         member.changeEmailAuthKey(uuid);
         member.addRole(MemberRole.USER);
         member.changeUserStatus(MemberCode.MEMBER_STATUS_REQ);
+        member.changeResetPwKey("");
 
         // 관리자 등록시 아래 사용
         /*member.changeEmailAuthYn(true);
         member.changeEmailAuthKey("");
         member.addRole(MemberRole.ADMIN);
-        member.changeUserStatus(MemberCode.MEMBER_STATUS_ING);*/
+        member.changeUserStatus(MemberCode.MEMBER_STATUS_ING);
+        member.changeResetPwKey("");*/
 
         memberRepository.save(member);
 
-        String subject = "[LMS] 회원이 되신 것을 환영합니다.";
+       /* String subject = "[LMS] 회원이 되신 것을 환영합니다.";
         String text = "<h2>LMS 회원가입을 축하드립니다.</h2><br /><hr /><br />";
         text += "<p>" + memberJoinDTO.getUserName() + "님의 아래 링크를 클릭하셔서 가입을 완료 하세요.</p>";
         text += "<div><a target='_blank' href='http://localhost:" + serverPost + "/member/email-auth/" + uuid + "'>가입 완료</a></div>";
-        mailComponent.sendMail(memberJoinDTO.getEmail(), subject, text);
+        mailComponent.sendMail(memberJoinDTO.getEmail(), subject, text);*/
 
         return true;
 

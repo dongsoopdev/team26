@@ -73,6 +73,10 @@ public class Member extends BaseEntity {
         this.password = password;
     }
 
+    public void changeResetPwKey(String resetPasswordKey){
+        this.resetPasswordKey = resetPasswordKey;
+    }
+
     public void changeEmailAuthYn(boolean emailAuthYn) {
         this.emailAuthYn = emailAuthYn;
     }

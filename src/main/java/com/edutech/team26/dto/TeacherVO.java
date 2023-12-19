@@ -23,7 +23,7 @@ public class TeacherVO {
     private LocalDateTime regDate;
     private LocalDateTime modDate;
     private Long teacherNo;
-    private String fileOriginNm;
+    private Long filesNo;
     private String fileSaveNm;
     private Boolean activeYn;
     private LocalDateTime activeDate;
