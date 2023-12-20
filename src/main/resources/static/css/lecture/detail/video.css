@@ -1,39 +1,196 @@
-.player { width:640px; margin: 0 auto; margin-top:20px; clear:both; position:relative; height: 500px; overflow-x:hidden; }
-.vdo_fr { width: 640px; height: 360px; position:relative; overflow:hidden; clear:both; }
-button { background-color:transparent; outline:0; border:0; }
-#video { display:block;  position:absolute; }
-#progress { height:10px; width:640px; position:relative; margin-top:20px; border-radius:6px; background:#333; overflow:hidden; }
-#progressBar { width:0px; height:10px;  background:#c30;  }
-#buttonbar { height:37px; padding:3px; background:#333; width: 100%;
-    box-sizing:border-box; }
-.player_btn, #buttonbar input { display:inline-block; cursor:pointer; }
-.player_btn { margin: 6px; width:18px; height:18px; background-repeat:no-repeat;
-    background-image:url("../img/controls2.png"); background-size:90px 90px; }
-#restart { background-position:-48px 0px; background-image:url("../img/controls2.png"); }
-#rew { background-position:-24px 0px; background-image:url("../img/controls2.png"); }
-#play { background-position:0px -48px; position:relative; }
-#play:after { content:"▶"; display:block; color:deepskyblue; margin-top:-5px;
-    font-size:10px; position:absolute; top:1px; left:0px; }
-#pause { background-position:-72px -48px; display:none; position:relative; }
-#pause:after { content:"||"; display:block; color:deepskyblue; margin-top:-8px;
-    font-size:10px; position:absolute; top:3px; left:0px; }
-#stop { background-position:-48px -48px;  }
-#stop:after {content:"◼︎"; display:block; color: deepskyblue; margin-top: -13px;
-    font-size: 10px; position: absolute; }
-#fastFwd { background-position:-72px 0px; transform: scaleX(-1); }
-#mute { background-position:0px 0px; background-image:url("../img/controls2.png"); }
-#unmute { background-position:0px -72px; display:none; }
-#vmup { background-position:-48px -72px; position:relative;}
-#vmup:after {content: "◀+";display:block; color:deepskyblue;  margin-top:-6px;
-    font-size:10px; position:absolute; top:2px; left:6px;}
-#vmdown { background-position:0px -24px; background-image:url("../img/controls2.png"); }
-#sizeup { background-size:72px 72px; background-image:url("../img/controls3.png");
-    background-position:0px 0px; }
-#sizedown { background-size:72px 72px; background-image:url("../img/controls3.png");
-    background-position:-24px 0px; }
-#full { background-size:72px 72px; background-image:url("../img/controls3.png");
-    background-position:-48px 0px; }
-#original { background-size:72px 72px; background-image:url("../img/controls3.png");
-    background-position:0px -24px; display:none; }
-#currentTime { position:absolute; right:1.5%; top:46%; color:#fff; }
-#volTxt { color:#fff; line-height: 10px;  width: 35px; text-align:center; padding: 0; }
+.player {
+    width: 640px;
+    margin: 0 auto;
+    margin-top: 20px;
+    clear: both;
+    position: relative;
+    height: 500px;
+    overflow-x: hidden;
+}
+
+.vdo_fr {
+    width: 640px;
+    height: 360px;
+    position: relative;
+    overflow: hidden;
+    clear: both;
+}
+
+button {
+    background-color: transparent;
+    outline: 0;
+    border: 0;
+}
+
+#video {
+    display: block;
+    position: absolute;
+}
+
+#progress {
+    height: 10px;
+    width: 640px;
+    position: relative;
+    margin-top: -44px;
+    border-radius: 6px;
+    background: #333;
+    overflow: hidden;
+}
+
+#progressBar {
+    width: 0px;
+    height: 10px;
+    background: #c30;
+}
+
+#buttonbar {
+    height: 37px;
+    background: #333;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.player_btn, #buttonbar input {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.player_btn {
+    margin: 6px;
+    width: 18px;
+    height: 18px;
+    background-repeat: no-repeat;
+    background-image: url("../img/controls2.png");
+    background-size: 90px 90px;
+}
+
+#restart {
+    background-position: -48px 0px;
+    background-image: url("../img/controls2.png");
+}
+
+#rew {
+    background-position: -24px 0px;
+    background-image: url("../img/controls2.png");
+}
+
+#play {
+    background-position: 0px -48px;
+    position: relative;
+}
+
+#play:after {
+    content: "▶";
+    display: block;
+    color: deepskyblue;
+    margin-top: -5px;
+    font-size: 10px;
+    position: absolute;
+    top: 1px;
+    left: 0px;
+}
+
+#pause {
+    background-position: -72px -48px;
+    display: none;
+    position: relative;
+}
+
+#pause:after {
+    content: "||";
+    display: block;
+    color: deepskyblue;
+    margin-top: -8px;
+    font-size: 10px;
+    position: absolute;
+    top: 3px;
+    left: 0px;
+}
+
+#stop {
+    background-position: -48px -48px;
+}
+
+#stop:after {
+    content: "◼︎";
+    display: block;
+    color: deepskyblue;
+    margin-top: -13px;
+    font-size: 10px;
+    position: absolute;
+}
+
+#fastFwd {
+    background-position: -72px 0px;
+    transform: scaleX(-1);
+}
+
+#mute {
+    background-position: 0px 0px;
+    background-image: url("../img/controls2.png");
+}
+
+#unmute {
+    background-position: 0px -72px;
+    display: none;
+}
+
+#vmup {
+    background-position: -48px -72px;
+    position: relative;
+}
+
+#vmup:after {
+    content: "◀+";
+    display: block;
+    color: deepskyblue;
+    margin-top: -6px;
+    font-size: 10px;
+    position: absolute;
+    top: 2px;
+    left: 6px;
+}
+
+#vmdown {
+    background-position: 0px -24px;
+    background-image: url("../img/controls2.png");
+}
+
+#sizeup {
+    background-size: 72px 72px;
+    background-image: url("../img/controls3.png");
+    background-position: 0px 0px;
+}
+
+#sizedown {
+    background-size: 72px 72px;
+    background-image: url("../img/controls3.png");
+    background-position: -24px 0px;
+}
+
+#full {
+    background-size: 72px 72px;
+    background-image: url("../img/controls3.png");
+    background-position: -48px 0px;
+}
+
+#original {
+    background-size: 72px 72px;
+    background-image: url("../img/controls3.png");
+    background-position: 0px -24px;
+    display: none;
+}
+
+#currentTime {
+    position: absolute;
+    right: 1.5%;
+    top: 46%;
+    color: #fff;
+}
+
+#volTxt {
+    color: #fff;
+    text-align: center;
+    padding: 0;
+
+}
