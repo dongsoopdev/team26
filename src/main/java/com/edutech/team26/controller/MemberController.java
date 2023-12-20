@@ -6,6 +6,7 @@ import com.edutech.team26.biz.TeacherService;
 import com.edutech.team26.constant.AcceptCode;
 import com.edutech.team26.dto.*;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -246,13 +247,20 @@ public class MemberController {
         List<TeacherHistoryFilesVO> teacherHistoryList = teacherService.getHistoryList(member.getMno());
         model.addAttribute("teacherHistoryList", teacherHistoryList);
         boolean canApply = true;
+        boolean finishApply = false;
         for(TeacherHistoryFilesVO teacherHistoryFilesVO : teacherHistoryList) {
+            if(teacherHistoryFilesVO.getStatus().equals("승인 완료")) {
+                finishApply = true;
+                break;
+            }
+
             if(teacherHistoryFilesVO.getStatus().equals("신청 대기")) {
                 canApply = false;
                 break;
             }
         }
         model.addAttribute("canApply", canApply);
+        model.addAttribute("finishApply", finishApply);
         return "member/teacherApply";
     }
 
@@ -260,6 +268,21 @@ public class MemberController {
     public String teacherApplyPro(HttpServletRequest request, List<MultipartFile> uploadFiles) throws Exception {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         teacherService.applyGrade(member.getMno(), uploadFiles, request);
+        return "redirect:/myPage/teacherApply";
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER', 'USER')")
+    @GetMapping("/myPage/teacherApplyDetail/{fileHistoryNo}")
+    public String teacherApplyDetail(@PathVariable(required = false) Long fileHistoryNo, Model model) throws Exception {
+        TeacherHistoryFilesVO teacherHistory = teacherService.getHistoryDetail(fileHistoryNo);
+        model.addAttribute("teacherHistory", teacherHistory);
+        return "member/teacherApplyDetail";
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER', 'USER')")
+    @GetMapping("/myPage/teacherApplyCancel/{teacherHistoryNo}")
+    public String teacherApplyCancel(@PathVariable(required = false) Long teacherHistoryNo, HttpServletRequest request,  Model model) throws Exception {
+        teacherService.historyRemove(request, teacherHistoryNo);
         return "redirect:/myPage/teacherApply";
     }
 
