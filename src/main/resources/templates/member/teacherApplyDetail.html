@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>EudTech LMS::선생님 신청</title>
+    <link rel="stylesheet" th:href="@{/css/sub.css}">
+</head>
+<body>
+    <th:block th:insert="~{layout/header :: header}"></th:block>
+
+    <div class="container mb-5 my_page">
+        <div class="row">
+            <div class="col-lg-3 col-md-5 left_sidebar_area pe-5">
+                <div>
+                    <h2 class="text-center fw-bolder py-5 bg-primary text-white mb-2">마이페이지</h2>
+                    <ul class="nav nav-pills flex-column mb-auto my_menu">
+                        <li class="border-bottom"><a th:href="@{/myPage}" class="nav-link link-dark">마이페이지</a></li>
+                        <th:block  sec:authorize="!hasRole('STUDENT')">
+                            <li class="border-bottom"><a th:href="@{/myPage/teacherApply}" class="nav-link link-dark">선생님신청</a></li>
+                        </th:block>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9 col-md-7 right_side mt-5">
+                <div class="row">
+                    <div class="position-relative ps-0 mb-5">
+                        <h3 class="mb-0">선생님 신청 상세</h3>
+                        <nav class="position-absolute align-middle breadcrumb_area mb-0 lh-1" aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a class="link-dark" th:href="@{/}">Home</a></li>
+                                <li class="breadcrumb-item"><a class="link-dark" th:href="@{/myPage}">마이페이지</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">선생님 신청</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <section id="applyArea" class="pb-5 mb-5 border-bottom">
+                        <table class="table table-bordered">
+                            <colgroup>
+                                <col style="width:15%;">
+                                <col style="width:auto;">
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th class="text-center">승인 결과</th>
+                                    <td th:text="${teacherHistory.status}"></td>
+                                </tr>
+                                <tr th:if="${teacherHistory.status eq '승인 거절'}">
+                                    <th class="text-center">거절 사유</th>
+                                    <td th:text="${teacherHistory.reason}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-center" th:if="${teacherHistory.status eq '신청 대기'}">
+                            <a th:href="|@{/myPage/teacherApplyCancel/}${teacherHistory.teacherHistoryNo}|" class="btn btn-primary">신청 취소</a>
+                        </div>
+                    </section>
+                    <section id="applyList">
+                        <table class="table">
+                            <colgroup>
+                                <col style="width:6%;">
+                                <col style="width:auto;">
+                                <col style="width:25%;">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th class="text-center" scope="col">#</th>
+                                <th class="text-center" scope="col">제목</th>
+                                <th class="text-center" scope="col">신청일자</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="files, num : ${teacherHistory.filesList}">
+                                <th class="text-center" scope="row" th:text="${num.count}"></th>
+                                <td class="text-start">
+                                    <a th:href="|@{/util/fileDownload/}${files.fileNo}|" th:text="${files.fileOriginNm}"></a>
+                                </td>
+                                <td class="text-center" th:text="${#temporals.format(files.regDate, 'yyyy-MM-dd HH:mm')}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                    <div class="text-end mt-5">
+                        <a class="btn btn-primary" th:href="@{/myPage/teacherApply}">목록</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:insert="~{layout/footer :: footer}"></th:block>
+</body>
+</html>

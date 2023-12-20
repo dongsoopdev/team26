@@ -9,6 +9,6 @@ public interface FilesRepository extends JpaRepository<Files, Long> {
 
     List<Files> findByPar(Long par);
 
-    Files findByParAndToUse(Long par, String toUse);
+    List<Files> findByParAndToUse(Long par, String toUse);
 
 }
