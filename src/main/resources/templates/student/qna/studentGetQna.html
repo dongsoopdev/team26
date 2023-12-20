@@ -13,6 +13,104 @@
             width: 80%;
             margin: 10%;
         }
+        section {
+            overflow: hidden;
+            padding: 80px 0;
+        }
+        .contact .php-email-form {
+            width: 100%;
+            margin-top: 30px;
+            background: #fff;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .contact .php-email-form .form-group {
+            padding-bottom: 20px;
+        }
+
+        .contact .php-email-form .error-message {
+            display: none;
+            color: #fff;
+            background: #df1529;
+            text-align: left;
+            padding: 15px;
+            font-weight: 600;
+        }
+
+        .contact .php-email-form .error-message br+br {
+            margin-top: 25px;
+        }
+
+        .contact .php-email-form .sent-message {
+            display: none;
+            color: #fff;
+            background: #059652;
+            text-align: center;
+            padding: 15px;
+            font-weight: 600;
+        }
+
+        .contact .php-email-form .loading {
+            display: none;
+            background: #fff;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .contact .php-email-form .loading:before {
+            content: "";
+            display: inline-block;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            margin: 0 10px -6px 0;
+            border: 3px solid #059652;
+            border-top-color: #fff;
+            animation: animate-loading 1s linear infinite;
+        }
+
+        .contact .php-email-form input,
+        .contact .php-email-form textarea {
+            border-radius: 0;
+            box-shadow: none;
+            font-size: 14px;
+        }
+
+        .contact .php-email-form input:focus,
+        .contact .php-email-form textarea:focus {
+            border-color: var(--color-primary);
+        }
+
+        .contact .php-email-form input {
+            height: 48px;
+        }
+
+        .contact .php-email-form textarea {
+            padding: 10px 12px;
+        }
+
+        .contact .php-email-form button[type=submit] {
+            background: #ce1212;
+            border: 0;
+            padding: 12px 40px;
+            color: #fff;
+            transition: 0.4s;
+            border-radius: 50px;
+        }
+
+        .contact .php-email-form button[type=submit]:hover {
+            background: #ec2727;
+        }
+
+        @keyframes animate-loading {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
@@ -61,7 +159,26 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
+                    <section id="contact" class="contact">
+                        <div class="container" data-aos="fade-up">
+                            <form action="forms/contact.php" method="post" role="form" class="php-email-form p-3 p-md-4">
+                                <div class="row">
+                                    <div class="col-xl-6 form-group">
+                                        <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                                    </div>
+                                    <div class="col-xl-6 form-group">
+                                        <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+                                </div>
+                                <div class="text-center"><button type="submit">Send Message</button></div>
+                            </form><!--End Contact Form -->
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>

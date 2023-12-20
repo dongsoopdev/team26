@@ -186,7 +186,7 @@ public class QnaController {
         qnaService.updateVisited(qna_no);
         MemberDTO memberDTO = memberService.getMemberInfo(qnaDTO.getMno());
         String userName = memberDTO.getUserName();
-        model.addAttribute("lecture_no",lecture_no);
+
         model.addAttribute("qna",qnaDTO);
         model.addAttribute("userName",userName);
         model.addAttribute("lecture_no",lecture_no);
@@ -195,6 +195,8 @@ public class QnaController {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
         model.addAttribute("student_no",student.get().getStudentNo());
+        System.out.println(student.get().getStudentNo());
+
         return "student/qna/studentGetQna";
     }
 
@@ -205,6 +207,8 @@ public class QnaController {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
         model.addAttribute("student_no",student.get().getStudentNo());
+
+        System.out.println(student.get().getStudentNo());
         return "student/qna/studentInsertQna";
     }
 

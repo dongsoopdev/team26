@@ -23,8 +23,6 @@ public class QTeacher extends EntityPathBase<Teacher> {
 
     public final BooleanPath activeYn = createBoolean("activeYn");
 
-    public final NumberPath<Long> filesNo = createNumber("filesNo", Long.class);
-
     public final StringPath intro = createString("intro");
 
     public final NumberPath<Long> mno = createNumber("mno", Long.class);
