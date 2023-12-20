@@ -12,8 +12,8 @@
                         </button>
                         <div class="collapse navbar-collapse navbar-end" id="navbarCollapse">
                             <div class="navbar-nav ms-auto">
-                                <a th:href="@{/notice/noticeList(lecture_no =0)}" class="nav-item text-black nav-link">공지사항</a>
                                 <a th:href="@{/lecture/lectureList}" class="nav-item text-black nav-link">개설강좌</a>
+                                <a th:href="@{/notice/noticeList(lecture_no =0)}" class="nav-item text-black nav-link">공지사항</a>
                                 <a th:href="@{/qna/qnaList(lecture_no =0)}" class="nav-item text-black nav-link">QNA</a>
                                 <th:block sec:authorize="isAuthenticated()">
                                     <ul class="navbar-nav me-auto me-md-0 ms-3 ms-lg-4">

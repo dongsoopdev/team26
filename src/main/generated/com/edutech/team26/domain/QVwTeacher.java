@@ -29,10 +29,6 @@ public class QVwTeacher extends EntityPathBase<VwTeacher> {
 
     public final StringPath email = createString("email");
 
-    public final StringPath fileOriginNm = createString("fileOriginNm");
-
-    public final StringPath fileSaveNm = createString("fileSaveNm");
-
     public final StringPath intro = createString("intro");
 
     public final NumberPath<Long> mno = createNumber("mno", Long.class);

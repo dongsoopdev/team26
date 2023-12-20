@@ -102,4 +102,15 @@ public class TeacherController {
     }
 
 
+    //관리자 문의
+    @GetMapping("/requestLecture/{lecture_no}")
+    public String requestLecture(Model model, @PathVariable("lecture_no") long lecture_no) {
+        VwLecture vwLecture = vwLectureRepository.getBylectureNo(lecture_no);
+        model.addAttribute("lecture", vwLecture);
+        model.addAttribute("lecture_no",lecture_no);
+
+        return "teacher/lecture/requestLecture";
+    }
+
+
 }
