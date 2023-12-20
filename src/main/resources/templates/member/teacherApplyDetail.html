@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -16,7 +17,9 @@
                     <h2 class="text-center fw-bolder py-5 bg-primary text-white mb-2">마이페이지</h2>
                     <ul class="nav nav-pills flex-column mb-auto my_menu">
                         <li class="border-bottom"><a th:href="@{/myPage}" class="nav-link link-dark">마이페이지</a></li>
-                        <li class="border-bottom active"><a th:href="@{/myPage/teacherApply}" class="nav-link link-dark">선생님신청</a></li>
+                        <th:block  sec:authorize="!hasRole('STUDENT')">
+                            <li class="border-bottom"><a th:href="@{/myPage/teacherApply}" class="nav-link link-dark">선생님신청</a></li>
+                        </th:block>
                     </ul>
                 </div>
             </div>
