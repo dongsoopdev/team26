@@ -11162,7 +11162,7 @@ body {
 .datatable-table > tfoot > tr > th,
 .datatable-table > thead > tr > td,
 .datatable-table > thead > tr > th {
-  vertical-align: top;
+  vertical-align: middle;
   padding: 0.5rem 0.5rem;
 }
 

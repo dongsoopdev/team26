@@ -31,8 +31,6 @@ public class VwTeacher {
     @Id
     @Column(name="teacher_no")
     private Long teacherNo;
-    private String fileOriginNm;
-    private String fileSaveNm;
     private Boolean activeYn;
     private LocalDateTime activeDate;
     private String status;

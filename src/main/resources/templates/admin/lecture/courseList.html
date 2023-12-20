@@ -43,7 +43,7 @@
 
                                 <div class="card-body">
 
-                                    <table class="table text-center" style="margin-top: 50px;">
+                                    <table id="datatablesSimple" class="text-center" >
                                         <thead>
                                         <tr>
                                             <th class="text-center" style="vertical-align: middle">번호</th>
@@ -82,15 +82,15 @@
 
 
                                             <td>
-                                                <p2 th:text="${courseList.getStartEnrolmentDate()}"></p2>
+                                                <p2 th:utext="${#temporals.format(courseList.getStartEnrolmentDate(), 'yy.MM.dd')}"></p2>
                                                 <strong> - </strong>
-                                                <p2 th:text="${courseList.getEndEnrolmentDate()}"></p2>
+                                                <p2 th:utext="${#temporals.format(courseList.getEndEnrolmentDate(), 'yy.MM.dd')}"></p2>
                                             </td>
 
                                             <td>
-                                                <p2 th:text="${courseList.getStartStudyDate()}"></p2>
+                                                <p2 th:utext="${#temporals.format(courseList.getStartStudyDate(), 'yy.MM.dd')}"></p2>
                                                 <strong> - </strong>
-                                                <p2 th:text="${courseList.getEndStudyDate()}"></p2>
+                                                <p2 th:utext="${#temporals.format(courseList.getEndStudyDate(), 'yy.MM.dd')}"></p2>
                                             </td>
 
                                             <td>

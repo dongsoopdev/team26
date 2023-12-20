@@ -4,6 +4,7 @@
 <head>
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
+    <link rel="stylesheet" th:href="@{/css/lecture/detail/video.css}"/>
     <title>LMS_관리자 페이지</title>
 </head>
 <body class="sb-nav-fixed">
@@ -161,12 +162,49 @@
                                                      style="    width: 400px;"></td>
                                         </tr>
 
+                                        <tr>
+                                            <th>강의 샘플 영상</th>
+                                            <td>
+                                                <div class="player">
+                                                    <div class="vdo_fr">
+                                                        <video id="video">
+                                                            <source th:src="@{'/upload/' + ${lecture.getLectureVedio()}}" type="video/mp4" />
+                                                        </video>
+                                                    </div>
+                                                    <div id="timebar">
+                                                        <span id="currentTime"></span>
+                                                    </div>
+                                                    <div id="buttonbar">
+                                                        <button id="restart" class="player_btn"></button>
+                                                        <button id="rew" class="player_btn"></button>
+                                                        <button id="play" class="player_btn"></button>
+                                                        <button id="pause" class="player_btn"></button>
+                                                        <button id="stop" class="player_btn"></button>
+                                                        <button id="fastFwd" class="player_btn"></button>
+                                                        <button id="mute" class="player_btn"></button>
+                                                        <button id="unmute" class="player_btn"></button>
+                                                        <input id="vol" type="range" value="500" min="0" max="1000">
+                                                        <button id="vmup" class="player_btn"></button>
+                                                        <button id="vmdown" class="player_btn"></button>
+                                                        <button id="volTxt">100%</button>
+                                                        <button id="sizeup" class="player_btn"></button>
+                                                        <button id="sizedown" class="player_btn"></button>
+                                                        <button id="full" class="player_btn"></button>
+                                                        <button id="original" class="player_btn"></button>
+                                                    </div>
+                                                    <div id="progress">
+                                                        <div id="progressBar"></div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <script th:src="@{/js/lecture/vdo.js}"/></script>
+
 
                                     </table>
 
 
                                 </div><!--end card body-->
-
                             </div><!--end card-->
                         </div><!-- end col-->
                     </div><!-- end row-->
