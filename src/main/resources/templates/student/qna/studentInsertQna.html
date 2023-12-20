@@ -18,7 +18,7 @@
 <body>
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
 <div id="layoutSidenav">
-    <th:block th:replace="~{layout/lmsMenuTeaLec :: lmsMenu2(${lecture_no},${student_no})}"></th:block>
+    <th:block th:replace="~{layout/lmsMenuStuLec :: lmsMenu2(${lecture_no},${student_no})}"></th:block>
     <div id="layoutSidenav_content">
         <main>
         <div class="content">
@@ -33,7 +33,6 @@
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Title</span>
                                     <input type="text" name="title" class="form-control" placeholder="Title" required>
-                                    <input type="hidden" name="mno" class="form-control" th:value="${2}">
                                     <input type="hidden" name="lecture_no" class="form-control" th:value="${lecture_no}">
                                 </div>
                                 <div class="input-group mb-3">
@@ -69,6 +68,5 @@
     }
 
 </script>
-<th:block th:insert="~{layout/footer :: footer}"></th:block>
 </body>
 </html>
