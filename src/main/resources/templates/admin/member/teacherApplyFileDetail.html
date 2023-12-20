@@ -112,7 +112,9 @@
                         <tbody>
                             <tr th:each="files, num : ${teacherHistoryFilesVO.getFilesList()}">
                                 <th scope="row" th:text="${num.count}"></th>
-                                <td th:text="${files.fileOriginNm}"></td>
+                                <td>
+                                    <a th:href="|@{/util/fileDownload/}${files.fileNo}|" th:text="${files.fileOriginNm}"></a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
