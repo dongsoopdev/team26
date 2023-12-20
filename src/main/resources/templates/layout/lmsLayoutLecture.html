@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
+    <title>강의 페이지 샘플</title>
+</head>
+<body class="sb-nav-fixed">
+<!--<th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>-->
+<div id="layoutSidenav">
+    <!--<th:block th:replace="~{layout/lmsMenuTeaLec :: lmsMenu2(${type})}"></th:block>
+    <th:block th:insert="~{layout/lmsMenuAdmin :: lmsMenu}"></th:block>-->
+    <th:block sec:authorize="hasRole('STUDENT')">
+        <p>zzzzzzzzzzzzzzzzzzzzzzzzzz</p>
+        <th:block th:insert="~{layout/lmsMenuStu :: lmsMenu}"></th:block>
+    </th:block>
+    <th:block sec:authorize="hasRole('TEACHER')">
+        <p>wwwwwwwwwwwwwwwwwwwwwwwww</p>
+        <th:block th:insert="~{layout/lmsMenuTea :: lmsMenu}"></th:block>
+    </th:block>
+    <th:block sec:authorize="hasRole('ADMIN')">
+        <p>qqqqqqqqqqqqqqqqqqqqqqqqqq</p>
+        <th:block th:insert="~{layout/lmsMenuAdmin :: lmsMenu}"></th:block>
+    </th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <th:block layout:fragment="content"></th:block>
+        </main>
+        <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
+    </div>
+</div>
+</body>
+</html>
+
+

@@ -1,6 +1,7 @@
 package com.edutech.team26.controller;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,12 @@ public class HomeController {
     @GetMapping("/layout2")
     public String layout2(Model model) throws Exception {
         return "contentLayout2";
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'ADMIN')")
+    @GetMapping("/lmsLayoutLec/{type}")
+    public String lmsLayoutLec(@PathVariable(required = false) Integer type, Model model) throws Exception {
+        return "contentLmsLayoutLec";
     }
 
 }
