@@ -126,8 +126,9 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void updateEntranceStatus(Long studentNo) {
         Student student = studentRepository.getById(studentNo);
+        System.out.println("여기야!!!!!!!"+student.getEntranceYn());
         student.updateEntranceYn(1);
-
+        System.out.println("여기야222222222222!!!!!!!"+student.getEntranceYn());
         studentRepository.save(student);
     }
 

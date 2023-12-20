@@ -28,165 +28,166 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="layout_contents">
-                <!-- <label for="lectureStatus"></label>-->
-                <select id="lectureStatus" onchange="filterTable()">
-                    <option value="all">전체</option>
-                    <option value="1">강의예정</option>
-                    <option value="2">강의중</option>
-                    <option value="3">강의종료</option>
-                    <option value="4">폐강</option>
-                    <option value="5">강의철회</option>
-                </select>
 
-               <!-- <script>
-                    function filterTable() {
-                        var statusFilter = document.getElementById("lectureStatus").value;
-                        console.log("Selected Status: " + statusFilter);
+                <div class="content">
+                    <div class="row mt-3">
+                        <div class="col">
+                            <div class="card">
 
-                        $.ajax({
-                            type: "GET",
-                            url: "/admin/filteredLectureList",
-                            data: { status: statusFilter },
-                            success: function (data) {
-                                console.log("Received data:", data);
-                                // Replace the content of the table with the fragment
-                                $('#lectureTable').html($(data).find('#lectureTableFragment').html());
-                            },
-                            error: function (error) {
-                                console.error("Ajax request failed:", error);
-                            }
-                        });
+                                <div class="card-header">
+                                    <h2 class="title" style="float: left;">강좌 리스트</h2>
 
-                    }
 
-                </script>-->
+                                    <div class="btn_group" style="padding-top: 4px; float: right; margin-right: 10px;">
+                                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/lectureSave}" class="btn btn-secondary">강의 등록</a>
+                                    </div>
+                                    <select id="lectureStatus" class="form-select form-select-md" onchange="filterTable()" style="float: right; margin-right: 10px;      margin-top: 4px; width: 15%;">
+                                        <option value="all">전체</option>
+                                        <option value="1">강의예정</option>
+                                        <option value="2">강의중</option>
+                                        <option value="3">강의종료</option>
+                                        <option value="4">폐강</option>
+                                        <option value="5">강의철회</option>
+                                    </select>
 
-                <div class="btn_group">
-                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/lectureSave}" class="btn btn-secondary"
-                       style="float: right;">강의 등록</a>
-                </div>
+
+                                </div>
 
 
 
-              <!--  <div th:include="lectureTableFragment :: lectureTableFragment"></div>-->
+
+                                <div class="card-body">
 
 
-
-                <div  id="lectureTableFragment" th:fragment="lectureTableFragment" class="page_wrap" style="margin-top: 50px;">
-                    <h2 class="page_tit"></h2>
-
-                    <table id="lectureTable" class="table text-center">
-                        <thead>
-                        <tr>
-                            <th class="text-center" style="vertical-align: middle">번호</th>
-                            <th class="text-center" style="vertical-align: middle">강의명</th>
-                            <th class="text-center" style="vertical-align: middle">강사명</th>
-                            <th class="text-center" style="vertical-align: middle">신청 인원</th>
-                            <th class="text-center" style="vertical-align: middle">최대 인원</th>
-                            <th class="text-center" style="vertical-align: middle">최소 인원</th>
-                            <th class="text-center" style="vertical-align: middle">수강 신청 기간</th>
-                            <th class="text-center" style="vertical-align: middle">강의 운영 기간</th>
-                            <th class="text-center" style="vertical-align: middle">강의 상태</th>
-                            <th class="text-center" style="vertical-align: middle">상세보기</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <tr th:each="lectureList, status: ${lectureList}" style="vertical-align: middle;">
-                            <td th:text="${status.index + 1}">
-                                <!--<p th:text="${status.count }"></p>-->
-                            </td>
-
-                            <td>
-                                <p2 th:text="${lectureList.getLectureName()}"></p2>
-                            </td>
-
-                            <td>
-                                <!--<p2>임시 강사명</p2>-->
-                                <p2 th:text="${lectureList.getUserName()}"></p2>
-                            </td>
-
-                            <td>
-                                <strong th:text="${lectureList.getLectureCurnum()}" style="color: #002a80"></strong>
-                            </td>
-
-                            <td>
-                                <p2 th:text="${lectureList.getLectureMaxnum()}"></p2>
-                            </td>
-
-                            <td>
-                                <p2 th:text="${lectureList.getLectureMinnum()}"></p2>
-                            </td>
+                                    <!--  <div th:include="lectureTableFragment :: lectureTableFragment"></div>-->
 
 
-                            <!-- <td>
-                                 <p2 th:text="${lectureList.getStartEnrolmentDate()}"></p2>
-                                 <strong> - </strong>
-                                 <p2 th:text="${lectureList.getEndEnrolmentDate()}"></p2>
-                             </td>
+                                    <div id="lectureTableFragment" th:fragment="lectureTableFragment" class="page_wrap">
 
-                             <td>
-                                 <p2 th:text="${lectureList.getStartStudyDate()}"></p2>
-                                 <strong> - </strong>
-                                 <p2 th:text="${lectureList.getEndStudyDate()}"></p2>
-                             </td>-->
+                                        <table id="datatablesSimple" class="text-center">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-center" style="vertical-align: middle; text-align: center;">번호</th>
+                                                <th class="text-center" style="vertical-align: middle; text-align: center;">강의명</th>
+                                                <th class="text-center" style="vertical-align: middle; text-align: center;">강사명</th>
+                                                <th class="text-center" style="vertical-align: middle; text-align: center;">신청 인원</th>
+                                                <th class="text-center" style="vertical-align: middle; text-align: center;">최대 인원</th>
+                                                <th class="text-center" style="vertical-align: middle; text-align: center;">최소 인원</th>
+                                                <th class="text-center" style="vertical-align: middle; text-align: center;">수강 신청 기간</th>
+                                                <th class="text-center" style="vertical-align: middle; text-align: center;">강의 운영 기간</th>
+                                                <th class="text-center" style="vertical-align: middle; text-align: center;">강의 상태</th>
+                                                <th class="text-center" style="vertical-align: middle; text-align: center;">상세보기</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
 
-                            <td>
-                                <p2 th:utext="${#temporals.format(lectureList.getStartEnrolmentDate(), 'yy.MM.dd')}"></p2>
-                                <strong> - </strong>
-                                <p2 th:utext="${#temporals.format(lectureList.getEndEnrolmentDate(), 'yy.MM.dd')}"></p2>
-                            </td>
+                                            <tr th:each="lectureList, status: ${lectureList}"
+                                                style="vertical-align: middle;">
+                                                <td th:text="${status.index + 1}">
+                                                    <!--<p th:text="${status.count }"></p>-->
+                                                </td>
 
-                            <td>
-                                <p2 th:utext="${#temporals.format(lectureList.getStartStudyDate(), 'yy.MM.dd')}"></p2>
-                                <strong> - </strong>
-                                <p2 th:utext="${#temporals.format(lectureList.getEndStudyDate(), 'yy.MM.dd')}"></p2>
-                            </td>
+                                                <td>
+                                                    <p2 th:text="${lectureList.getLectureName()}"></p2>
+                                                </td>
 
+                                                <td>
+                                                    <!--<p2>임시 강사명</p2>-->
+                                                    <p2 th:text="${lectureList.getUserName()}"></p2>
+                                                </td>
 
-                            <!-- <td>
-                                 <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정' : (lectureList.getLectureAct() == 2 ? '강의중' : (lectureList.getLectureAct() == 3 ? '강의종료' : (lectureList.getLectureAct() == 4 ? '폐강' : (lectureList.getLectureAct() == 5 ? '강의철회' : ''))))}"
-                                 ></p2>
-                             </td>
- -->
-                            <!--<td>
-                                <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정'
-                                            : (lectureList.getLectureAct() == 2 ? '강의중'
-                                            : (lectureList.getLectureAct() == 3 ? '강의종료'
-                                            : (lectureList.getLectureAct() == 4 ? '폐강'
-                                            : (lectureList.getLectureAct() == 5 ? '강의철회' : ''))))}"
-                                    th:classappend="${lectureList.getLectureAct() == 4 ? 'text-danger' : ''}
-                                                     ${lectureList.getLectureAct() == 5 ? 'text-danger2' : ''} ">
-                                </p2>
-                            </td>
--->
+                                                <td>
+                                                    <strong th:text="${lectureList.getLectureCurnum()}"
+                                                            style="color: #002a80"></strong>
+                                                </td>
+
+                                                <td>
+                                                    <p2 th:text="${lectureList.getLectureMaxnum()}"></p2>
+                                                </td>
+
+                                                <td>
+                                                    <p2 th:text="${lectureList.getLectureMinnum()}"></p2>
+                                                </td>
 
 
-                            <td>
-                                <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정'
+                                                <!-- <td>
+                                                     <p2 th:text="${lectureList.getStartEnrolmentDate()}"></p2>
+                                                     <strong> - </strong>
+                                                     <p2 th:text="${lectureList.getEndEnrolmentDate()}"></p2>
+                                                 </td>
+
+                                                 <td>
+                                                     <p2 th:text="${lectureList.getStartStudyDate()}"></p2>
+                                                     <strong> - </strong>
+                                                     <p2 th:text="${lectureList.getEndStudyDate()}"></p2>
+                                                 </td>-->
+
+                                                <td>
+                                                    <p2 th:utext="${#temporals.format(lectureList.getStartEnrolmentDate(), 'yy.MM.dd')}"></p2>
+                                                    <strong> - </strong>
+                                                    <p2 th:utext="${#temporals.format(lectureList.getEndEnrolmentDate(), 'yy.MM.dd')}"></p2>
+                                                </td>
+
+                                                <td>
+                                                    <p2 th:utext="${#temporals.format(lectureList.getStartStudyDate(), 'yy.MM.dd')}"></p2>
+                                                    <strong> - </strong>
+                                                    <p2 th:utext="${#temporals.format(lectureList.getEndStudyDate(), 'yy.MM.dd')}"></p2>
+                                                </td>
+
+
+                                                <!-- <td>
+                                                     <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정' : (lectureList.getLectureAct() == 2 ? '강의중' : (lectureList.getLectureAct() == 3 ? '강의종료' : (lectureList.getLectureAct() == 4 ? '폐강' : (lectureList.getLectureAct() == 5 ? '강의철회' : ''))))}"
+                                                     ></p2>
+                                                 </td>
+                     -->
+                                                <!--<td>
+                                                    <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정'
+                                                                : (lectureList.getLectureAct() == 2 ? '강의중'
+                                                                : (lectureList.getLectureAct() == 3 ? '강의종료'
+                                                                : (lectureList.getLectureAct() == 4 ? '폐강'
+                                                                : (lectureList.getLectureAct() == 5 ? '강의철회' : ''))))}"
+                                                        th:classappend="${lectureList.getLectureAct() == 4 ? 'text-danger' : ''}
+                                                                         ${lectureList.getLectureAct() == 5 ? 'text-danger2' : ''} ">
+                                                    </p2>
+                                                </td>
+                    -->
+
+
+                                                <td>
+                                                    <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정'
                                     : (lectureList.getLectureAct() == 2 ? '강의중'
                                     : (lectureList.getLectureAct() == 3 ? '강의종료'
                                     : (lectureList.getLectureAct() == 4 ? '폐강'
                                     : (lectureList.getLectureAct() == 5 ? '강의철회' : ''))))}"
-                                    th:class="${lectureList.getLectureAct() == 4 ? 'text-danger' : ''}"
-                                    th:classappend="${lectureList.getLectureAct() == 5 ? 'text-danger' : ''}">
-                                </p2>
-                            </td>
+                                                        th:class="${lectureList.getLectureAct() == 4 ? 'text-danger' : ''}"
+                                                        th:classappend="${lectureList.getLectureAct() == 5 ? 'text-danger' : ''}">
+                                                    </p2>
+                                                </td>
 
 
-                            <td>
-                                <div class="btn_group">
-                                    <a th:href="@{'/admin/getlecture/'+${lectureList.getLectureNo()}}"
-                                       class="btn btn-primary">상세보기</a>
-                                </div>
-                            </td>
+                                                <td>
+                                                    <div class="btn_group">
+                                                        <a th:href="@{'/admin/getlecture/'+${lectureList.getLectureNo()}}"
+                                                           class="btn btn-primary">상세보기</a>
+                                                    </div>
+                                                </td>
 
-                        </tr>
+                                            </tr>
 
-                        </tbody>
-                    </table>
+                                            </tbody>
+                                        </table>
 
+                                    </div>
+
+
+                                </div><!--end card body-->
+
+                            </div><!--end card-->
+                        </div><!-- end col-->
+                    </div><!-- end row-->
                 </div>
+
+
             </div>
         </main>
     </div>
@@ -203,7 +204,7 @@
             $.ajax({
                 type: "GET",
                 url: "/admin/filteredLectureList",
-                data: { status: 0 },  // Pass 0 to indicate "all" status
+                data: {status: 0},  // Pass 0 to indicate "all" status
                 success: function (data) {
                     console.log("Received data:", data);
                     // Replace the content of the table with the fragment
@@ -218,7 +219,7 @@
             $.ajax({
                 type: "GET",
                 url: "/admin/filteredLectureList",
-                data: { status: statusFilter },
+                data: {status: statusFilter},
                 success: function (data) {
                     console.log("Received data:", data);
                     // Replace the content of the table with the fragment
