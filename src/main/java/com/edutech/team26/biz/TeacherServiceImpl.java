@@ -275,13 +275,15 @@ public class TeacherServiceImpl implements TeacherService {
 
             Files files = filesRepository.findByParAndToUse(saveTeacherHistoryNo, "teacherApplyFiles");
 
+            // 파일 히스토리에 해당하는 넘버 다시 저장 teacherApplyOKFiles 로 저장
+
             // teacher
             Optional<Teacher> optionalTeacher = teacherRepository.findByMno(saveTeacherHistory.getMno());
             if(optionalTeacher.isEmpty()) {
                 return false;
             }
             Teacher teacher = optionalTeacher.get();
-            teacher.upgradeStatus(true, files.getFileNo(), AcceptCode.ACCEPT_STATUS_OK, now);
+            teacher.upgradeStatus(true, AcceptCode.ACCEPT_STATUS_OK, now);
             teacherRepository.save(teacher);
         } else {
             // 거절일때

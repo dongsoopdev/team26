@@ -27,9 +27,6 @@ public class Teacher {
     private Long mno;
 
     @Column
-    private Long filesNo;
-
-    @Column
     private Boolean activeYn;
 
     @Column
@@ -44,9 +41,8 @@ public class Teacher {
     @Column
     private LocalDateTime activeDate;
 
-    public void upgradeStatus(Boolean activeYn, Long filesNo, String status, LocalDateTime activeDate){
+    public void upgradeStatus(Boolean activeYn, String status, LocalDateTime activeDate){
         this.activeYn = activeYn;
-        this.filesNo = filesNo;
         this.status = status;
         this.activeDate = activeDate;
     }
