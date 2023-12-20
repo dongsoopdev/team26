@@ -22,6 +22,8 @@ public interface TeacherService {
 
     boolean changeActive(Long teacherNo, int type) throws Exception;
 
+    boolean historyRemove(HttpServletRequest request, Long teacherHistoryNo) throws Exception;
+
     boolean upgradeGrade(Long teacherHistoryNo, String status, String reason) throws Exception;
 
     List<TeacherVO> teacherList();

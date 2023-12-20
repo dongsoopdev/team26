@@ -16,7 +16,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>이름</th>
+                                <th>이름(이메일)</th>
                                 <th>등록일</th>
                                 <th>상태</th>
                             </tr>
@@ -24,7 +24,7 @@
                         <tbody>
                             <tr th:each="teacherHistory, num : ${teacherHistoryList}">
                                 <th scope="row" th:text="${num.count}"></th>
-                                <td><a th:href="|@{/admin/teacherApplyDetail/}${teacherHistory.mno}|" th:text="${teacherHistory.userName}"></a></td>
+                                <td><a th:href="|@{/admin/teacherApplyDetail/}${teacherHistory.mno}|" th:text="|${teacherHistory.userName} (${teacherHistory.email})|"></a></td>
                                 <td th:text="${#temporals.format(teacherHistory.regDate, 'yyyy-MM-dd')}"></td>
                                 <td th:text="${teacherHistory.status}"></td>
                             </tr>

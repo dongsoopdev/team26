@@ -1,6 +1,7 @@
 package com.edutech.team26.biz;
 
 import com.edutech.team26.constant.AcceptCode;
+import com.edutech.team26.constant.MemberRole;
 import com.edutech.team26.domain.*;
 
 import com.edutech.team26.dto.*;
@@ -12,12 +13,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -146,13 +153,8 @@ public class TeacherServiceImpl implements TeacherService {
         if(checkTeacher.isPresent()) {
             teacherNo = checkTeacher.get().getTeacherNo();
         } else {
-            // 선생님 테이블에 없을 경우
-            //realPath = application.getRealPath("/teacher");
-            
             TeacherDTO teacherDTO = new TeacherDTO();
             teacherDTO.setMno(mno);
-            //teacherDTO.setFileOriginNm(fileOriginNm);
-            //teacherDTO.setFileSaveNm(fileUploadNm);
             teacherDTO.setActiveYn(false);
             teacherDTO.setRegDate(LocalDateTime.now());
             teacherDTO.setStatus(AcceptCode.ACCEPT_STATUS_REQ);
@@ -202,15 +204,6 @@ public class TeacherServiceImpl implements TeacherService {
 
         }
 
-        /*
-        선생님 승인 이후에 권한 업데이트 작업
-        Member memberInfo = memberRepository.findByMno(mno);
-
-        Member memberUpgrade = modelMapper.map(memberInfo, Member.class);
-        memberUpgrade.updateRole(MemberRole.TEACHER);
-        memberRepository.save(memberUpgrade);
-        */
-
         return true;
     }
 
@@ -228,8 +221,6 @@ public class TeacherServiceImpl implements TeacherService {
         TeacherDTO teacherDTO = new TeacherDTO();
         teacherDTO.setTeacherNo(teacherNo);
         teacherDTO.setMno(result.get().getMno());
-        //teacherDTO.setFileOriginNm(result.get().getFileOriginNm());
-        //teacherDTO.setFileSaveNm(result.get().getFileSaveNm());
         teacherDTO.setIntro(result.get().getIntro());
         teacherDTO.setRegDate(result.get().getRegDate());
 
@@ -255,6 +246,31 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    public boolean historyRemove(HttpServletRequest request, Long teacherHistoryNo) throws Exception {
+        Optional<TeacherHistory> optionalTeacherHistory = teacherHistoryRepository.findById(teacherHistoryNo);
+        if(optionalTeacherHistory.isEmpty()) {
+            return false;
+        }
+
+        TeacherHistory teacherHistory = optionalTeacherHistory.get();
+
+        List<Files> filesList = filesRepository.findByParAndToUse(teacherHistoryNo, "teacherApplyFiles");
+        if(filesList != null) {
+            for(Files files : filesList) {
+                File file = new File( files.getFileSaveFolder() + File.separator + files.getFileSaveNm());
+                if (file.exists()) { // 해당 파일이 존재하면
+                    file.delete(); // 파일 삭제
+                    filesRepository.deleteById(files.getFileNo());
+                }
+            }
+        }
+
+        teacherHistoryRepository.deleteById(teacherHistoryNo);
+
+        return true;
+    }
+
+    @Override
     public boolean upgradeGrade(Long teacherHistoryNo, String status, String reason) throws Exception {
 
         Optional<TeacherHistory> optionalTeacherHistory = teacherHistoryRepository.findById(teacherHistoryNo);
@@ -273,18 +289,44 @@ public class TeacherServiceImpl implements TeacherService {
 
             TeacherHistory saveTeacherHistory = teacherHistoryRepository.findByTeacherHistoryNo(saveTeacherHistoryNo);
 
-            Files files = filesRepository.findByParAndToUse(saveTeacherHistoryNo, "teacherApplyFiles");
-
-            // 파일 히스토리에 해당하는 넘버 다시 저장 teacherApplyOKFiles 로 저장
+            Long mno = saveTeacherHistory.getMno();
 
             // teacher
-            Optional<Teacher> optionalTeacher = teacherRepository.findByMno(saveTeacherHistory.getMno());
+            Optional<Teacher> optionalTeacher = teacherRepository.findByMno(mno);
             if(optionalTeacher.isEmpty()) {
                 return false;
             }
             Teacher teacher = optionalTeacher.get();
             teacher.upgradeStatus(true, AcceptCode.ACCEPT_STATUS_OK, now);
             teacherRepository.save(teacher);
+
+            List<Files> filesList = filesRepository.findByParAndToUse(saveTeacherHistoryNo, "teacherApplyFiles");
+
+            // 파일 히스토리에 해당하는 넘버 다시 저장 teacherApplyOKFiles 로 저장
+            for(Files files : filesList) {
+                FilesDTO filesDTO = new FilesDTO();
+                filesDTO.setPar(teacher.getTeacherNo());
+                filesDTO.setToUse("teacherApplyFilesOK");
+                filesDTO.setFileOriginNm(files.getFileOriginNm());
+                filesDTO.setFileSaveNm(files.getFileSaveNm());
+                filesDTO.setFileSaveFolder(files.getFileSaveFolder());
+                Files saveFiles = modelMapper.map(filesDTO, Files.class);
+                filesRepository.save(saveFiles);
+            }
+
+            //선생님 승인 이후에 권한 업데이트 작업
+            Member memberInfo = memberRepository.findByMno(mno);
+
+            Member memberUpgrade = modelMapper.map(memberInfo, Member.class);
+            memberUpgrade.updateRole(MemberRole.TEACHER);
+            memberRepository.save(memberUpgrade);
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+            updatedAuthorities.add(new SimpleGrantedAuthority("ROLE_TEACHER"));
+            Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+
         } else {
             // 거절일때
             // teacherHistory
