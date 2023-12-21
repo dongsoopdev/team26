@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="testLayout/layoutLms">
+    <th:block layout:fragment="content">
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">선생님 신청</h1>
+            <ol class="breadcrumb mb-5">
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item">마이페이지</li>
+                <li class="breadcrumb-item active" aria-current="page">선생님 신청</li>
+            </ol>
+            <div class="container">
+                <section id="applyList">
+                    <table class="table" th:if="${#lists.isEmpty(teacherHistoryList)}">
+                        <colgroup>
+                            <col style="width:25%;">
+                            <col style="width:25%;">
+                            <col style="width:25%;">
+                            <col style="width:25%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">제목</th>
+                            <th scope="col">신청일자</th>
+                            <th scope="col">신청결과</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="4" class="text-center">신청 내역이 없습니다.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <table class="table" th:unless="${#lists.isEmpty(teacherHistoryList)}">
+                        <colgroup>
+                            <col style="width:6%;">
+                            <col style="width:auto;">
+                            <col style="width:25%;">
+                            <col style="width:25%;">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th class="text-center" scope="col">#</th>
+                            <th class="text-center" scope="col">제목</th>
+                            <th class="text-center" scope="col">신청일자</th>
+                            <th class="text-center" scope="col">신청결과</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="teacherHistory, num : ${teacherHistoryList}">
+                            <th class="text-center" scope="row" th:text="${num.count}"></th>
+                            <td class="text-start">
+                                <th:block th:if="${teacherHistory.fileCnt > 0}">
+                                    <a th:href="|@{/myTeacherApplyDetail/}${teacherHistory.teacherHistoryNo}|" th:text="|${teacherHistory.filesList[0].getFileOriginNm()} 외 ${teacherHistory.fileCnt}건|"></a>
+                                </th:block>
+                                <th:block th:if="${teacherHistory.fileCnt == 0}">
+                                    <a th:href="|@{/myTeacherApplyDetail/}${teacherHistory.teacherHistoryNo}|" th:text="|${teacherHistory.filesList[0].getFileOriginNm()}|"></a>
+                                </th:block>
+                            </td>
+                            <td class="text-center" th:text="${#temporals.format(teacherHistory.regDate, 'yyyy-MM-dd HH:mm')}"></td>
+                            <td class="text-center" th:text="${teacherHistory.status}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </th:block>
+</html>
