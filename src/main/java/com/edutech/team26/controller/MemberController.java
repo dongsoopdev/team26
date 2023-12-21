@@ -161,8 +161,8 @@ public class MemberController {
 
     }
 
-    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
-    @GetMapping("/myPage")
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/user/myPage")
     public String myPage(Model model) {
         MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MemberDTO memberDTO = memberService.getMemberInfo(memberSecurityDTO.getMno());
@@ -170,13 +170,31 @@ public class MemberController {
         return "member/myPage";
     }
 
-    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
-    @GetMapping("/myPage/modifyInfo")
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT')")
+    @GetMapping("/myPage")
+    public String myPageLms(Model model) {
+        MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MemberDTO memberDTO = memberService.getMemberInfo(memberSecurityDTO.getMno());
+        model.addAttribute("memberDTO", memberDTO);
+        return "member/lmsMyPage";
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/user/myPageModify")
     public String myPageInfo(Model model) {
         MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MemberDTO memberDTO = memberService.getMemberInfo(memberSecurityDTO.getMno());
         model.addAttribute("memberDTO", memberDTO);
         return "member/myPageInfo";
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT')")
+    @GetMapping("/myPageModify")
+    public String myPageInfoLms(Model model) {
+        MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MemberDTO memberDTO = memberService.getMemberInfo(memberSecurityDTO.getMno());
+        model.addAttribute("memberDTO", memberDTO);
+        return "member/lmsMyPageInfo";
     }
 
     @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
@@ -195,7 +213,7 @@ public class MemberController {
         return "redirect:/myPage";
     }
 
-    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/myPage/resetPw")
     public String myPagePw(Model model) {
         MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -204,6 +222,17 @@ public class MemberController {
         memberPwDTO.setPassword(memberDTO.getPassword());
         model.addAttribute("memberPwDTO", memberPwDTO);
         return "member/myPagePw";
+    }
+
+    @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT')")
+    @GetMapping("/myPageResetPw")
+    public String myPagePwLms(Model model) {
+        MemberSecurityDTO memberSecurityDTO = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MemberDTO memberDTO = memberService.getMemberInfo(memberSecurityDTO.getMno());
+        MemberPwDTO memberPwDTO = new MemberPwDTO();
+        memberPwDTO.setPassword(memberDTO.getPassword());
+        model.addAttribute("memberPwDTO", memberPwDTO);
+        return "member/lmsMyPagePw";
     }
 
     @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
@@ -264,6 +293,30 @@ public class MemberController {
         return "member/teacherApply";
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
+    @GetMapping("/myTeacherApply")
+    public String teacherApplyLms(Model model) throws Exception {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<TeacherHistoryFilesVO> teacherHistoryList = teacherService.getHistoryList(member.getMno());
+        model.addAttribute("teacherHistoryList", teacherHistoryList);
+        boolean canApply = true;
+        boolean finishApply = false;
+        for(TeacherHistoryFilesVO teacherHistoryFilesVO : teacherHistoryList) {
+            if(teacherHistoryFilesVO.getStatus().equals("승인 완료")) {
+                finishApply = true;
+                break;
+            }
+
+            if(teacherHistoryFilesVO.getStatus().equals("신청 대기")) {
+                canApply = false;
+                break;
+            }
+        }
+        model.addAttribute("canApply", canApply);
+        model.addAttribute("finishApply", finishApply);
+        return "member/lmsMyTeacherApply";
+    }
+
     @PostMapping("/myPage/teacherApply")
     public String teacherApplyPro(HttpServletRequest request, List<MultipartFile> uploadFiles) throws Exception {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -277,6 +330,14 @@ public class MemberController {
         TeacherHistoryFilesVO teacherHistory = teacherService.getHistoryDetail(fileHistoryNo);
         model.addAttribute("teacherHistory", teacherHistory);
         return "member/teacherApplyDetail";
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @GetMapping("/myTeacherApplyDetail/{fileHistoryNo}")
+    public String teacherApplyDetailLms(@PathVariable(required = false) Long fileHistoryNo, Model model) throws Exception {
+        TeacherHistoryFilesVO teacherHistory = teacherService.getHistoryDetail(fileHistoryNo);
+        model.addAttribute("teacherHistory", teacherHistory);
+        return "member/lmsMyTeacherApplyDetail";
     }
 
     @PreAuthorize("hasAnyRole('TEACHER', 'USER')")

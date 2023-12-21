@@ -20,6 +20,11 @@ public class HomeController {
         return "contentLayout";
     }
 
+    @GetMapping("/howToUse")
+    public String howToUse(Model model) throws Exception {
+        return "howToUse";
+    }
+
     @GetMapping("/layout2")
     public String layout2(Model model) throws Exception {
         return "contentLayout2";

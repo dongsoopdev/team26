@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="testLayout/layoutLms">
+    <th:block layout:fragment="content">
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">마이페이지</h1>
+            <ol class="breadcrumb mb-5">
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item">마이페이지</li>
+                <li class="breadcrumb-item active" aria-current="page">마이페이지</li>
+            </ol>
+            <div class="container">
+                <form th:action="@{/myPage/resetPw}" id="modifyPwForm" th:object="${memberPwDTO}" method="post">
+                    <section id="myPage">
+                        <table class="table">
+                            <colgroup>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr class="border-top">
+                                <th class="text-center">현재 비밀번호</th>
+                                <td>
+                                    <input type="password" th:field="*{password}" placeholder="기존 비밀번호를 입력하세요." class="form-control" required />
+                                    <label th:if="${#fields.hasErrors('password') || errorMessage != null}" class="fieldError">기존 비밀번호가 맞지 않습니다.</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">새로운 비밀번호</th>
+                                <td>
+                                    <input type="password" th:field="*{newPassword}" placeholder="새로운 비밀번호을 입력하세요." class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$" maxlength="16" minlength="8" autocomplete="on" required />
+                                    <label th:if="${#fields.hasErrors('newPassword')}" th:errors="*{newPassword}" class="fieldError">새로운 비밀번호</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">새로운 비밀번호 확인</th>
+                                <td>
+                                    <input type="password" th:field="*{newPasswordConfirm}" placeholder="새로운 비밀번호을 입력하세요." class="form-control" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$" maxlength="16" minlength="8" autocomplete="on" required />
+                                    <label th:if="${#fields.hasErrors('newPasswordConfirm')}" th:errors="*{newPasswordConfirm}" class="fieldError">새로운 비밀번호</label>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-center mt-5">
+                            <a th:href="@{/myPage}" class="btn btn-danger">취소</a>
+                            <button type="button" onclick="modifyPw()" class="btn btn-primary">수정</button>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </div>
+        <script>
+            function modifyPw() {
+                let pw = $("#password").val();
+                let newPw = $("#newPassword").val();
+                let newPwConfirm = $("#newPasswordConfirm").val();
+
+                if(pw == "") {
+                    alert("비밀번호를 입력해주세요.");
+                    $("#password").focus();
+                    return false;
+                }
+
+                if(newPw != newPwConfirm) {
+                    alert("새로운 비밀번호와 새로운 비밀번호 확인이 일치하지 않습니다.");
+                    return false;
+                }
+
+                $("#modifyPwForm").submit();
+            }
+        </script>
+    </th:block>
+</html>
