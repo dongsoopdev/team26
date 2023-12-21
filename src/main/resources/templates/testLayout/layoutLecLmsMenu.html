@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <th:block th:fragment="lmsMenu">
+        <div id="layoutSidenav_nav_sub">
+            <nav class="sb-sidenav accordion sb-sidenav-light border-right">
+
+                <th:block sec:authorize="hasRole('STUDENT')">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <!--<div class="sb-sidenav-menu-heading">Core</div>-->
+                            <a class="nav-link">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                내 강의실
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <a class="nav-link collapsed" th:href="@{'/student/getCourse/'+${student_no}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                강좌 정보
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+                            <!--<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                                 data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="layout-static.html">Static Navigation</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                                </nav>
+                            </div>-->
+
+                            <a class="nav-link collapsed" th:href="@{/student/entranceZoom(lecture_no=${lecture_no})}" >
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                실시간 강의
+                                <div class="sb-sidenav-collapse-arrow"></div>
+                            </a>
+                            <!--<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
+                               aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                실시간 강의
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>-->
+                            <!-- <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                                  data-bs-parent="#sidenavAccordion">
+                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    &lt;!&ndash;<a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        data-bs-target="#pagesCollapseAuth" aria-expanded="false"
+                                        aria-controls="pagesCollapseAuth">
+                                         ZOOM 등록
+                                         <div class="sb-sidenav-collapse-arrow">
+                                             &lt;!&ndash;<i class="fas fa-angle-down">&ndash;&gt;</i></div>
+                                     </a>
+     &ndash;&gt;
+                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                        data-bs-target="#pagesCollapseError" aria-expanded="false"
+                                        aria-controls="pagesCollapseError">
+                                         강의 입장
+                                         <div class="sb-sidenav-collapse-arrow">
+                                             &lt;!&ndash;<i class="fas fa-angle-down">&ndash;&gt;</i></div>
+                                     </a>
+                                     &lt;!&ndash; <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                           data-bs-parent="#sidenavAccordionPages">
+                                          <nav class="sb-sidenav-menu-nested nav">
+                                              <a class="nav-link" href="401.html">401 Page</a>
+                                              <a class="nav-link" href="404.html">404 Page</a>
+                                              <a class="nav-link" href="500.html">500 Page</a>
+                                          </nav>
+                                      </div>&ndash;&gt;
+
+                                 </nav>
+                             </div>-->
+
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                               data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                출석
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                               data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                시험
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+                            <a class="nav-link collapsed" th:href="@{/student/noticeList(lecture_no=${lecture_no})}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                공지사항
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+                            <a class="nav-link collapsed" th:href="@{/student/qnaList(lecture_no=${lecture_no})}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                QnA
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+
+                            <!-- <div class="sb-sidenav-menu-heading">Addons</div>
+                             <a class="nav-link" href="charts.html">
+                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                 Charts
+                             </a>
+                             <a class="nav-link" href="tables.html">
+                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                 Tables
+                             </a>-->
+                        </div>
+                    </div>
+                </th:block>
+
+                <th:block sec:authorize="hasRole('TEACHER')">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <!--<div class="sb-sidenav-menu-heading">Core</div>-->
+                            <a class="nav-link" th:href="@{/teacher/lectureList}"><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>개설 강좌 목록</a>
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <a class="nav-link collapsed" th:href="@{'/teacher/getlecture/'+${lecture_no}}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                강좌 정보
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+                            <!--<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                                 data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="layout-static.html">Static Navigation</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                                </nav>
+                            </div>-->
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
+                               aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                실시간 강의
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                                 data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+
+                                    <a class="nav-link collapsed" th:href="@{/teacher/addZoom(lecture_no=${lecture_no})}" >
+                                        ZOOM 등록
+                                    </a>
+
+                                    <a class="nav-link collapsed" th:href="@{/teacher/entranceZoom(lecture_no=${lecture_no})}" >
+                                        강의 입장
+                                    </a>
+
+
+                                    <!-- <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                          data-bs-parent="#sidenavAccordionPages">
+                                         <nav class="sb-sidenav-menu-nested nav">
+                                             <a class="nav-link" href="401.html">401 Page</a>
+                                             <a class="nav-link" href="404.html">404 Page</a>
+                                             <a class="nav-link" href="500.html">500 Page</a>
+                                         </nav>
+                                     </div>-->
+
+                                </nav>
+                            </div>
+
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                               data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                출석
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                               data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                시험
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+                            <a class="nav-link collapsed" th:href="@{/teacher/noticeList(lecture_no=${lecture_no})}">
+                                <!--                        <a class="nav-link collapsed" th:href="@{/teacher/noticeList(lecture_no=${lecture_no})}" data-bs-toggle="collapse"-->
+                                <!--                           data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">-->
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                공지사항
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+                            <a class="nav-link collapsed" th:href="@{/teacher/qnaList(lecture_no=${lecture_no})}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                QnA
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+
+                            <!-- <div class="sb-sidenav-menu-heading">Addons</div>
+                             <a class="nav-link" href="charts.html">
+                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                 Charts
+                             </a>
+                             <a class="nav-link" href="tables.html">
+                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                 Tables
+                             </a>-->
+                        </div>
+                    </div>
+                </th:block>
+
+                <th:block sec:authorize="hasRole('ADMIN')">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <!--<div class="sb-sidenav-menu-heading">Core</div>-->
+                            <a class="nav-link" href="index.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                강좌 관리
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <a class="nav-link collapsed" th:href="@{/admin/lectureList}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                전체 개설 강좌
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+
+                            <a class="nav-link collapsed" th:href="@{/admin/courseList}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                전체 수강생 관리
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+                            <!--<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                                 data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="layout-static.html">Static Navigation</a>
+                                    <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
+                                </nav>
+                            </div>-->
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages"
+                               aria-expanded="false" aria-controls="collapsePages">
+                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                                실시간 강의 관리
+                                <!-- <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>-->
+                            </a>
+                            <!--<div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                                 data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                       data-bs-target="#pagesCollapseAuth" aria-expanded="false"
+                                       aria-controls="pagesCollapseAuth">
+                                        ZOOM 등록
+                                        <div class="sb-sidenav-collapse-arrow">
+                                            &lt;!&ndash;<i class="fas fa-angle-down">&ndash;&gt;</i></div>
+                                    </a>
+                                    &lt;!&ndash;<div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne"
+                                         data-bs-parent="#sidenavAccordionPages">
+                                        <nav class="sb-sidenav-menu-nested nav">
+                                            <a class="nav-link" href="login.html">Login</a>
+                                            <a class="nav-link" href="register.html">Register</a>
+                                            <a class="nav-link" href="password.html">Forgot Password</a>
+                                        </nav>
+                                    </div>&ndash;&gt;
+                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                                       data-bs-target="#pagesCollapseError" aria-expanded="false"
+                                       aria-controls="pagesCollapseError">
+                                        강의 입장
+                                        <div class="sb-sidenav-collapse-arrow">
+                                            &lt;!&ndash;<i class="fas fa-angle-down">&ndash;&gt;</i></div>
+                                    </a>
+                                    &lt;!&ndash; <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne"
+                                          data-bs-parent="#sidenavAccordionPages">
+                                         <nav class="sb-sidenav-menu-nested nav">
+                                             <a class="nav-link" href="401.html">401 Page</a>
+                                             <a class="nav-link" href="404.html">404 Page</a>
+                                             <a class="nav-link" href="500.html">500 Page</a>
+                                         </nav>
+                                     </div>&ndash;&gt;
+
+                                </nav>
+                            </div>-->
+
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                               data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                통합 출석 관리
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                               data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                통합 시험 관리
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                               data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                과정 게시판 관리
+                                <div class="sb-sidenav-collapse-arrow"><!--<i class="fas fa-angle-down">--></i></div>
+                            </a>
+
+
+                            <!-- <div class="sb-sidenav-menu-heading">Addons</div>
+                             <a class="nav-link" href="charts.html">
+                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                 Charts
+                             </a>
+                             <a class="nav-link" href="tables.html">
+                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                 Tables
+                             </a>-->
+                        </div>
+                    </div>
+                </th:block>
+
+            </nav>
+        </div>
+    </th:block>
+</html>
