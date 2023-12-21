@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="testLayout/layoutLms">
+    <th:block layout:fragment="content">
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">마이페이지</h1>
+            <ol class="breadcrumb mb-5">
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item">마이페이지</li>
+                <li class="breadcrumb-item active" aria-current="page">마이페이지</li>
+            </ol>
+            <div class="container">
+                <form th:action="@{/myPage/modifyInfo}" th:object="${memberDTO}" method="post">
+                    <section id="myPage">
+                        <table class="table">
+                            <colgroup>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr class="border-top">
+                                <th class="text-center">이름</th>
+                                <td th:text="${memberDTO.userName}"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">이메일</th>
+                                <td th:text="${memberDTO.email}"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-center">전화번호</th>
+                                <td>
+                                    <input type="text" th:field="*{phone}" placeholder="010-XXXX-XXXX" class="form-control" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" th:value="${memberDTO.phone}" required />
+                                    <label th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="fieldError">전화번호</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th rowspan="3" class="text-center">주소</th>
+                                <td>
+                                    <input type="text" th:field="*{addr}" placeholder="기본주소" id="address1" th:value="${memberDTO.addr}" class="form-control bg-light" required readonly/>
+                                    <label th:if="${#fields.hasErrors('addr')}" th:errors="*{addr}" class="fieldError">기본주소</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" th:field="*{addrDetail}" th:value="${memberDTO.addrDetail}" placeholder="상세주소를 입력해주세요." id="address2" class="form-control" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="text" th:field="*{zipcode}" placeholder="우편번호" id="postcode" th:value="${memberDTO.zipcode}" class="form-control bg-light" style="width:85%;display:inline-block;vertical-align:top;" required readonly/>
+                                    <button type="button" id="post_btn" onclick="findAddr()" class="btn btn-outline-primary" style="width:calc(15% - 17px);margin-left:10px;display:inline-block;vertical-align:top;">우편번호 검색</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="text-center mt-5">
+                            <a th:href="@{/myPage}" class="btn btn-danger">취소</a>
+                            <button type="submit" class="btn btn-primary">수정</button>
+                        </div>
+                    </section>
+                </form>
+            </div>
+        </div>
+        <script th:src="@{/js/common.js}"></script>
+        <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    </th:block>
+</html>

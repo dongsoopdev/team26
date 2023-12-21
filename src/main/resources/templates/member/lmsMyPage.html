@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="testLayout/layoutLms">
+    <th:block layout:fragment="content">
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">마이페이지</h1>
+            <ol class="breadcrumb mb-5">
+                <li class="breadcrumb-item">Home</li>
+                <li class="breadcrumb-item">마이페이지</li>
+                <li class="breadcrumb-item active" aria-current="page">마이페이지</li>
+            </ol>
+            <div class="container">
+                <section id="myPage">
+                    <table class="table">
+                        <colgroup>
+                            <col>
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <!--<tr class="profile_img">
+                            <th class="text-center">프로필 사진</th>
+                            <td>
+                                <img th:src="@{/images/common/basic_profile.png}" alt="기본 이미지" />
+                                <button class="btn btn-sm btn-primary ms-5">이미지 변경</button>
+                            </td>
+                        </tr>-->
+                        <tr class="border-top">
+                            <th class="text-center">이름</th>
+                            <td th:text="${memberDTO.userName}"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">이메일</th>
+                            <td th:text="${memberDTO.email}"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">비밀번호</th>
+                            <td><a class="btn btn-sm btn-primary" th:href="@{/myPageResetPw}">비밀번호 변경</a></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">전화번호</th>
+                            <td th:text="${memberDTO.phone}"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">주소</th>
+                            <td th:text="|[${memberDTO.zipcode}] ${memberDTO.addr}${memberDTO.addrDetail}|"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-center mt-5">
+                        <a th:href="@{/myPageModify}" class="btn btn-primary">회원정보 수정</a>
+                        <button type="button" class="btn btn-danger" onclick="openModal()">회원정보 탈퇴</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="modal_form lms" id="withdrawModal">
+            <div class="modal_detail">
+                <div class="modal_con">
+                    <div class="modal_detail_con text-center">
+                        <div class="p-5">삭제 하시겠습니까?</div>
+                        <div class="modal_btn">
+                            <button class="btn btn-primary" onclick="hideModel()">취소</button>
+                            <a class="btn btn-danger" th:href="@{/myPage/withdrawUser}">삭제</a>
+                        </div>
+                    </div>
+                    <button onclick="hideModel()" class="modal_close btn btn-primary p-0">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function openModal() {
+                let modalForm = document.getElementById("withdrawModal");
+                if(modalForm.style.display != "block"){
+                    modalForm.style.display = "block";
+                } else {
+                    modalForm.style.display = "none";
+                }
+            }
+            function hideModel() {
+                document.getElementById("withdrawModal").style.display = "none";
+            }
+        </script>
+    </th:block>
+</html>

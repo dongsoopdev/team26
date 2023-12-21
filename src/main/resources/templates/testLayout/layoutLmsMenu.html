@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <th:block th:fragment="lmsMenu(type)">
+        <div id="layoutSidenav_nav" th:class="${type}">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+
+                <th:block sec:authorize="hasRole('STUDENT')">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <a class="nav-link" href="#"><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Dashboard</a>
+                            <a class="nav-link" th:href="@{/myPage}"><div class="sb-nav-link-icon"><i class="fas fa-user-edit"></i></div>마이페이지</a>
+                            <a class="nav-link" th:href="@{/student/courseList}"><div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>수강 강좌</a>
+                            <a class="nav-link" th:href="@{/howToUse}"><div class="sb-nav-link-icon"><i class="far fa-question-circle"></i></div>이용 안내</a>
+                        </div>
+                    </div>
+                </th:block>
+
+                <th:block sec:authorize="hasRole('TEACHER')">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <a class="nav-link" href="#"><div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>Dashboard</a>
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTeacherMember" aria-expanded="false" aria-controls="collapseTeacherMember">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>마이페이지<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseTeacherMember" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordionTeacherMember">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionTeacherMember">
+                                    <a class="nav-link" th:href="@{/myPage}">마이페이지</a>
+                                    <a class="nav-link" th:href="@{/myTeacherApply}">선생님 신청</a>
+                                </nav>
+                            </div>
+                            <a class="nav-link" th:href="@{/teacher/lectureList}"><div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>개설 강좌</a>
+                            <a class="nav-link" th:href="@{/howToUse}"><div class="sb-nav-link-icon"><i class="far fa-question-circle"></i></div>이용 안내</a>
+                        </div>
+                    </div>
+                </th:block>
+
+                <th:block sec:authorize="hasRole('ADMIN')">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <th:block th:if="${type eq ''}">
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMember" aria-expanded="false" aria-controls="collapseMember">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>회원관리<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                            </th:block>
+                            <th:block th:unless="${type eq ''}">
+                                <a class="nav-link collapsed" th:href="@{/admin/memberList}">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                </a>
+                            </th:block>
+                            <div class="collapse" id="collapseMember" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordionPagesAdmin">
+                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPagesAdmin">
+                                    <a class="nav-link" th:href="@{/admin/memberList}">회원</a>
+                                    <a class="nav-link" th:href="@{/admin/teacherApplyList}">선생님 신청</a>
+                                </nav>
+                            </div>
+                            <th:block th:if="${type eq ''}">
+                                <a class="nav-link collapsed" th:href="@{/admin/lectureList}"><div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>강좌관리</a>
+                            </th:block>
+                            <th:block th:unless="${type eq ''}">
+                                <a class="nav-link collapsed active" th:href="@{/admin/lectureList}"><div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>강좌관리</a>
+                            </th:block>
+                            <a class="nav-link collapsed" th:href="@{/admin/noticeList}"><div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>공지사항 관리</a>
+                            <a class="nav-link collapsed" th:href="@{/admin/qnaList}"><div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>QNA 관리</a>
+                        </div>
+                    </div>
+                </th:block>
+
+            </nav>
+        </div>
+    </th:block>
+</html>

@@ -19,7 +19,9 @@
             <div>
                 <h2 class="text-center fw-bolder py-5 bg-primary text-white mb-2">마이페이지</h2>
                 <ul class="nav nav-pills flex-column mb-auto my_menu">
-                    <li class="border-bottom active"><a th:href="@{/myPage}" class="nav-link link-dark">마이페이지</a></li>
+                    <th:block  sec:authorize="hasRole('USER')">
+                        <li class="border-bottom"><a th:href="@{/user/myPage}" class="nav-link link-dark">마이페이지</a></li>
+                    </th:block>
                     <th:block  sec:authorize="!hasRole('STUDENT')">
                         <li class="border-bottom"><a th:href="@{/myPage/teacherApply}" class="nav-link link-dark">선생님신청</a></li>
                     </th:block>
@@ -70,7 +72,7 @@
                             </tbody>
                         </table>
                         <div class="text-center mt-5">
-                            <a th:href="@{/myPage}" class="btn btn-danger">취소</a>
+                            <a th:href="@{/user/myPage}" class="btn btn-danger">취소</a>
                             <button type="button" onclick="modifyPw()" class="btn btn-primary">수정</button>
                         </div>
                     </section>
