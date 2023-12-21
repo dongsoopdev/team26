@@ -4,9 +4,7 @@ import com.edutech.team26.biz.MemberService;
 import com.edutech.team26.biz.QnaService;
 import com.edutech.team26.biz.StudentService;
 import com.edutech.team26.domain.Student;
-import com.edutech.team26.dto.MemberDTO;
-import com.edutech.team26.dto.MemberSecurityDTO;
-import com.edutech.team26.dto.QnaDTO;
+import com.edutech.team26.dto.*;
 import com.edutech.team26.dto.QnaDTO;
 import com.edutech.team26.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -190,13 +188,15 @@ public class QnaController {
         model.addAttribute("qna",qnaDTO);
         model.addAttribute("userName",userName);
         model.addAttribute("lecture_no",lecture_no);
-        model.addAttribute("qna",qnaDTO);
 
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
         model.addAttribute("student_no",student.get().getStudentNo());
-        System.out.println(student.get().getStudentNo());
 
+        //댓글 리스트
+        List<QnaCommentDTO> commentList = qnaService.commentListByqnoAndLecno(qna_no,lecture_no);
+        model.addAttribute("commentList",commentList);
+        System.out.println(commentList);
         return "student/qna/studentGetQna";
     }
 
@@ -207,8 +207,7 @@ public class QnaController {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
         model.addAttribute("student_no",student.get().getStudentNo());
-
-        System.out.println(student.get().getStudentNo());
+        member.getUserName();
         return "student/qna/studentInsertQna";
     }
 
@@ -239,6 +238,25 @@ public class QnaController {
 
     @GetMapping("/student/deleteQna")
     public String studentDelete(@RequestParam(name = "qna_no") Long qna_no, Model model) {
+        QnaDTO qnaDTO= qnaService.findByQno(qna_no);
+        Long lecture_no = qnaDTO.getLecture_no();
+        model.addAttribute("lecture_no",lecture_no);
+        qnaService.deleteQna(qna_no);
+
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
+        model.addAttribute("student_no",student.get().getStudentNo());
+        return "redirect:/student/qnaList?lecture_no="+ lecture_no;
+    }
+
+    //학생의 답변
+    @PostMapping("/student/insertComment")
+    public String studentInsertCommentPro (QnaCommentDTO qnaCommentDTO) {
+        qnaService.insertQnaComment(qnaCommentDTO);
+        return "redirect:/student/getQna?qna_no="+ qnaCommentDTO.getQna_no();
+    }
+    @GetMapping("/student/deleteComment")
+    public String studentDeleteComment(@RequestParam(name = "qna_no") Long qna_no, Model model) {
         QnaDTO qnaDTO= qnaService.findByQno(qna_no);
         Long lecture_no = qnaDTO.getLecture_no();
         model.addAttribute("lecture_no",lecture_no);
