@@ -15,6 +15,16 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/howToUse")
+    public String howToUse(Model model) throws Exception {
+        return "howToUse";
+    }
+
+    @GetMapping("/privacyPolicy")
+    public String privacyPolicy(Model model) throws Exception {
+        return "privacyPolicy";
+    }
+
     @GetMapping("/layout")
     public String layout(Model model) throws Exception {
         return "contentLayout";

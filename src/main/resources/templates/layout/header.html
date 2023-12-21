@@ -23,8 +23,8 @@
                                                 <i class="fas fa-user fa-fw"></i>
                                             </a>
                                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                                <th:block sec:authorize="!hasRole('ADMIN')">
-                                                    <li><a class="dropdown-item" th:href="@{/myPage}">마이페이지</a></li>
+                                                <th:block sec:authorize="hasRole('USER')">
+                                                    <li><a class="dropdown-item" th:href="@{/user/myPage}">마이페이지</a></li>
                                                     <li><hr class="dropdown-divider" /></li>
                                                 </th:block>
                                                 <li><a class="dropdown-item" th:href="@{/logout}">로그아웃</a></li>
