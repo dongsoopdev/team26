@@ -87,13 +87,20 @@ public class QnaServiceImpl implements QnaService{
     }
 
     @Override
-    public List<QnaCommentDTO> commentListByqno(Long qna_no) {
+    public List<QnaCommentDTO> commentListByqnoAndLecno(Long qna_no, Long lecture_no) {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<QnaComment> list = qnaCommentRepository.findAll();
-        // qna_no 기반으로 공지사항 필터링
+        // qna_no와 lecture_no 기반으로 공지사항 필터링
         List<QnaCommentDTO> commentList = list.stream()
-                .filter(comment -> comment.getQna_no().equals(qna_no))
-                .map(comment -> modelMapper.map(comment, QnaCommentDTO.class))
-                .collect(Collectors.toList());
+                .filter(comment -> comment.getQna_no().equals(qna_no) && comment.getLecture_no().equals(lecture_no))
+                .map(comment -> {
+                    QnaCommentDTO dto = new QnaCommentDTO();
+                    dto.setUserName(member.getUserName());
+                    modelMapper.map(comment, dto);
+                    return dto;
+                })
+                    .collect(Collectors.toList());
+
         return commentList;
     }
 

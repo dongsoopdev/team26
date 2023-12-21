@@ -23,4 +23,5 @@ public class QnaCommentDTO {
     private String content;
     private LocalDateTime regDate;
     private Long mno;
+    private String userName;
 }
