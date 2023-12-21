@@ -74,12 +74,11 @@
                                     <div class="name" th:text="${lecture.getLectureName()}" style="width: 50%;"></div>
                                     <br>
 
-                                    <div class="date"
-                                         th:text="${#temporals.format(lecture.getZoomDate(), 'MM월 dd일 HH시 mm분') + ' 강의 시작'}"
-                                         style="width: 50%;"></div>
+                                    <div class="date" th:text="${#temporals.format(lecture.getZoomDate(), 'MM월 dd일 HH시 mm분') != null ? #temporals.format(lecture.getZoomDate(), 'MM월 dd일 HH시 mm분') + ' 강의 시작' : 'URL이 등록되지 않았습니다.'}" style="width: 50%;"></div>
 
 
-                                    <!--<div class="name" th:text="${lecture.getZoomDate()} + ' 시작합니다.'" style="width: 50%;"></div>-->
+
+
                                     <br><br>
 
                                     <button class="btn btn-primary btn-lg"
@@ -98,7 +97,7 @@
                                                 }
                                                 window.open(zoomUrl, '_blank');
                                             } else {
-                                                alert('Zoom URL이 없습니다.');
+                                                alert('Zoom URL이 등록되지 않은 상태입니다.');
                                             }
                                         }
                                     </script>

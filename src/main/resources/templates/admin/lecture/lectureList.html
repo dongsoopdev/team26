@@ -57,9 +57,7 @@
 
 
                                 <div class="card-body">
-
-
-                                    <!--  <div th:include="lectureTableFragment :: lectureTableFragment"></div>-->
+                                     <!--  <div th:include="lectureTableFragment :: lectureTableFragment"></div>-->
 
 
                                     <div id="lectureTableFragment" th:fragment="lectureTableFragment" class="page_wrap">
@@ -110,18 +108,6 @@
                                                 </td>
 
 
-                                                <!-- <td>
-                                                     <p2 th:text="${lectureList.getStartEnrolmentDate()}"></p2>
-                                                     <strong> - </strong>
-                                                     <p2 th:text="${lectureList.getEndEnrolmentDate()}"></p2>
-                                                 </td>
-
-                                                 <td>
-                                                     <p2 th:text="${lectureList.getStartStudyDate()}"></p2>
-                                                     <strong> - </strong>
-                                                     <p2 th:text="${lectureList.getEndStudyDate()}"></p2>
-                                                 </td>-->
-
                                                 <td>
                                                     <p2 th:utext="${#temporals.format(lectureList.getStartEnrolmentDate(), 'yy.MM.dd')}"></p2>
                                                     <strong> - </strong>
@@ -135,30 +121,13 @@
                                                 </td>
 
 
-                                                <!-- <td>
-                                                     <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정' : (lectureList.getLectureAct() == 2 ? '강의중' : (lectureList.getLectureAct() == 3 ? '강의종료' : (lectureList.getLectureAct() == 4 ? '폐강' : (lectureList.getLectureAct() == 5 ? '강의철회' : ''))))}"
-                                                     ></p2>
-                                                 </td>
-                     -->
-                                                <!--<td>
+
+                                                <td>
                                                     <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정'
                                                                 : (lectureList.getLectureAct() == 2 ? '강의중'
                                                                 : (lectureList.getLectureAct() == 3 ? '강의종료'
                                                                 : (lectureList.getLectureAct() == 4 ? '폐강'
                                                                 : (lectureList.getLectureAct() == 5 ? '강의철회' : ''))))}"
-                                                        th:classappend="${lectureList.getLectureAct() == 4 ? 'text-danger' : ''}
-                                                                         ${lectureList.getLectureAct() == 5 ? 'text-danger2' : ''} ">
-                                                    </p2>
-                                                </td>
-                    -->
-
-
-                                                <td>
-                                                    <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정'
-                                    : (lectureList.getLectureAct() == 2 ? '강의중'
-                                    : (lectureList.getLectureAct() == 3 ? '강의종료'
-                                    : (lectureList.getLectureAct() == 4 ? '폐강'
-                                    : (lectureList.getLectureAct() == 5 ? '강의철회' : ''))))}"
                                                         th:class="${lectureList.getLectureAct() == 4 ? 'text-danger' : ''}"
                                                         th:classappend="${lectureList.getLectureAct() == 5 ? 'text-danger' : ''}">
                                                     </p2>
@@ -193,7 +162,65 @@
     </div>
 </div>
 
+
+
 <script>
+    function filterTable() {
+        var statusFilter = document.getElementById("lectureStatus").value;
+        console.log("Selected Status: " + statusFilter);
+
+        // Handle "all" option separately
+        if (statusFilter === "all") {
+            // Make an AJAX call to get all lectures
+            $.ajax({
+                type: "GET",
+                url: "/admin/filteredLectureList",
+                data: {status: 0},  // Pass 0 to indicate "all" status
+                success: function (data) {
+                    console.log("Received data:", data);
+                    // Replace the content of the table with the fragment
+                    $('#lectureTableFragment').html(data);
+
+                    // Trigger DataTables initialization
+                    initDatatables();
+                },
+                error: function (error) {
+                    console.error("Ajax request failed:", error);
+                }
+            });
+        } else {
+            // Make an AJAX call to get filtered lectures
+            $.ajax({
+                type: "GET",
+                url: "/admin/filteredLectureList",
+                data: {status: statusFilter},
+                success: function (data) {
+                    console.log("Received data:", data);
+                    // Replace the content of the table with the fragment
+                    $('#lectureTableFragment').html(data);
+
+                    // Trigger DataTables initialization
+                    initDatatables();
+                },
+                error: function (error) {
+                    console.error("Ajax request failed:", error);
+                }
+            });
+        }
+    }
+
+    function initDatatables() {
+        $('#datatablesSimple').DataTable({
+            // Add DataTables options here
+            "paging": true,
+            "lengthChange": false,
+            // Add other options as needed
+        });
+    }
+</script>
+
+
+<!--<script>
     function filterTable() {
         var statusFilter = document.getElementById("lectureStatus").value;
         console.log("Selected Status: " + statusFilter);
@@ -233,7 +260,7 @@
     }
 
 
-</script>
+</script>-->
 
 
 <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>

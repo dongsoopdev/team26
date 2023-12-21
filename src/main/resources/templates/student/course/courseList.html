@@ -90,11 +90,15 @@
                                             <td>
                                                 <div class="btn_group">
                                                     <a th:href="@{'/student/getCourse/'+${courseList.getStudentNo()}}"
-                                                       th:if="${courseList.getStudentStatus() ne 'CANCEL'}"
+                                                       th:if="${courseList.getStudentStatus() ne 'CANCEL' && courseList.getLectureAct() ne 4}"
                                                        class="btn btn-primary">상세보기</a>
 
                                                     <p2 class="" style="color: red;"
-                                                        th:if="${courseList.getStudentStatus() eq 'CANCEL'}">수강 취소된 강의
+                                                        th:if="${courseList.getStudentStatus() eq 'CANCEL'}">수강 취소한 강의
+                                                    </p2>
+
+                                                    <p2 class="" style="color: red;"
+                                                        th:if="${courseList.getLectureAct() eq 4}">폐강
                                                     </p2>
                                                     <br>
 

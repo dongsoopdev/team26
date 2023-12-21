@@ -173,8 +173,11 @@ public class NoticeController {
     public String studentNoticeList(@RequestParam(name = "lecture_no") Long lecture_no, Model model) {
         List<NoticeDTO> noticeList = noticeService.noticeList(lecture_no);
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
-        model.addAttribute("student_no",student.get().getStudentNo());
+       /* Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
+        model.addAttribute("student_no",student.get().getStudentNo());*/
+        Optional<Student> student =studentRepository.findByMnoAndLectureNoAndStatus(member.getMno(), lecture_no,"COMPLETE");
+        if (!student.isPresent()) { student = studentRepository.findByMnoAndLectureNoAndStatus(member.getMno(),lecture_no, "REQ");}
+        model.addAttribute("student_no", student.get().getStudentNo());
 
         model.addAttribute("noticeList",noticeList);
         model.addAttribute("lecture_no",lecture_no);

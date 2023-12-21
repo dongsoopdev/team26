@@ -68,7 +68,7 @@ public class AdminController extends lecBaseController {
 
     // ===========================================   [강의 관련 시작]  ============================================================
 
-
+    //셀렉트박스 AJAX
     @GetMapping("/filteredLectureList")
     public String filteredLectureList(Model model, @RequestParam(name = "status", defaultValue = "0") int status) {
         System.out.println("Status: " + status);
