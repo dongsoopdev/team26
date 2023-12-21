@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
+    <title>강의 페이지 샘플</title>
+</head>
+<body class="sb-nav-fixed">
+<th:block th:insert="~{testLayout/lmsTop :: lmsTop}"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="~{testLayout/layoutLmsMenu :: lmsMenu('')}"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <th:block layout:fragment="content"></th:block>
+        </main>
+        <th:block th:insert="~{testLayout/lmsFooter :: lmsFooter}"></th:block>
+    </div>
+</div>
+</body>
+</html>
+
+
