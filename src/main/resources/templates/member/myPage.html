@@ -17,7 +17,7 @@
                 <h2 class="text-center fw-bolder py-5 bg-primary text-white mb-2">마이페이지</h2>
                 <ul class="nav nav-pills flex-column mb-auto my_menu">
                     <th:block  sec:authorize="hasRole('USER')">
-                        <li class="border-bottom"><a th:href="@{/user/myPage}" class="nav-link link-dark">마이페이지</a></li>
+                        <li class="border-bottom active"><a th:href="@{/user/myPage}" class="nav-link link-dark">마이페이지</a></li>
                     </th:block>
                     <th:block  sec:authorize="!hasRole('STUDENT')">
                         <li class="border-bottom"><a th:href="@{/myPage/teacherApply}" class="nav-link link-dark">선생님신청</a></li>
