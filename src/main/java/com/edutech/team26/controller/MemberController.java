@@ -366,6 +366,15 @@ public class MemberController {
     }
 
     // 관리자 페이지
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/userList")
+    public String adminUserList(Model model) throws Exception {
+        List<MemberDTO> memberDTOList = memberService.getAllList();
+        model.addAttribute("memberDTOList", memberDTOList);
+        return "admin/member/userList";
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/teacherApplyList")
     public String adminTeacherApplyList(Model model) throws Exception {
@@ -422,18 +431,5 @@ public class MemberController {
             return "redirect:/admin/teacherApplyDetail/" + mno;
         }
     }
-
-    // Teacher
-
-    @GetMapping("/upgradeTeacher")
-    public String upgradeTeacher(Model model){
-        return "teacher/upgrade";
-    }
-
-    /*@GetMapping("/stateTeacher")
-    public String stateTeacher(@Param("type") int type, @Param("mno") Long teacherNo) throws Exception {
-        teacherService.changeActive(teacherNo, type);
-        return "redirect:/";
-    }*/
 
 }

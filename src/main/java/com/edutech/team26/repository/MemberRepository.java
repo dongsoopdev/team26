@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
@@ -30,6 +31,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("select m from Member m where m.email = :email")
     Member findByUserId(@Param("email") String email);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM member m LEFT JOIN member_role_set mr ON m.mno = mr.member_mno where email NOT IN ('admin') ORDER BY mr.role_set desc, m.user_status asc")
+    List<Member> getAllMember();
 
     @Modifying
     @Transactional
