@@ -45,7 +45,6 @@ public class StudentController {
     private VwLectureRepository vwLectureRepository;
 
 
-
     @GetMapping("/home")
     public String studentHome(Model model) {
         log.info("---------------------- STUDENT ----------------------");
@@ -81,7 +80,6 @@ public class StudentController {
     }
 
 
-
     //수강 취소하기(삭제 x)
     @GetMapping("/deleteCourse/{student_no}")
     public String deleteLecture(@PathVariable("student_no") long student_no, Model model) {
@@ -98,21 +96,37 @@ public class StudentController {
     }
 
 
+    //실시간 강의 입장
     @GetMapping("/entranceZoom")
     public String entranceZoom(Model model, @RequestParam("lecture_no") long lecture_no) {
 
-       VwLecture vwLecture =vwLectureRepository.getBylectureNo(lecture_no);
-        VwCourse vwCourse = vwCourseRepository.findByLectureNo(vwLecture.getLectureNo());
-
-        model.addAttribute("lecture", vwCourse);
-        model.addAttribute("lecture_no",lecture_no);
+        //학생이 CANCEL강의가 아니여야 한다.
 
 
-        // 사이드 메뉴 때문에 "student_no" 던져줘야 해서 생성
-        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
-        model.addAttribute("student_no",student.get().getStudentNo());
-  
+        List<VwCourse> vwCourse = vwCourseRepository.findAllByLectureNo(lecture_no);
+        System.out.println("취소된강의만보고싶" + vwCourse);
+        for (VwCourse course : vwCourse) {
+            if (course.getStudentStatus().equals("REQ") || course.getStudentStatus().equals("COMPLETE")) { //취소된 강의가 아닐때
+                VwCourse c = vwCourseRepository.findByStudentNo(course.getStudentNo());
+                System.out.println("asdf : " + c);
+                System.out.println("asdfasdf : " + c.getLectureNo());
+                model.addAttribute("lecture", c);
+                model.addAttribute("lecture_no", c.getLectureNo());
+
+                // 사이드 메뉴 때문에 "student_no" 던져줘야 해서 생성
+                MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                System.out.println("member.getMno() : " + member.getMno());
+                System.out.println("c.getLectureNo() : " + c.getLectureNo());
+
+
+               // Optional<VwCourse> course1 = vwCourseRepository.findByMnoAndLectureNoAndStudentStatus(member.getMno(), c.getLectureNo(), "COMPLETE");
+                Optional<Student> student =studentRepository.findByMnoAndLectureNoAndStatus(member.getMno(), lecture_no,"COMPLETE");
+                if (!student.isPresent()) { student = studentRepository.findByMnoAndLectureNoAndStatus(member.getMno(),lecture_no, "REQ");}
+                model.addAttribute("student_no", student.get().getStudentNo());
+
+            }
+        }
+
 
         return "student/course/entranceZoom";
 
@@ -128,7 +142,6 @@ public class StudentController {
 
         return "Success";
     }
-
 
 
 }

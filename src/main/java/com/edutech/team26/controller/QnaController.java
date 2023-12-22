@@ -173,8 +173,9 @@ public class QnaController {
         model.addAttribute("lecture_no",lecture_no);
 
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
-        model.addAttribute("student_no",student.get().getStudentNo());
+        Optional<Student> student =studentRepository.findByMnoAndLectureNoAndStatus(member.getMno(), lecture_no,"COMPLETE");
+        if (!student.isPresent()) { student = studentRepository.findByMnoAndLectureNoAndStatus(member.getMno(),lecture_no, "REQ");}
+        model.addAttribute("student_no", student.get().getStudentNo());
         return "student/qna/studentQnaList";
     }
     @GetMapping("/student/getQna")

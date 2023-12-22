@@ -69,6 +69,8 @@ public class AdminController extends lecBaseController {
     // ===========================================   [강의 관련 시작]  ============================================================
 
 
+
+    /*//셀렉트박스 AJAX
     @GetMapping("/filteredLectureList")
     public String filteredLectureList(Model model, @RequestParam(name = "status", defaultValue = "0") int status) {
         System.out.println("Status: " + status);
@@ -86,6 +88,48 @@ public class AdminController extends lecBaseController {
 
         // Return only the fragment (table)
         return "admin/lecture/lectureList :: #lectureTableFragment";
+    }
+*/
+
+    // 강의 ajax
+    @GetMapping("/filteredLectureList")
+    public String filteredLectureList(Model model, @RequestParam(name = "status", defaultValue = "0") int status) {
+        List<VwLecture> filteredList;
+
+        if (status == 0) {
+            // Return all lectures if status is 0 or not provided
+            filteredList = vwLectureRepository.findAllByOrderByLecRegDateDesc();
+        } else {
+            // Otherwise, filter by status
+            filteredList = vwLectureRepository.findByLectureAct(status);
+        }
+
+        model.addAttribute("lectureList", filteredList);
+
+        // Return only the fragment (table)
+        return "admin/lecture/lectureList :: #lectureTableFragment";
+    }
+
+
+    // 수강생 ajax
+    @GetMapping("/filteredLectureList2")
+    public String filteredLectureList2(Model model, @RequestParam(name = "status", defaultValue = "0") long status) {
+        List<VwCourse> filteredList;
+
+        if (status == 0) {
+            // Return all lectures if status is 0 or not provided
+            filteredList = vwCourseRepository.findAllByOrderByStudentRegDateDesc();
+            System.out.println("전체 강의 >>>> " + filteredList);
+        } else {
+            // Otherwise, filter by status
+            filteredList = vwCourseRepository.findAllByLectureNo(status);
+            System.out.println("강의번호 별 >>>> " + filteredList);
+        }
+
+        model.addAttribute("courseList", filteredList);
+
+        // Return only the fragment (table)
+        return "admin/lecture/courseList :: #lectureTableFragment";
     }
 
 
@@ -290,7 +334,7 @@ public class AdminController extends lecBaseController {
     @GetMapping("/courseList")
     public String courseList(Model model, LectureParam lectureParam) {
 
-        List<VwCourse> courseList = vwCourseRepository.findAll();
+        List<VwCourse> courseList = vwCourseRepository.findAllByOrderByStudentRegDateDesc();
 
         System.out.println("전체 강좌" + courseList.toString());
         model.addAttribute("courseList", courseList);
