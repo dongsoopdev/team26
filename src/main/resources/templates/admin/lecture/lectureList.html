@@ -6,6 +6,11 @@
     <th:block th:insert="~{layout/head :: head}"></th:block>
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+</script>
+
+
     <title>관리자 페이지</title>
     <style>
         .text-danger {
@@ -60,9 +65,13 @@
                                      <!--  <div th:include="lectureTableFragment :: lectureTableFragment"></div>-->
 
 
-                                    <div id="lectureTableFragment" th:fragment="lectureTableFragment" class="page_wrap">
+                              <!--      <div id="lectureTableFragmentContainer">
+                                        <div id="lectureTableFragment" th:replace="admin/lecture/lectureList :: lectureTableFragment"></div>
+                                    </div>-->
 
-                                        <table id="datatablesSimple" class="text-center">
+
+                                    <div id="lectureTableFragment" th:fragment="lectureTableFragment" class="page_wrap">
+                                        <table id="datatablesSimple" class="text-center table">
                                             <thead>
                                             <tr>
                                                 <th class="text-center" style="vertical-align: middle; text-align: center;">번호</th>
@@ -150,7 +159,6 @@
 
 
                                 </div><!--end card body-->
-
                             </div><!--end card-->
                         </div><!-- end col-->
                     </div><!-- end row-->
@@ -169,16 +177,15 @@
         var statusFilter = document.getElementById("lectureStatus").value;
         console.log("Selected Status: " + statusFilter);
 
-        // Handle "all" option separately
+        // Make an AJAX call to get filtered lectures
         if (statusFilter === "all") {
-            // Make an AJAX call to get all lectures
             $.ajax({
                 type: "GET",
                 url: "/admin/filteredLectureList",
-                data: {status: 0},  // Pass 0 to indicate "all" status
+                data: { status: 0 },
                 success: function (data) {
                     console.log("Received data:", data);
-                    // Replace the content of the table with the fragment
+                    // Replace the content of the table fragment with the new data
                     $('#lectureTableFragment').html(data);
 
                     // Trigger DataTables initialization
@@ -189,14 +196,13 @@
                 }
             });
         } else {
-            // Make an AJAX call to get filtered lectures
             $.ajax({
                 type: "GET",
                 url: "/admin/filteredLectureList",
-                data: {status: statusFilter},
+                data: { status: statusFilter },
                 success: function (data) {
                     console.log("Received data:", data);
-                    // Replace the content of the table with the fragment
+                    // Replace the content of the table fragment with the new data
                     $('#lectureTableFragment').html(data);
 
                     // Trigger DataTables initialization
@@ -209,14 +215,71 @@
         }
     }
 
+
     function initDatatables() {
+        // Destroy the existing DataTable instance
+        if ($.fn.DataTable.isDataTable('#datatablesSimple')) {
+            $('#datatablesSimple').DataTable().destroy();
+        }
+
+        // Initialize DataTable on the table
         $('#datatablesSimple').DataTable({
-            // Add DataTables options here
             "paging": true,
             "lengthChange": false,
-            // Add other options as needed
         });
     }
+
+    /*    function filterTable() {
+            var statusFilter = document.getElementById("lectureStatus").value;
+            console.log("Selected Status: " + statusFilter);
+
+
+            if (statusFilter === "all") {
+
+                $.ajax({
+                    type: "GET",
+                    url: "/admin/filteredLectureList",
+                    data: {status: 0},  // Pass 0 to indicate "all" status
+                    success: function (data) {
+                        console.log("Received data:", data);
+                        // Replace the content of the table with the fragment
+                        $('#lectureTableFragment').html(data);
+
+                        // Trigger DataTables initialization
+                        initDatatables();
+                    },
+                    error: function (error) {
+                        console.error("Ajax request failed:", error);
+                    }
+                });
+            } else {
+                // Make an AJAX call to get filtered lectures
+                $.ajax({
+                    type: "GET",
+                    url: "/admin/filteredLectureList",
+                    data: {status: statusFilter},
+                    success: function (data) {
+                        console.log("Received data:", data);
+                        // Replace the content of the table with the fragment
+                        $('#lectureTableFragment').html(data);
+
+                        // Trigger DataTables initialization
+                        initDatatables();
+                    },
+                    error: function (error) {
+                        console.error("Ajax request failed:", error);
+                    }
+                });
+            }
+        }
+
+        function initDatatables() {
+            $('#datatablesSimple').DataTable({
+                "paging": true,
+                "lengthChange": false,
+
+            });
+        }*/
 </script>
 
 

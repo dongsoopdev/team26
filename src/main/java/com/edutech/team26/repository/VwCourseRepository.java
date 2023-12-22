@@ -33,4 +33,10 @@ public interface VwCourseRepository extends JpaRepository<VwCourse, Long> {
     VwCourse findByLectureNoAndStudentStatus(long lectureNo, String studentStatus);
 
     Optional<VwCourse> findByMnoAndLectureNoAndStudentStatus(Long mno, long lectureNo, String studentStatus);
+
+
+    // 수강신청날짜기준
+    List<VwCourse> findAllByOrderByStudentRegDateDesc();
+    List<VwCourse> findAllByOrderByStudentRegDateAsc();
+
 }
