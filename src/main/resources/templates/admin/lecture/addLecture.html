@@ -1,295 +1,303 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="testLayout/layoutLecLms">
 <head>
-    <th:block th:insert="~{layout/head :: head}"></th:block>
-    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
     <title>LMS_관리자 페이지</title>
 </head>
-<body class="sb-nav-fixed">
-<th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
-<div id="layoutSidenav">
-    <!--<th:block th:insert="~{layout/lmsMenuAdmin :: lmsMenu}"></th:block>-->
-    <th:block th:insert="~{layout/lmsMenuAdminLec :: lmsMenu2}"></th:block>
+<th:block layout:fragment="content">
+    <div id="layoutSidenav">
 
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="layout_contents">
+        <div class="layout_contents">
 
-                <div class="content">
+            <div class="content">
 
-                    <div class="row mt-3">
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h2 class="title">강의 등록</h2>
-                                </div>
-                                <div class="card-body">
-                                    <!--<h5 class="card-title">공지사항 목록</h5>-->
+                <div class="row mt-3">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="title">강의 등록</h2>
+                            </div>
+                            <div class="card-body">
+                                <!--<h5 class="card-title">공지사항 목록</h5>-->
 
 
-                <div class="detail" style="width: 70%;
+                                <div class="detail" style="width: 70%;
                     margin: 0 auto;
                     margin-top: 20px;
                     margin-bottom: 20px;">
-                    <form th:action="@{/admin/save}" id="submitForm" method="post" enctype="multipart/form-data">
-                        <table class="table">
-                            <tbody>
-                            <!--                        <tr>-->
-                            <!--                            <th>강좌 카테고리</th>-->
-                            <!--                            <td>-->
-                            <!--                                <select name="categoryId" required>-->
-                            <!--                                    <option value=""> 카테고리 선택 </option>-->
-                            <!--                                    <option-->
-                            <!--                                            th:selected="${detail.categoryId == x.id}"-->
-                            <!--                                            th:each="x : ${category}" th:value="${x.id}" th:text="${x.categoryName}"> 기획 </option>-->
-                            <!--                                </select>-->
-                            <!--                            </td>-->
-                            <!--                        </tr>-->
-                            <tr>
-                                <th>강좌명</th>
-                                <td colspan="2"><input type="text" name="lectureName" id="lectureName" class="input"
-                                                       placeholder="강좌명 입력" required>
-                               <!-- <p th:each="lectureList : ${lectureList}" th:text="${lectureList.getLectureName()}"></p>-->
-                                    <div id="duplicateWarning" style="color: red;"></div>
-                                </td>
-                            </tr>
-                            <script>
-                                $(document).ready(function () {
-                                    // 포커스 아웃 이벤트 발생 시 중복 강의 제목을 확인
-                                    $('#lectureName').on('blur', function () {
-                                        var inputVal = $(this).val();
+                                    <form th:action="@{/admin/save}" id="submitForm" method="post"
+                                          enctype="multipart/form-data">
+                                        <table class="table">
+                                            <tbody>
+                                            <!--                        <tr>-->
+                                            <!--                            <th>강좌 카테고리</th>-->
+                                            <!--                            <td>-->
+                                            <!--                                <select name="categoryId" required>-->
+                                            <!--                                    <option value=""> 카테고리 선택 </option>-->
+                                            <!--                                    <option-->
+                                            <!--                                            th:selected="${detail.categoryId == x.id}"-->
+                                            <!--                                            th:each="x : ${category}" th:value="${x.id}" th:text="${x.categoryName}"> 기획 </option>-->
+                                            <!--                                </select>-->
+                                            <!--                            </td>-->
+                                            <!--                        </tr>-->
+                                            <tr>
+                                                <th>강좌명</th>
+                                                <td colspan="2"><input type="text" name="lectureName" id="lectureName"
+                                                                       class="input"
+                                                                       placeholder="강좌명 입력" required>
+                                                    <!-- <p th:each="lectureList : ${lectureList}" th:text="${lectureList.getLectureName()}"></p>-->
+                                                    <div id="duplicateWarning" style="color: red;"></div>
+                                                </td>
+                                            </tr>
+                                            <script>
+                                                $(document).ready(function () {
+                                                    // 포커스 아웃 이벤트 발생 시 중복 강의 제목을 확인
+                                                    $('#lectureName').on('blur', function () {
+                                                        var inputVal = $(this).val();
 
-                                        // AJAX를 통해 서버에 중복 여부 확인 요청
-                                        $.ajax({
-                                            url: '/admin/checkDuplicate',
-                                            method: 'POST',
-                                            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
-                                            data: { lectureName: inputVal },
-                                            success: function (response) {
-                                                var duplicateWarning = $('#duplicateWarning');
-                                                if (response.duplicate) {
-                                                    duplicateWarning.text('중복된 강의 제목입니다. 다른 제목을 입력해주세요.').css('color', 'red');
-                                                } else {
-                                                    duplicateWarning.text('입력이 가능합니다.').css('color', 'blue');
-                                                }
-                                            },
-                                            error: function () {
-                                                console.error('Error checking duplicate lecture name.');
-                                            }
-                                        });
-                                    });
-                                });
-                            </script>
-
-
-
-                            <tr>
-                                <th>강사 이름</th>
-                                <td colspan="2">
-                                    <select name="teacher_no" id="teacher_no" autofocus required>
-                                        <option th:if="${teacherList.Status} eq 'OK'" th:each="teacherList : ${teacherList}" th:value="${teacherList.teacherNo}" th:text="${teacherList.userName}"></option>
-                                    </select>
-                                </td>
-                            </tr>
+                                                        // AJAX를 통해 서버에 중복 여부 확인 요청
+                                                        $.ajax({
+                                                            url: '/admin/checkDuplicate',
+                                                            method: 'POST',
+                                                            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+                                                            data: {lectureName: inputVal},
+                                                            success: function (response) {
+                                                                var duplicateWarning = $('#duplicateWarning');
+                                                                if (response.duplicate) {
+                                                                    duplicateWarning.text('중복된 강의 제목입니다. 다른 제목을 입력해주세요.').css('color', 'red');
+                                                                } else {
+                                                                    duplicateWarning.text('입력이 가능합니다.').css('color', 'blue');
+                                                                }
+                                                            },
+                                                            error: function () {
+                                                                console.error('Error checking duplicate lecture name.');
+                                                            }
+                                                        });
+                                                    });
+                                                });
+                                            </script>
 
 
-                            <tr>
-                                <th>강좌 설명</th>
-                                <td colspan="2"><textarea name="lectureContent" id="lectureContent" cols="50"
-                                                          class="textarea" rows="8" maxlength="2000" style="width: 100%"
-                                                          placeholder="강좌 설명 입력" required></textarea></td>
-                            </tr>
+                                            <tr>
+                                                <th>강사 이름</th>
+                                                <td colspan="2">
+                                                    <select name="teacher_no" id="teacher_no" autofocus required>
+                                                        <option th:if="${teacherList.Status} eq 'OK'"
+                                                                th:each="teacherList : ${teacherList}"
+                                                                th:value="${teacherList.teacherNo}"
+                                                                th:text="${teacherList.userName}"></option>
+                                                    </select>
+                                                </td>
+                                            </tr>
 
 
-                            <tr>
-                                <th>모집 수강 인원</th>
-                                <td colspan="2"><input type="number" name="lectureMaxnum" id="lectureMaxnum"
-                                                       class="input" placeholder="모집 인원 입력" style="width: 50%" required>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th>최소 수강 인원</th>
-                                <td colspan="2"><input type="number" name="lectureMinnum" id="lectureMinnum"
-                                                       class="input" placeholder="최소 수강 인원 입력" style="width: 50%"
-                                                       required></td>
-                            </tr>
-                            <script>
-                                document.getElementById('lectureMaxnum').addEventListener('change', function() {
-                                    var maxNum = parseInt(this.value, 10);
-                                    var minNum = parseInt(document.getElementById('lectureMinnum').value, 10);
-
-                                    if (maxNum > 100) {
-                                        alert('모집 수강인원은 100명 이하로 제한됩니다.');
-                                        this.value = 100;
-                                    } else if (maxNum < 1) {
-                                        alert('모집 수강인원은 1명 이상이어야 합니다.');
-                                        this.value = 1;
-                                    }
-
-                                    if (minNum < 1 || minNum > maxNum) {
-                                        alert('최소 수강 인원은 1명 이상이여야 하고, 모집 수강인원 이내여야 합니다.');
-                                        document.getElementById('lectureMinnum').value = 1;
-                                    }
-                                });
-
-                                document.getElementById('lectureMinnum').addEventListener('change', function() {
-                                    var minNum = parseInt(this.value, 10);
-                                    var maxNum = parseInt(document.getElementById('lectureMaxnum').value, 10);
-
-                                    if (minNum < 1 || minNum > maxNum) {
-                                        alert('최소 수강 인원은 1명 이상이여하 하고, 모집 수강인원 이내여야 합니다.');
-                                        this.value = 1;
-                                    }
-                                });
-                            </script>
+                                            <tr>
+                                                <th>강좌 설명</th>
+                                                <td colspan="2"><textarea name="lectureContent" id="lectureContent"
+                                                                          cols="50"
+                                                                          class="textarea" rows="8" maxlength="2000"
+                                                                          style="width: 100%"
+                                                                          placeholder="강좌 설명 입력" required></textarea>
+                                                </td>
+                                            </tr>
 
 
-                            <tr>
-                                <th>수강 신청 기간</th>
-                                <td colspan="2">
-                                    <input type="date" name="startEnrolmentDate" id="startEnrolmentDate"
-                                           class="input" placeholder="수강 신청 시작일" required>
-                                    <strong>&nbsp;&nbsp;-&nbsp;&nbsp;</strong>
-                                    <input type="date" name="endEnrolmentDate" id="endEnrolmentDate"
-                                           class="input" placeholder="수강 신청 마감일" required>
-                                </td>
-                            </tr>
+                                            <tr>
+                                                <th>모집 수강 인원</th>
+                                                <td colspan="2"><input type="number" name="lectureMaxnum"
+                                                                       id="lectureMaxnum"
+                                                                       class="input" placeholder="모집 인원 입력"
+                                                                       style="width: 50%" required>
+                                                </td>
+                                            </tr>
 
-                            <script>
-                                // 스크립트 부분
-                                document.getElementById('startEnrolmentDate').addEventListener('change', function() {
-                                    // 현재 날짜를 가져오기
-                                    var currentDate = new Date();
-                                    currentDate.setHours(0, 0, 0, 0); // 시, 분, 초, 밀리초를 0으로 설정
+                                            <tr>
+                                                <th>최소 수강 인원</th>
+                                                <td colspan="2"><input type="number" name="lectureMinnum"
+                                                                       id="lectureMinnum"
+                                                                       class="input" placeholder="최소 수강 인원 입력"
+                                                                       style="width: 50%"
+                                                                       required></td>
+                                            </tr>
+                                            <script>
+                                                document.getElementById('lectureMaxnum').addEventListener('change', function () {
+                                                    var maxNum = parseInt(this.value, 10);
+                                                    var minNum = parseInt(document.getElementById('lectureMinnum').value, 10);
 
-                                    // 선택한 시작일과 마감일을 가져오기
-                                    var startEnrolmentDate = new Date(this.value);
-                                    var endEnrolmentDate = new Date(document.getElementById('endEnrolmentDate').value);
+                                                    if (maxNum > 100) {
+                                                        alert('모집 수강인원은 100명 이하로 제한됩니다.');
+                                                        this.value = 100;
+                                                    } else if (maxNum < 1) {
+                                                        alert('모집 수강인원은 1명 이상이어야 합니다.');
+                                                        this.value = 1;
+                                                    }
 
-                                    // 시작일이 현재 날짜보다 이전인 경우
-                                    if (startEnrolmentDate < currentDate) {
-                                        alert('현재 날짜보다 이전의 날짜를 선택할 수 없습니다.');
-                                        // 선택한 시작일을 초기화
-                                        this.value = '';
-                                    }
+                                                    if (minNum < 1 || minNum > maxNum) {
+                                                        alert('최소 수강 인원은 1명 이상이여야 하고, 모집 수강인원 이내여야 합니다.');
+                                                        document.getElementById('lectureMinnum').value = 1;
+                                                    }
+                                                });
 
-                                    // 시작일이 마감일보다 이전인 경우
-                                    if (startEnrolmentDate > endEnrolmentDate) {
-                                        alert('시작일은 마감일보다 이전이어야 합니다.');
-                                        // 선택한 마감일을 초기화
-                                        document.getElementById('endEnrolmentDate').value = '';
-                                    }
-                                });
+                                                document.getElementById('lectureMinnum').addEventListener('change', function () {
+                                                    var minNum = parseInt(this.value, 10);
+                                                    var maxNum = parseInt(document.getElementById('lectureMaxnum').value, 10);
 
-                                document.getElementById('endEnrolmentDate').addEventListener('change', function() {
-                                    // 선택한 시작일과 마감일을 가져오기
-                                    var startEnrolmentDate = new Date(document.getElementById('startEnrolmentDate').value);
-                                    var endEnrolmentDate = new Date(this.value);
-
-                                    // 마감일이 시작일보다 이전인 경우
-                                    if (endEnrolmentDate < startEnrolmentDate) {
-                                        alert('마감일은 시작일보다 이후이어야 합니다.');
-                                        // 선택한 마감일을 초기화
-                                        this.value = '';
-                                    }
-                                });
-                            </script>
+                                                    if (minNum < 1 || minNum > maxNum) {
+                                                        alert('최소 수강 인원은 1명 이상이여하 하고, 모집 수강인원 이내여야 합니다.');
+                                                        this.value = 1;
+                                                    }
+                                                });
+                                            </script>
 
 
+                                            <tr>
+                                                <th>수강 신청 기간</th>
+                                                <td colspan="2">
+                                                    <input type="date" name="startEnrolmentDate" id="startEnrolmentDate"
+                                                           class="input" placeholder="수강 신청 시작일" required>
+                                                    <strong>&nbsp;&nbsp;-&nbsp;&nbsp;</strong>
+                                                    <input type="date" name="endEnrolmentDate" id="endEnrolmentDate"
+                                                           class="input" placeholder="수강 신청 마감일" required>
+                                                </td>
+                                            </tr>
 
-                            <tr>
-                                <th>강의 운영 기간</th>
-                                <td colspan="2">
-                                    <input type="date" name="startStudyDate" id="startStudyDate"
-                                           class="input" placeholder="강의 시작일" required>
-                                    <strong>&nbsp;&nbsp;-&nbsp;&nbsp;</strong>
-                                    <input type="date" name="endStudyDate" id="endStudyDate" class="input"
-                                           placeholder="강의 종료일" required></td>
-                                </td>
-                            </tr>
+                                            <script>
+                                                // 스크립트 부분
+                                                document.getElementById('startEnrolmentDate').addEventListener('change', function () {
+                                                    // 현재 날짜를 가져오기
+                                                    var currentDate = new Date();
+                                                    currentDate.setHours(0, 0, 0, 0); // 시, 분, 초, 밀리초를 0으로 설정
 
-                            <script>
-                                document.getElementById('startStudyDate').addEventListener('change', function() {
-                                    var startStudyDate = new Date(this.value);
-                                    var endEnrolmentDate = new Date(document.getElementById('endEnrolmentDate').value);
+                                                    // 선택한 시작일과 마감일을 가져오기
+                                                    var startEnrolmentDate = new Date(this.value);
+                                                    var endEnrolmentDate = new Date(document.getElementById('endEnrolmentDate').value);
 
-                                    if (startStudyDate <= endEnrolmentDate) {
-                                        alert('강의 시작일은 수강 신청 마감일보다 이후에 있어야 합니다.');
-                                        this.value = '';
-                                    }
-                                });
+                                                    // 시작일이 현재 날짜보다 이전인 경우
+                                                    if (startEnrolmentDate < currentDate) {
+                                                        alert('현재 날짜보다 이전의 날짜를 선택할 수 없습니다.');
+                                                        // 선택한 시작일을 초기화
+                                                        this.value = '';
+                                                    }
 
-                                document.getElementById('endStudyDate').addEventListener('change', function() {
-                                    var startStudyDate = new Date(document.getElementById('startStudyDate').value);
-                                    var endStudyDate = new Date(this.value);
+                                                    // 시작일이 마감일보다 이전인 경우
+                                                    if (startEnrolmentDate > endEnrolmentDate) {
+                                                        alert('시작일은 마감일보다 이전이어야 합니다.');
+                                                        // 선택한 마감일을 초기화
+                                                        document.getElementById('endEnrolmentDate').value = '';
+                                                    }
+                                                });
 
-                                    if (endStudyDate <= startStudyDate) {
-                                        alert('강의 종료일은 강의 시작일보다 이후에 있어야 합니다.');
-                                        this.value = '';
-                                    }
-                                });
-                            </script>
+                                                document.getElementById('endEnrolmentDate').addEventListener('change', function () {
+                                                    // 선택한 시작일과 마감일을 가져오기
+                                                    var startEnrolmentDate = new Date(document.getElementById('startEnrolmentDate').value);
+                                                    var endEnrolmentDate = new Date(this.value);
 
-
-                            <tr>
-                                <th>썸네일 이미지</th>
-                                <td colspan="2"><input type="file" name="file" id="lectureImg1" class="input"
-                                                       placeholder="썸네일 이미지" accept=".jpg, .png" required></td>
-                            </tr>
-
-                            <tr>
-                                <th>강좌소개 이미지</th>
-                                <td colspan="2"><input type="file" name="file" id="lectureImg2" class="input"
-                                                       placeholder="강좌 소개 이미지" accept=".jpg, .png" required></td>
-                            </tr>
-                            <tr>
-                                <th>샘플(OT) 영상</th>
-                                <td colspan="2"><input type="file" name="file" id="lectureVedio" class="input"
-                                                       placeholder="샘플 영상" accept=".mp4" required></td>
-                            </tr>
-
-
-                            </tbody>
-                        </table>
-
-                        <tr>
-                            <td colspan="2">
-                                <input type="reset" value="취소" class="btn btn-danger" onclick="window.history.back();">
-                                <input type="submit" value="강의등록" class="btn btn-primary">
-                                <a th:href="@{admin/lectureList}" type="button" class="btn btn-secondary"
-                                   style="float: right;">강의목록</a>
-                            </td>
-                        </tr>
-                    </form>
-                </div>
-
-                <!--            <script type="text/javascript" src="/res/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>-->
-
-                <!--            <script type="text/javascript">-->
-                <!--                var oEditors = [];-->
-                <!--                nhn.husky.EZCreator.createInIFrame({-->
-                <!--                    oAppRef: oEditors,-->
-                <!--                    elPlaceHolder: "content",-->
-                <!--                    sSkinURI: "/res/se2/SmartEditor2Skin.html",-->
-                <!--                    fCreator: "createSEditor2"-->
-                <!--                });-->
-                <!--            </script>-->
-
-                                </div><!--end card body-->
-                            </div><!--end card-->
-                        </div><!-- end col-->
-                    </div><!-- end row-->
-                </div>
+                                                    // 마감일이 시작일보다 이전인 경우
+                                                    if (endEnrolmentDate < startEnrolmentDate) {
+                                                        alert('마감일은 시작일보다 이후이어야 합니다.');
+                                                        // 선택한 마감일을 초기화
+                                                        this.value = '';
+                                                    }
+                                                });
+                                            </script>
 
 
+                                            <tr>
+                                                <th>강의 운영 기간</th>
+                                                <td colspan="2">
+                                                    <input type="date" name="startStudyDate" id="startStudyDate"
+                                                           class="input" placeholder="강의 시작일" required>
+                                                    <strong>&nbsp;&nbsp;-&nbsp;&nbsp;</strong>
+                                                    <input type="date" name="endStudyDate" id="endStudyDate"
+                                                           class="input"
+                                                           placeholder="강의 종료일" required></td>
+                                                </td>
+                                            </tr>
+
+                                            <script>
+                                                document.getElementById('startStudyDate').addEventListener('change', function () {
+                                                    var startStudyDate = new Date(this.value);
+                                                    var endEnrolmentDate = new Date(document.getElementById('endEnrolmentDate').value);
+
+                                                    if (startStudyDate <= endEnrolmentDate) {
+                                                        alert('강의 시작일은 수강 신청 마감일보다 이후에 있어야 합니다.');
+                                                        this.value = '';
+                                                    }
+                                                });
+
+                                                document.getElementById('endStudyDate').addEventListener('change', function () {
+                                                    var startStudyDate = new Date(document.getElementById('startStudyDate').value);
+                                                    var endStudyDate = new Date(this.value);
+
+                                                    if (endStudyDate <= startStudyDate) {
+                                                        alert('강의 종료일은 강의 시작일보다 이후에 있어야 합니다.');
+                                                        this.value = '';
+                                                    }
+                                                });
+                                            </script>
+
+
+                                            <tr>
+                                                <th>썸네일 이미지</th>
+                                                <td colspan="2"><input type="file" name="file" id="lectureImg1"
+                                                                       class="input"
+                                                                       placeholder="썸네일 이미지" accept=".jpg, .png"
+                                                                       required></td>
+                                            </tr>
+
+                                            <tr>
+                                                <th>강좌소개 이미지</th>
+                                                <td colspan="2"><input type="file" name="file" id="lectureImg2"
+                                                                       class="input"
+                                                                       placeholder="강좌 소개 이미지" accept=".jpg, .png"
+                                                                       required></td>
+                                            </tr>
+                                            <tr>
+                                                <th>샘플(OT) 영상</th>
+                                                <td colspan="2"><input type="file" name="file" id="lectureVedio"
+                                                                       class="input"
+                                                                       placeholder="샘플 영상" accept=".mp4" required></td>
+                                            </tr>
+
+
+                                            </tbody>
+                                        </table>
+
+                                        <tr>
+                                            <td colspan="2">
+                                                <input type="reset" value="취소" class="btn btn-danger"
+                                                       onclick="window.history.back();">
+                                                <input type="submit" value="강의등록" class="btn btn-primary">
+                                                <a th:href="@{admin/lectureList}" type="button"
+                                                   class="btn btn-secondary"
+                                                   style="float: right;">강의목록</a>
+                                            </td>
+                                        </tr>
+                                    </form>
+                                </div>
+
+                                <!--            <script type="text/javascript" src="/res/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>-->
+
+                                <!--            <script type="text/javascript">-->
+                                <!--                var oEditors = [];-->
+                                <!--                nhn.husky.EZCreator.createInIFrame({-->
+                                <!--                    oAppRef: oEditors,-->
+                                <!--                    elPlaceHolder: "content",-->
+                                <!--                    sSkinURI: "/res/se2/SmartEditor2Skin.html",-->
+                                <!--                    fCreator: "createSEditor2"-->
+                                <!--                });-->
+                                <!--            </script>-->
+
+                            </div><!--end card body-->
+                        </div><!--end card-->
+                    </div><!-- end col-->
+                </div><!-- end row-->
             </div>
-        </main>
 
-        <th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
+
+        </div>
+
     </div>
-</div>
-</div>
-</body>
+</th:block>
 </html>

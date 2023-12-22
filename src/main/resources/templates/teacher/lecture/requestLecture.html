@@ -75,14 +75,14 @@
                                     <script>
                                         function submitForm(event) {
                                             event.preventDefault(); // Prevent the default form submission behavior
-                                            let lecture_no = [[${lecture.getLectureNo()}]];
+                                            let request_no = [[${lecture.getRequestNo()}]];
                                             $.ajax({
                                                 type: "POST",
                                                 url: "/teacher/requestLecture",
                                                 data: $("#submitForm").serialize(),
                                                 success: function (data) {
                                                     alert("문의가 성공적으로 등록되었습니다.");
-                                                    window.location.href = "/teacher/getlecture/" + lecture_no;
+                                                    window.location.href = "/teacher/getlecture/" + request_no;
                                                 },
                                                 error: function (error) {
                                                     console.error("Form submission error:", error);

@@ -62,9 +62,11 @@
                                                       rows="10" maxlength="2000" th:text="${request.getContent()}"
                                                       readonly></textarea>
                                         </div>
-                                        <input type="reset" value="뒤로가기" class="btn btn-lg btn-danger"
-                                               onclick="window.history.back();">
-                                        <input type="submit" value="수정하기" class="btn btn-lg btn-primary">
+
+
+                                        <a th:href="@{'/admin/getlecture/' + ${lectureNo}}"
+                                           class="btn btn-lg btn-warning">강의상세보기</a>
+                                        <a class="btn btn-lg btn-primary">답변하기</a>
                                     </div>
                                 </form>
 

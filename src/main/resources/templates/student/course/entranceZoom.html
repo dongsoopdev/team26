@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="testLayout/layoutLecLms">
 <head>
-    <th:block th:insert="~{layout/head :: head}"></th:block>
-    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
     <title>LMS_선생님 페이지</title>
     <style>
         .text-danger {
@@ -49,107 +48,98 @@
 </head>
 
 
-<body class="sb-nav-fixed">
-<th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
-<div id="layoutSidenav">
-    <!--<th:block th:insert="~{layout/lmsMenuAdmin :: lmsMenu}"></th:block>-->
-    <th:block th:replace="~{layout/lmsMenuStuLec :: lmsMenu2(${lecture_no},${student_no})}"></th:block>
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="layout_contents" th:with="lecture=${lecture}" >
+<th:block layout:fragment="content">
+    <div id="layoutSidenav">
+        <div class="layout_contents" th:with="lecture=${lecture}">
+
+            <div class="content">
+                <div class="row mt-3">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="title">강의 입장</h2>
+                            </div>
+                            <div class="card-body" style="text-align: center; margin: 100px 0px;">
 
 
-                <div class="content">
+                                <!-- <div th:text="${lecture.getZoomUrl()}"></div>-->
 
-                    <div class="row mt-3">
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h2 class="title">강의 입장</h2>
+                                <div class="name" th:text="${lecture.getLectureName()}"
+                                     style="width: 50%;"></div>
+                                <br>
+
+
+                                <div class="date" th:if="${lecture.getLectureAct() eq 1}"
+                                     style="width: 50%;"> 수강 기간이 아닙니다
                                 </div>
-                                <div class="card-body" style="text-align: center; margin: 100px 0px;">
 
 
-                                    <!-- <div th:text="${lecture.getZoomUrl()}"></div>-->
+                                <div class="date" th:if="${lecture.getLectureAct() eq 2}"
+                                     th:text="${#temporals.format(lecture.getZoomDate(), 'MM월 dd일 HH시 mm분') + ' 강의 시작'}"
+                                     style="width: 50%;">
+                                </div>
 
-                                    <div class="name" th:text="${lecture.getLectureName()}" style="width: 50%;"></div>
-                                    <br>
-
-
-                                    <div class="date" th:if="${lecture.getLectureAct() eq 1}"
-                                         style="width: 50%;"> 수강 기간이 아닙니다
-                                    </div>
-
-
-                                    <div class="date" th:if="${lecture.getLectureAct() eq 2}"
-                                         th:text="${#temporals.format(lecture.getZoomDate(), 'MM월 dd일 HH시 mm분') + ' 강의 시작'}"
-                                         style="width: 50%;">
-                                    </div>
-
-                                    <div class="date" th:if="${lecture.getLectureAct() eq 3}"
-                                         style="width: 50%;"> 종료된 강의입니다
-                                    </div>
+                                <div class="date" th:if="${lecture.getLectureAct() eq 3}"
+                                     style="width: 50%;"> 종료된 강의입니다
+                                </div>
 
 
-                                    <br><br>
+                                <br><br>
 
-                                    <!-- 강의 상태가 강의 중일 때만 버튼 보임-->
-                                    <button th:if="${lecture.getLectureAct() eq 2}" class="btn btn-primary btn-lg" th:onclick="load()">
-                                        강의 입장하기
-                                    </button>
+                                <!-- 강의 상태가 강의 중일 때만 버튼 보임-->
+                                <button th:if="${lecture.getLectureAct() eq 2}" class="btn btn-primary btn-lg"
+                                        th:onclick="load()">
+                                    강의 입장하기
+                                </button>
 
-                                    <script th:inline="javascript">
-                                        function load() {
-                                            var zoomUrl = [[${lecture.getZoomUrl()}]];
-                                            var zoomDate = new Date([[${#temporals.format(lecture.getZoomDate(), "yyyy-MM-dd'T'HH:mm:ss")}]]);
-                                            var currentTime = new Date();
+                                <script th:inline="javascript">
+                                    function load() {
+                                        var zoomUrl = [[${lecture.getZoomUrl()}]];
+                                        var zoomDate = new Date([[${#temporals.format(lecture.getZoomDate(), "yyyy-MM-dd'T'HH:mm:ss")}]]);
+                                        var currentTime = new Date();
 
-                                            // Calculate the time difference in minutes
-                                            var timeDifference = (zoomDate.getTime() - currentTime.getTime()) / (1000 * 60);
+                                        // Calculate the time difference in minutes
+                                        var timeDifference = (zoomDate.getTime() - currentTime.getTime()) / (1000 * 60);
 
-                                            // Check if the current time is after the lecture start and before the lecture ends
-                                            if (timeDifference < 0 || timeDifference > 30) {
-                                                alert('강의 시작 30분 전부터 입장 가능합니다');
-                                            } else {
-                                                if (zoomUrl && zoomUrl.trim() !== '') {
-                                                    if (!zoomUrl.startsWith('http://') && !zoomUrl.startsWith('https://')) {
-                                                        zoomUrl = 'http://' + zoomUrl; // Add the protocol if missing
-                                                    }
-                                                    window.open(zoomUrl, '_blank');
-
-                                                    var student_no = [[${lecture.getStudentNo()}]];
-                                                    if (student_no) {
-                                                        fetch('/student/entranceLecture?StudentNo=' + student_no)
-                                                            .then(response => response.text())
-                                                            .then(data => console.log(data))
-                                                            .catch(error => console.error('Error:', error));
-                                                    }
-                                                } else {
-                                                    alert('Zoom URL이 없습니다.');
+                                        // Check if the current time is after the lecture start and before the lecture ends
+                                        if (timeDifference < 0 || timeDifference > 30) {
+                                            alert('강의 시작 30분 전부터 입장 가능합니다');
+                                        } else {
+                                            if (zoomUrl && zoomUrl.trim() !== '') {
+                                                if (!zoomUrl.startsWith('http://') && !zoomUrl.startsWith('https://')) {
+                                                    zoomUrl = 'http://' + zoomUrl; // Add the protocol if missing
                                                 }
+                                                window.open(zoomUrl, '_blank');
+
+                                                var student_no = [[${lecture.getStudentNo()}]];
+                                                if (student_no) {
+                                                    fetch('/student/entranceLecture?StudentNo=' + student_no)
+                                                        .then(response => response.text())
+                                                        .then(data => console.log(data))
+                                                        .catch(error => console.error('Error:', error));
+                                                }
+                                            } else {
+                                                alert('Zoom URL이 없습니다.');
                                             }
                                         }
-                                    </script>
+                                    }
+                                </script>
 
 
+                            </div><!--end card body-->
 
-                                </div><!--end card body-->
-
-                            </div><!--end card-->
-                        </div><!-- end col-->
-                    </div><!-- end row-->
-                </div>
-
-
+                        </div><!--end card-->
+                    </div><!-- end col-->
+                </div><!-- end row-->
             </div>
 
-        </main>
+
+        </div>
+
     </div>
 
-</div>
-<th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
-</div>
-</body>
+
+</th:block>
 </html>
 
 
