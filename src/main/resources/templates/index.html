@@ -51,7 +51,7 @@
                     </th:block>
                     <a sec:authorize="hasRole('ADMIN')" th:href="@{admin/home}" class="btn btn-primary w-100">관리자 LMS 이동</a>
                     <a sec:authorize="hasRole('TEACHER')" th:href="@{teacher/home}" class="btn btn-primary w-100">선생님 LMS 이동</a>
-                    <a sec:authorize="hasRole('STUDENT')"  th:href="@{student/home}" class="btn btn-primary w-100">수강생 LMS 이동</a>
+                    <a sec:authorize="hasRole('STUDENT')"  th:href="@{/student/courseList}" class="btn btn-primary w-100">수강생 LMS 이동</a>
 
 
                 </div>

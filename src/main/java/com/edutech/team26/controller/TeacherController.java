@@ -146,7 +146,7 @@ public class TeacherController {
         Request viewRequest = requestRepository.findByLectureNo(lecture_no);
         model.addAttribute("request",viewRequest);
 
-        VwLecture vwLecture = vwLectureRepository.getBylectureNo(lecture_no);
+        VwLecture vwLecture = vwLectureRepository.getBylectureNo(viewRequest.getLecture().getLecture_no());
         String lectureName = vwLecture.getLectureName();
         model.addAttribute("lectureName",lectureName);
 

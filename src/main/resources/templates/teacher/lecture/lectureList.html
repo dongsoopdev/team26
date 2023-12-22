@@ -1,176 +1,99 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-<head>
-    <th:block th:insert="~{layout/head :: head}"></th:block>
-    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
-    <title>LMS_선생님 페이지</title>
-    <style>
-        .text-danger {
-            color: red;
-        }
-
-    </style>
-</head>
+      layout:decorate="testLayout/layoutLms">
 
 
-<body class="sb-nav-fixed">
-<th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
+<th:block layout:fragment="content">
 <div id="layoutSidenav">
-    <!--<th:block th:insert="~{layout/lmsMenuAdmin :: lmsMenu}"></th:block>-->
-    <th:block th:insert="~{layout/lmsMenuTea :: lmsMenu}"></th:block>
-    <div id="layoutSidenav_content">
-        <main>
 
-            <div class="layout_contents">
+    <div class="layout_contents">
 
-                <div class="content" >
-                    <div class="row mt-3">
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h2 class="title">개설 강좌</h2>
-                                </div>
-                                <div class="card-body" >
-                                    <!--<h5 class="card-title">공지사항 목록</h5>-->
+        <div class="content">
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="title">개설 강좌</h2>
+                        </div>
+                        <div class="card-body">
+                            <!--<h5 class="card-title">공지사항 목록</h5>-->
 
-                                    <div class="btn_group">
-                                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/lectureSave}" class="btn btn-secondary"
-                                           style="float: right;">강좌등록</a>
-                                    </div>
+                            <div class="btn_group">
+                                <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/lectureSave}"
+                                   class="btn btn-secondary"
+                                   style="float: right;">강좌등록</a>
+                            </div>
 
-                                    <!--table-->
-                                    <table id="datatablesSimple" class="text-center" >
-                                        <thead>
-                                        <tr>
-                                            <th class="text-center" style="vertical-align: middle">번호</th>
-                                            <th class="text-center" style="vertical-align: middle">강의명</th>
+                            <!--table-->
+                            <table id="datatablesSimple" class="text-center">
+                                <thead>
+                                <tr>
+                                    <th class="text-center" style="vertical-align: middle">번호</th>
+                                    <th class="text-center" style="vertical-align: middle">강의명</th>
 
-                                            <th class="text-center" style="vertical-align: middle">수강 신청 기간</th>
-                                            <th class="text-center" style="vertical-align: middle">강의 운영 기간</th>
-                                            <th class="text-center" style="vertical-align: middle">강의 상태</th>
-                                            <th class="text-center" style="vertical-align: middle">상세보기</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
+                                    <th class="text-center" style="vertical-align: middle">수강 신청 기간</th>
+                                    <th class="text-center" style="vertical-align: middle">강의 운영 기간</th>
+                                    <th class="text-center" style="vertical-align: middle">강의 상태</th>
+                                    <th class="text-center" style="vertical-align: middle">상세보기</th>
+                                </tr>
+                                </thead>
+                                <tbody>
 
-                                        <tr th:each="lectureList, status: ${lectureList}" style="vertical-align: middle;">
-                                            <td th:text="${status.index + 1}">
-                                                <!--<p th:text="${status.count }"></p>-->
-                                            </td>
+                                <tr th:each="lectureList, status: ${lectureList}"
+                                    style="vertical-align: middle;">
+                                    <td th:text="${status.index + 1}">
+                                        <!--<p th:text="${status.count }"></p>-->
+                                    </td>
 
-                                            <td>
-                                                <p2 th:text="${lectureList.getLectureName()}"></p2>
-                                            </td>
+                                    <td>
+                                        <p2 th:text="${lectureList.getLectureName()}"></p2>
+                                    </td>
 
 
+                                    <td>
+                                        <p2 th:utext="${#temporals.format(lectureList.getStartEnrolmentDate(), 'yy.MM.dd')}"></p2>
+                                        <strong> - </strong>
+                                        <p2 th:utext="${#temporals.format(lectureList.getEndEnrolmentDate(), 'yy.MM.dd')}"></p2>
+                                    </td>
+
+                                    <td>
+                                        <p2 th:utext="${#temporals.format(lectureList.getStartStudyDate(), 'yy.MM.dd')}"></p2>
+                                        <strong> - </strong>
+                                        <p2 th:utext="${#temporals.format(lectureList.getEndStudyDate(), 'yy.MM.dd')}"></p2>
+                                    </td>
+
+                                    <td>
+                                        <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정' : (lectureList.getLectureAct() == 2 ? '강의중' : (lectureList.getLectureAct() == 3 ? '강의종료' : '폐강'))}"></p2>
+                                    </td>
 
 
-                                            <td>
-                                                <p2 th:utext="${#temporals.format(lectureList.getStartEnrolmentDate(), 'yy.MM.dd')}"></p2>
-                                                <strong> - </strong>
-                                                <p2 th:utext="${#temporals.format(lectureList.getEndEnrolmentDate(), 'yy.MM.dd')}"></p2>
-                                            </td>
+                                    <td>
+                                        <div class="btn_group">
+                                            <a th:href="@{'/teacher/getlecture/'+${lectureList.getLectureNo()}}"
+                                               class="btn btn-primary">상세보기</a>
+                                        </div>
+                                    </td>
 
-                                            <td>
-                                                <p2 th:utext="${#temporals.format(lectureList.getStartStudyDate(), 'yy.MM.dd')}"></p2>
-                                                <strong> - </strong>
-                                                <p2 th:utext="${#temporals.format(lectureList.getEndStudyDate(), 'yy.MM.dd')}"></p2>
-                                            </td>
+                                </tr>
 
-                                            <td>
-                                                <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정' : (lectureList.getLectureAct() == 2 ? '강의중' : (lectureList.getLectureAct() == 3 ? '강의종료' : '폐강'))}"></p2>
-                                            </td>
+                                </tbody>
+                            </table>
 
+                        </div><!--end card body-->
 
-                                            <td>
-                                                <div class="btn_group">
-                                                    <a th:href="@{'/teacher/getlecture/'+${lectureList.getLectureNo()}}"
-                                                       class="btn btn-primary">상세보기</a>
-                                                </div>
-                                            </td>
-
-                                        </tr>
-
-                                        </tbody>
-                                    </table>
-
-                                </div><!--end card body-->
-
-                            </div><!--end card-->
-                        </div><!-- end col-->
-                    </div><!-- end row-->
-                </div>
-
-               <!-- <div class="page_wrap" style="margin-top: 50px;">
-                    <h2 class="page_tit"></h2>
-                    <table class="table text-center">
-                        <thead>
-                        <tr>
-                            <th class="text-center" style="vertical-align: middle">번호</th>
-                            <th class="text-center" style="vertical-align: middle">강의명</th>
-
-                            <th class="text-center" style="vertical-align: middle">수강 신청 기간</th>
-                            <th class="text-center" style="vertical-align: middle">강의 운영 기간</th>
-                            <th class="text-center" style="vertical-align: middle">강의 상태</th>
-                            <th class="text-center" style="vertical-align: middle">상세보기</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <tr th:each="lectureList, status: ${lectureList}" style="vertical-align: middle;">
-                            <td th:text="${status.index + 1}">
-                                &lt;!&ndash;<p th:text="${status.count }"></p>&ndash;&gt;
-                            </td>
-
-                            <td>
-                                <p2 th:text="${lectureList.getLectureName()}"></p2>
-                            </td>
+                    </div><!--end card-->
+                </div><!-- end col-->
+            </div><!-- end row-->
+        </div>
 
 
-
-
-                            <td>
-                                <p2 th:utext="${#temporals.format(lectureList.getStartEnrolmentDate(), 'yy.MM.dd')}"></p2>
-                                <strong> - </strong>
-                                <p2 th:utext="${#temporals.format(lectureList.getEndEnrolmentDate(), 'yy.MM.dd')}"></p2>
-                            </td>
-
-                            <td>
-                                <p2 th:utext="${#temporals.format(lectureList.getStartStudyDate(), 'yy.MM.dd')}"></p2>
-                                <strong> - </strong>
-                                <p2 th:utext="${#temporals.format(lectureList.getEndStudyDate(), 'yy.MM.dd')}"></p2>
-                            </td>
-
-                            <td>
-                                <p2 th:text="${lectureList.getLectureAct() == 1 ? '강의예정' : (lectureList.getLectureAct() == 2 ? '강의중' : (lectureList.getLectureAct() == 3 ? '강의종료' : '폐강'))}"></p2>
-                            </td>
-
-
-                            <td>
-                                <div class="btn_group">
-                                    <a th:href="@{'/teacher/getlecture/'+${lectureList.getLectureNo()}}"
-                                       class="btn btn-primary">상세보기</a>
-                                </div>
-                            </td>
-
-                        </tr>
-
-                        </tbody>
-                    </table>
-
-
-                </div>-->
-
-            </div>
-        </main>
     </div>
 
 </div>
-<th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
-</div>
-</body>
+
+
+</th:block>
 </html>
 
 
