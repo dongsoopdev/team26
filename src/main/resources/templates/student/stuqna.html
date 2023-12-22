@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="testLayout/layoutLecLms">
+    <th:block layout:fragment="content">
+        <div class="content" >
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">[[${lecture_name}]]</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">QNA</li>
+                </ol>
+            </nav>
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="title">[QNA] [[${lecture_name}]]</h3>
+                        </div>
+                        <div class="card-body" >
+                            <table class="text-center" id="datatablesSimple">
+                                <thead>
+                                <tr>
+                                    <th scope="col">번호</th>
+                                    <th scope="col">제목</th>
+                                    <th scope="col">등록일</th>
+                                    <th scope="col">조회수</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:each="qna , status:${qnaList}"  >
+                                    <td th:text="${status.index + 1}"></td>
+                                    <td>
+                                        <a th:href="|@{/student/getQna(qna_no =${qna.qna_no})}|" class="text-decoration-none"> [[${qna.title}]] </a>
+                                    </td>
+                                    <td>[[${#temporals.format(qna.regDate, 'yyyy-MM-dd')}]]</td>
+                                    <td>[[${qna.visited}]]</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div><!--end card body-->
+                        <div class="my-4">
+                            <div class="float-end">
+                                <a sec:authorize="hasRole('STUDENT')" th:href="|@{/student/insertQna(lecture_no=${lecture_no})}|" class="btn btn-primary">
+                                    등록
+                                </a>
+                            </div>
+                        </div>
+                    </div><!--end card-->
+                </div><!-- end col-->
+            </div><!-- end row-->
+        </div>
+    </th:block>
+</html>

@@ -5,10 +5,7 @@ import com.edutech.team26.component.MailComponent;
 import com.edutech.team26.constant.MemberCode;
 import com.edutech.team26.constant.MemberRole;
 import com.edutech.team26.domain.Member;
-import com.edutech.team26.dto.MemberDTO;
-import com.edutech.team26.dto.MemberJoinDTO;
-import com.edutech.team26.dto.MemberPwDTO;
-import com.edutech.team26.dto.MemberSecurityDTO;
+import com.edutech.team26.dto.*;
 import com.edutech.team26.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,8 +26,10 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -324,4 +323,32 @@ public class MemberServiceImpl implements MemberService {
         return true;
     }
 
+    @Override
+    public List<MemberDTO> getAllList() {
+        List<Member> memberList = memberRepository.getAllMember();
+        List<MemberDTO> memberDTOList = memberList.stream()
+                .map(member -> modelMapper.map(member, MemberDTO.class))
+                .collect(Collectors.toList());
+        
+        for(MemberDTO member : memberDTOList) {
+            String memberStatus = switch (member.getUserStatus()) {
+                case MemberCode.MEMBER_STATUS_ING -> "활동 중";
+                case MemberCode.MEMBER_STATUS_WITHDRAW -> "탈퇴";
+                case MemberCode.MEMBER_STATUS_REQ -> "활성화 대기";
+                default -> "";
+            };
+            member.setUserStatus(memberStatus);
+
+            /*String memberRole = switch (member.getRole_set()) {
+                case 0 -> "회원";
+                case 1 -> "학생";
+                case 2 -> "선생님";
+                case 3 -> "관리자";
+                default -> "";
+            };
+            member.setRoleSetName(memberRole);*/
+        }
+        
+        return memberDTOList;
+    }
 }

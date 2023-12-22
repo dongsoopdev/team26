@@ -18,51 +18,47 @@
 <body>
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
 <div id="layoutSidenav">
-    <th:block th:replace="~{layout/lmsMenuTeaLec :: lmsMenu2(${lecture_no},${student_no})}"></th:block>
+    <th:block th:replace="~{layout/lmsMenuStuLec :: lmsMenu2(${lecture_no},${student_no})}"></th:block>
     <div id="layoutSidenav_content">
         <main>
             <div class="content">
+                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#">[[${lecture_name}]]</a></li>
+                        <li class="breadcrumb-item"><a href="#">QNA</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">QNA 수정</li>
+                    </ol>
+                </nav>
                 <div class="row mt-3">
                     <div class="col">
                         <div class="card">
                             <div class="card-header">
-                                QNA 수정하기
+                                <h3 class="title">[QNA] [[${qna.title}]] 수정하기</h3>
                             </div>
                             <div class="card-body">
                                 <form th:action="@{/student/updateQna}" method="post">
                                     <div class="input-group mb-3">
-                                        <span class="input-group-text">Nno</span>
-                                        <input type="text" class="form-control" th:value="${qna.qna_no}" name="qna_no" readonly>
+                                        <span class="input-group-text">Title</span>
+                                        <input type="hidden" class="form-control" th:value="${qna.qna_no}" name="qna_no" readonly>
+                                        <input type="text" class="form-control" name="title" th:value="${qna.title}" required>
                                         <input type="hidden" name="lecture_no" class="form-control" th:value="${lecture_no}">
                                     </div>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">Title</span>
-                                        <input type="text" class="form-control" name="title" th:value="${qna.title}" required>
-                                    </div>
-
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">Content</span>
                                         <textarea class="form-control col-sm-5" rows="5" name="content" required>[[${qna.content}]]</textarea>
                                     </div>
-
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">Writer</span>
                                         <input type="number" class="form-control" th:value="${qna.mno}" readonly required>
                                     </div>
-
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">RegDate</span>
                                         <input type="text" class="form-control" th:value="${#temporals.format(qna.regDate, 'yyyy-MM-dd')}" readonly>
                                     </div>
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text">ModDate</span>
-                                        <input type="text" class="form-control" th:value="${#temporals.format(qna.modDate, 'yyyy-MM-dd')}" readonly>
-                                    </div>
-
                                     <div class="my-4">
                                         <div class="float-end">
-                                            <a th:href="@{/student/qnaList(lecture_no=${lecture_no})}" class="btn btn-secondary">목록으로</a>
-                                            <button type="submit" class="btn btn-primary">수정하기</button>
+                                            <a th:href="@{/student/qnaList(lecture_no=${lecture_no})}" class="btn btn-secondary">QNA 목록</a>
+                                            <button type="submit" class="btn btn-primary">수정</button>
                                         </div>
                                     </div>
                                 </form>
@@ -78,16 +74,7 @@
     </div>
 </div>
 <script th:inline="javascript">
-    const errors = [[${errors}]]
-    console.log(errors)
-    let errorMsg = ''
-    if(errors){
-        for (let i = 0; i < errors.length; i++) {
-            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
-        }
-        history.replaceState({}, null, null)
-        alert(errorMsg)
-    }
+
 </script>
 </body>
 </html>

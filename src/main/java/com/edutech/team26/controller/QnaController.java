@@ -1,8 +1,8 @@
 package com.edutech.team26.controller;
 
+import com.edutech.team26.biz.LectureService;
 import com.edutech.team26.biz.MemberService;
 import com.edutech.team26.biz.QnaService;
-import com.edutech.team26.biz.StudentService;
 import com.edutech.team26.domain.Student;
 import com.edutech.team26.dto.*;
 import com.edutech.team26.dto.QnaDTO;
@@ -26,12 +26,13 @@ public class QnaController {
     private final QnaService qnaService;
     private final MemberService memberService;
     private final StudentRepository studentRepository;
+    private final LectureService lectureService;
 
     @GetMapping("/qna/qnaList")
     public String qnaList(@RequestParam(name = "lecture_no") Long lecture_no, Model model) {
         List<QnaDTO> qnaList = qnaService.qnaListByLec(lecture_no);
         model.addAttribute("qnaList",qnaList);
-        return "qna/qnaList";
+        return "qna/homeQnaList";
     }
 
     @GetMapping("/qna/getQna")
@@ -39,31 +40,31 @@ public class QnaController {
         QnaDTO qnaDTO= qnaService.findByQno(qna_no);
         qnaService.updateVisited(qna_no);
         model.addAttribute("qna", qnaDTO);
-        return "qna/getQna";
+        return "qna/homeGetQna";
     }
 
     @GetMapping("/qna/insertQna")
     public String insertQna(Model model) {
-        return "qna/insertQna";
+        return "qna/homeInsertQna";
     }
 
     @PostMapping("/qna/insertQna")
     public String insertQnaPro (QnaDTO qnaDTO) {
         qnaService.insertQna(qnaDTO);
-        return "redirect:/qna/qnaList?lecture_no="+ qnaDTO.getLecture_no();
+        return "redirect:/qna/homeQnaList?lecture_no="+ qnaDTO.getLecture_no();
     }
 
     @GetMapping("/qna/updateQna")
     public String updateQna(@RequestParam(name = "qna_no") Long qna_no, Model model) {
         QnaDTO qnaDTO= qnaService.findByQno(qna_no);
         model.addAttribute("qna", qnaDTO);
-        return "qna/updateQna";
+        return "qna/homeUpdateQna";
     }
 
     @PostMapping("/qna/updateQna")
     public String updateQnaPro (QnaDTO qnaDTO) {
         qnaService.updateQna(qnaDTO);
-        return "redirect:/qna/qnaList?lecture_no="+ qnaDTO.getLecture_no();
+        return "redirect:/qna/homeQnaList?lecture_no="+ qnaDTO.getLecture_no();
     }
 
     @GetMapping("/qna/deleteQna")
@@ -71,7 +72,7 @@ public class QnaController {
         QnaDTO qnaDTO= qnaService.findByQno(qna_no);
         Long lecNo = qnaDTO.getLecture_no();
         qnaService.deleteQna(qna_no);
-        return "redirect:/qna/qnaList?lecture_no="+ lecNo;
+        return "redirect:/qna/homeQnaList?lecture_no="+ lecNo;
     }
 
     //관리자의 Qna
@@ -114,7 +115,7 @@ public class QnaController {
         List<QnaDTO> qnaList = qnaService.qnaListByLec(lecture_no);
         model.addAttribute("qnaList",qnaList);
         model.addAttribute("lecture_no",lecture_no);
-        return "teacher/qna/teacherQnaList";
+        return "qna/lmsQnaList";
     }
 
     @GetMapping("/teacher/getQna")
@@ -173,10 +174,15 @@ public class QnaController {
         model.addAttribute("lecture_no",lecture_no);
 
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Optional<Student> student =studentRepository.findByMnoAndLectureNoAndStatus(member.getMno(), lecture_no,"COMPLETE");
+        Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
         if (!student.isPresent()) { student = studentRepository.findByMnoAndLectureNoAndStatus(member.getMno(),lecture_no, "REQ");}
         model.addAttribute("student_no", student.get().getStudentNo());
-        return "student/qna/studentQnaList";
+
+        //강의 이름
+        LectureDTO lectureDTO = lectureService.getById(lecture_no);
+        model.addAttribute("lecture_name",lectureDTO.getLectureName());
+
+        return "qna/lmsQnaList";
     }
     @GetMapping("/student/getQna")
     public String studentGetQna( @RequestParam(name = "qna_no") Long qna_no, Model model) {
@@ -193,11 +199,17 @@ public class QnaController {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
         model.addAttribute("student_no",student.get().getStudentNo());
+        model.addAttribute("login_mno",member.getMno());
 
         //댓글 리스트
         List<QnaCommentDTO> commentList = qnaService.commentListByqnoAndLecno(qna_no,lecture_no);
         model.addAttribute("commentList",commentList);
         System.out.println(commentList);
+
+        //강의 이름
+        LectureDTO lectureDTO = lectureService.getById(lecture_no);
+        model.addAttribute("lecture_name",lectureDTO.getLectureName());
+
         return "student/qna/studentGetQna";
     }
 
@@ -209,13 +221,18 @@ public class QnaController {
         Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
         model.addAttribute("student_no",student.get().getStudentNo());
         member.getUserName();
+
+        //강의 이름
+        LectureDTO lectureDTO = lectureService.getById(lecture_no);
+        model.addAttribute("lecture_name",lectureDTO.getLectureName());
+
         return "student/qna/studentInsertQna";
     }
 
     @PostMapping("/student/insertQna")
     public String studentInsertQnaPro ( QnaDTO qnaDTO) {
         qnaService.insertQna(qnaDTO);
-        return "redirect:/student/qnaList?lecture_no="+ qnaDTO.getLecture_no();
+        return "redirect:/qna/lmsQnaList?lecture_no="+ qnaDTO.getLecture_no();
     }
 
     @GetMapping("/student/updateQna")
@@ -228,13 +245,18 @@ public class QnaController {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
         model.addAttribute("student_no",student.get().getStudentNo());
+
+        //강의 이름
+        LectureDTO lectureDTO = lectureService.getById(lecture_no);
+        model.addAttribute("lecture_name",lectureDTO.getLectureName());
+
         return "student/qna/studentUpdateQna";
     }
 
     @PostMapping("/student/updateQna")
     public String studentUpdateQnaPro (QnaDTO qnaDTO) {
         qnaService.updateQna(qnaDTO);
-        return "redirect:/student/qnaList?lecture_no="+ qnaDTO.getLecture_no();
+        return "redirect:/qna/lmsQnaList?lecture_no="+ qnaDTO.getLecture_no();
     }
 
     @GetMapping("/student/deleteQna")
@@ -247,25 +269,26 @@ public class QnaController {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
         model.addAttribute("student_no",student.get().getStudentNo());
-        return "redirect:/student/qnaList?lecture_no="+ lecture_no;
+        return "redirect:/qna/lmsQnaList?lecture_no="+ lecture_no;
     }
 
-    //학생의 답변
+    //학생의 댓글
     @PostMapping("/student/insertComment")
     public String studentInsertCommentPro (QnaCommentDTO qnaCommentDTO) {
         qnaService.insertQnaComment(qnaCommentDTO);
         return "redirect:/student/getQna?qna_no="+ qnaCommentDTO.getQna_no();
     }
     @GetMapping("/student/deleteComment")
-    public String studentDeleteComment(@RequestParam(name = "qna_no") Long qna_no, Model model) {
+    public String studentDeleteComment(@RequestParam(name = "comment_no") Long comment_no, @RequestParam(name = "qna_no") Long qna_no, Model model) {
+        qnaService.deleteQnaComment(comment_no);
+
         QnaDTO qnaDTO= qnaService.findByQno(qna_no);
         Long lecture_no = qnaDTO.getLecture_no();
         model.addAttribute("lecture_no",lecture_no);
-        qnaService.deleteQna(qna_no);
 
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
         model.addAttribute("student_no",student.get().getStudentNo());
-        return "redirect:/student/qnaList?lecture_no="+ lecture_no;
+        return "redirect:/student/getQna?qna_no="+ qna_no;
     }
 }

@@ -28,6 +28,15 @@
             line-height: 70px;
             color: white;
         }
+        .d-flex {
+            display: flex !important;
+            margin-bottom: 1rem;
+        }
+        .ms-3 p {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            display: inline-flex;
+        }
     </style>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 </head>
@@ -38,52 +47,42 @@
     <div id="layoutSidenav_content">
         <main>
         <div class="content" >
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">[[${lecture_name}]]</a></li>
+                    <li class="breadcrumb-item"><a href="#">QNA</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">QNA 상세</li>
+                </ol>
+            </nav>
             <div class="row mt-3">
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            QNA 상세보기
+                            <h3 class="title">[QNA] [[${qna.title}]]</h3>
                         </div>
                         <div class="card-body">
                             <div class="input-group mb-3">
-                                <span class="input-group-text">Qno</span>
-                                <input type="text" id="qna_no" class="form-control" th:value="${qna.qna_no}" readonly>
-                            </div>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">Title</span>
-                                <input type="text" class="form-control" th:value="${qna.title}" readonly>
+                                <span class="input-group-text">작성자</span>
+                                <input type="text" class="form-control" th:value="${userName}" readonly>
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Content</span>
                                 <textarea class="form-control col-sm-5" rows="5" readonly>[[${qna.content}]]</textarea>
                             </div>
                             <div class="input-group mb-3">
-                                <span class="input-group-text">작성자</span>
-                                <input type="text" class="form-control" th:value="${userName}" readonly>
-                            </div>
-                            <div class="input-group mb-3">
                                 <span class="input-group-text">RegDate</span>
                                 <input type="text" class="form-control" th:value="${#temporals.format(qna.regDate, 'yyyy-MM-dd')}" readonly>
-                            </div>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text">ModDate</span>
-                                <input type="text" class="form-control" th:value="${#temporals.format(qna.modDate, 'yyyy-MM-dd')}" readonly>
                             </div>
                             <div class="my-4">
                                 <div class="float-end">
                                     <a th:href="@{/student/qnaList(lecture_no=${lecture_no})}" class="btn btn-secondary">QNA 목록</a>
-                                    <a sec:authorize="hasAnyRole('ADMIN', 'TEACHER')" th:href="|@{/teacher/updateQna(qna_no=${qna.qna_no})}|" class="btn btn-primary">수정</a>
-                                    <a sec:authorize="hasAnyRole('ADMIN', 'TEACHER')" th:href="|@{/teacher/deleteQna(qna_no=${qna.qna_no})}|" class="btn btn-danger">삭제</a>
+                                    <a th:if="${qna.mno == login_mno}" th:href="|@{/student/updateQna(qna_no=${qna.qna_no})}|" class="btn btn-primary">수정</a>
+                                    <a th:if="${qna.mno == login_mno}" th:href="|@{/student/deleteQna(qna_no=${qna.qna_no})}|" class="btn btn-danger">삭제</a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <section style="margin-top: 100px;">
-                        <div data-aos="fade-up">
-
-                        </div>
-                    </section>
-                    <section class="mb-5">
+                    <section class="mb-5" style="margin-top: 100px;">
                         <div class="card bg-light">
                             <div class="card-body">
                                 <!-- Comment form-->
@@ -102,7 +101,7 @@
                                     </div>
                                     <div class="ms-3">
                                         <p>[[${comment.content}]]</p>
-                                        <i class="fa fa-times-circle"></i>
+                                        <a th:if="${comment.mno == login_mno}" th:href="|@{/student/deleteComment(comment_no=${comment.comment_no}, qna_no=${comment.qna_no})}|"><p><i class="fa fa-times-circle"></i></p></a>
                                     </div>
                                 </div>
                             </div>

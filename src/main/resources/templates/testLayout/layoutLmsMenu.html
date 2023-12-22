@@ -40,17 +40,17 @@
                         <div class="nav">
                             <th:block th:if="${type eq ''}">
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMember" aria-expanded="false" aria-controls="collapseMember">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>회원관리<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>회원 관리<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                             </th:block>
                             <th:block th:unless="${type eq ''}">
-                                <a class="nav-link collapsed" th:href="@{/admin/memberList}">
+                                <a class="nav-link collapsed" th:href="@{/admin/userList}">
                                     <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
                                 </a>
                             </th:block>
                             <div class="collapse" id="collapseMember" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordionPagesAdmin">
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPagesAdmin">
-                                    <a class="nav-link" th:href="@{/admin/memberList}">회원</a>
+                                    <a class="nav-link" th:href="@{/admin/userList}">회원</a>
                                     <a class="nav-link" th:href="@{/admin/teacherApplyList}">선생님 신청</a>
                                 </nav>
                             </div>

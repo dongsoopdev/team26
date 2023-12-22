@@ -18,6 +18,7 @@ public class MemberDTO {
     private String addr;
     private String addrDetail;
     private LocalDateTime lastLoginAt;
+    private LocalDateTime regDate;
     private String userStatus;
 
 }
