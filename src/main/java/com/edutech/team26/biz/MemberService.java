@@ -5,6 +5,8 @@ import com.edutech.team26.dto.MemberDTO;
 import com.edutech.team26.dto.MemberJoinDTO;
 import com.edutech.team26.dto.MemberPwDTO;
 
+import java.util.List;
+
 public interface MemberService {
     //static class MidExistException extends Exception {}
 
@@ -27,6 +29,8 @@ public interface MemberService {
     MemberDTO getMemberInfo(Long mno);
 
     MemberDTO findId(String username, String phone);
+
+    List<MemberDTO> getAllList();
 
     boolean findPw(String email, String phone, String username);
 
