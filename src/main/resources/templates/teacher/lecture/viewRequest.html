@@ -35,63 +35,42 @@
     <th:block th:replace="~{layout/lmsMenuTeaLec :: lmsMenu2(${lecture_no})}"></th:block>
     <div id="layoutSidenav_content">
         <main>
-            <div class="layout_contents" th:with="lecture=${lecture}">
+            <div class="layout_contents" th:with="request=${request}">
                 <div class="content">
 
                     <div class="row mt-3">
                         <div class="col">
                             <div class="card">
                                 <div class="card-header">
-                                    <h2 class="title">관리자 문의</h2>
+                                    <h2 class="title">문의 내용 확인</h2>
                                 </div>
                                 <div class="card-body" style="text-align: center; margin: 100px 0px;">
 
 
 
-                                    <div class="name" th:text="${lecture.getLectureName()}" style=" width: 700px;"></div>
+                                    <div class="name" th:text="${lectureName}" style=" width: 700px;"></div>
                                     <br>
 
 
                                     <form th:action="@{/teacher/requestLecture}" id="submitForm" method="post" onsubmit="return submitForm(event)">
                                         <div style="width: 700px;margin: 0 auto;}">
 
-                                            <input type="hidden" name="lecture_no" th:value="${lecture.getLectureNo()}"/>
+
                                             <div class="mb-3">
                                              <!--   <label for="exampleFormControlInput1" class="form-label"> </label>-->
                                                 <input type="text" class="form-control" id="title" name="title"
-                                                       maxlength="100" placeholder="제목을 작성하세요 (EX. 강의 내용 수정 요청드립니다)">
+                                                       maxlength="100" th:value="${request.getTitle()}" readonly>
                                             </div>
                                             <div class="mb-3">
                                      <!--           <label for="exampleFormControlTextarea1" class="form-label"></label>-->
                                                 <textarea class="form-control" id="content" name="content"
-                                                          rows="10" maxlength="2000" placeholder="문의 내용을 자세히 작성하세요"></textarea>
+                                                          rows="10" maxlength="2000" th:text="${request.getContent()}" readonly></textarea>
                                             </div>
-                                            <input type="reset" value="취소" class="btn btn-lg btn-danger" onclick="window.history.back();">
-                                            <input type="submit" value="강의등록" class="btn btn-lg btn-primary">
+                                            <input type="reset" value="뒤로가기" class="btn btn-lg btn-danger" onclick="window.history.back();">
+                                            <input type="submit" value="수정하기" class="btn btn-lg btn-primary">
                                         </div>
                                     </form>
 
-
-                                    <script>
-                                        function submitForm(event) {
-                                            event.preventDefault(); // Prevent the default form submission behavior
-                                            let lecture_no = [[${lecture.getLectureNo()}]];
-                                            $.ajax({
-                                                type: "POST",
-                                                url: "/teacher/requestLecture",
-                                                data: $("#submitForm").serialize(),
-                                                success: function (data) {
-                                                    alert("문의가 성공적으로 등록되었습니다.");
-                                                    window.location.href = "/teacher/getlecture/" + lecture_no;
-                                                },
-                                                error: function (error) {
-                                                    console.error("Form submission error:", error);
-                                                }
-                                            });
-
-                                            return false;
-                                        }
-                                    </script>
 
 
 

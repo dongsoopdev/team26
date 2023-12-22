@@ -10,6 +10,9 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
     Optional<Student> findByMnoAndLectureNo(Long mno, Long lecture_no);
+
+    List<Student> findAllByMnoAndLectureNo(Long mno, Long lecture_no);
+
     long countBylectureNoAndStudentNoAndStatus(long lecture_no, long mno, String status);
 
     //Student findByLectureNoAndStatus(long lectureNo, String status);
@@ -17,4 +20,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Student findByLectureNoAndStatus(long lectureNo, String status);
 
     List<Student> findByLectureNo(long lectureNo);
+
+    Optional<Student> findByMnoAndLectureNoAndStatus(Long mno, long lectureNo, String status);
 }

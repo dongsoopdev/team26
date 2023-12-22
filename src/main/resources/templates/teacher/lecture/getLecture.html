@@ -38,9 +38,15 @@
                                         <!--강의 예정일 시에만 수정 요청 가능-->
                                         <tr th:if="${lecture.getLectureAct() == 1}">
                                             <th> 관리자 문의</th>
-                                            <td>
+                                            <!--<td>
                                                 <a th:href="@{'/teacher/requestLecture/' + ${lecture.getLectureNo()}}"
                                                    class="btn btn-primary" style="width: 150px;"> 수정 요청</a>
+                                            </td>-->
+
+
+                                            <td>
+                                            <a th:if="${requestExists}" th:href="@{'/teacher/viewRequest/' + ${lecture.getLectureNo()}}" class="btn btn-primary" style="width: 150px;">요청내용확인</a>
+                                            <a th:unless="${requestExists}" th:href="@{'/teacher/requestLecture/' + ${lecture.getLectureNo()}}" class="btn btn-primary" style="width: 150px;"> 수정 요청</a>
                                             </td>
                                         </tr>
 

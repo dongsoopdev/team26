@@ -5,6 +5,7 @@ import com.edutech.team26.constant.MemberRole;
 import com.edutech.team26.domain.*;
 import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
+import com.edutech.team26.dto.RequestDTO;
 import com.edutech.team26.dto.StudentDTO;
 
 import com.edutech.team26.mapper.LectureMapper;
@@ -44,7 +45,7 @@ public class LectureServiceImpl implements LectureService {
     private final TeacherRepository teacherRepository;
     private final VwCourseRepository vwCourseRepository;
     private final VwLectureRepository vwLectureRepository;
-
+    private final RequestRepository requestRepository;
 
     private LocalDate getLocalDate(String value) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -391,7 +392,20 @@ public class LectureServiceImpl implements LectureService {
 
     }
 
+    // 관리자 문의
+    @Override
+    public void addRequest(RequestDTO requestDTO) {
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        requestDTO.setMno(member.getMno());
+        Request request = modelMapper.map(requestDTO, Request.class);
+        requestRepository.save(request);
+    }
 
+   @Override
+    public boolean requestExistsForLecture(Long lectureNo) {
+       Long count = requestRepository.countByLecture_No(lectureNo);
+       return count != null && count > 0;
+    }
 
 
 }

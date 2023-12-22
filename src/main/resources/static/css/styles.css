@@ -11192,7 +11192,6 @@ body {
   height: 100%;
   position: relative;
   width: 100%;
-  padding-right: 1rem;
 }
 
 .datatable-sorter::before,

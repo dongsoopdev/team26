@@ -5,6 +5,7 @@ import com.edutech.team26.domain.VwTeacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface VwCourseRepository extends JpaRepository<VwCourse, Long> {
 
@@ -17,6 +18,7 @@ public interface VwCourseRepository extends JpaRepository<VwCourse, Long> {
     VwCourse findByStudentNo(long studentNo);
 
 
+
     //학생이 이미 수강한 강의 인지 체크
     //int countByLectureNoAndMno(long lectureno, long mno);
 
@@ -26,5 +28,15 @@ public interface VwCourseRepository extends JpaRepository<VwCourse, Long> {
     int countByLectureNoAndMnoAndStudentStatus(long lectureno, long mno, String studentStatus);
 
     VwCourse findByLectureNo(long lectureNo);
+    List<VwCourse> findAllByLectureNo(long lectureNo);
+
+    VwCourse findByLectureNoAndStudentStatus(long lectureNo, String studentStatus);
+
+    Optional<VwCourse> findByMnoAndLectureNoAndStudentStatus(Long mno, long lectureNo, String studentStatus);
+
+
+    // 수강신청날짜기준
+    List<VwCourse> findAllByOrderByStudentRegDateDesc();
+    List<VwCourse> findAllByOrderByStudentRegDateAsc();
 
 }
