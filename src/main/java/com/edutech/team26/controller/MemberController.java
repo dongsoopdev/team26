@@ -199,7 +199,7 @@ public class MemberController {
 
     @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
     @PostMapping("/myPage/modifyInfo")
-    public String myPageInfoPOST(@Valid MemberDTO memberDTO, BindingResult bindingResult, Model model) throws Exception {
+    public String myPageInfoPOST(@Valid MemberDTO memberDTO, BindingResult bindingResult, Model model, HttpServletRequest request, RedirectAttributes rttr) throws Exception {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(bindingResult.hasErrors()){
             return "member/myPageInfo";
@@ -210,7 +210,9 @@ public class MemberController {
             model.addAttribute("errorMessage", e.getMessage());
             return "member/myPageInfo";
         }
-        return "redirect:/myPage";
+
+        rttr.addFlashAttribute("success", "success");
+        return "redirect:" + request.getHeader("referer");
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -237,7 +239,7 @@ public class MemberController {
 
     @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
     @PostMapping("/myPage/resetPw")
-    public String myPagePwPro(@Valid MemberPwDTO memberPwDTO, BindingResult bindingResult, Model model) {
+    public String myPagePwPro(@Valid MemberPwDTO memberPwDTO, BindingResult bindingResult, Model model, HttpServletRequest request, RedirectAttributes rttr) {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(bindingResult.hasErrors()){
             return "member/myPagePw";
@@ -258,7 +260,8 @@ public class MemberController {
             return "member/myPagePw";
         }
 
-        return "redirect:/myPage";
+        rttr.addFlashAttribute("success", "success");
+        return "redirect:" + request.getHeader("referer");
     }
 
     @PreAuthorize("hasAnyRole('TEACHER', 'STUDENT', 'USER')")
