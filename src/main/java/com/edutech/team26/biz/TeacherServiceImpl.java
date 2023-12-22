@@ -58,7 +58,7 @@ public class TeacherServiceImpl implements TeacherService {
 
         int cnt = 0;
         for(TeacherHistoryFilesVO teacherHistoryFilesVO : teacherHistoryDTOList) {
-            List<Files> filesList = filesRepository.findByPar(teacherHistoryFilesVO.getTeacherHistoryNo());
+            List<Files> filesList = filesRepository.findByParAndToUse(teacherHistoryFilesVO.getTeacherHistoryNo(), "teacherApplyFiles");
             List<FilesDTO> filesDTOList = filesList.stream().map(files -> modelMapper.map(files, FilesDTO.class)).collect(Collectors.toList());
             cnt = filesDTOList.size() - 1;
             teacherHistoryFilesVO.setFilesList(filesDTOList);
@@ -117,7 +117,7 @@ public class TeacherServiceImpl implements TeacherService {
         TeacherHistory teacherHistory = teacherHistoryRepository.findByTeacherHistoryNo(teacherHistoryNo);
         TeacherHistoryFilesVO teacherHistoryFilesVO = modelMapper.map(teacherHistory, TeacherHistoryFilesVO.class);
 
-        List<Files> filesList = filesRepository.findByPar(teacherHistoryFilesVO.getTeacherHistoryNo());
+        List<Files> filesList = filesRepository.findByParAndToUse(teacherHistoryFilesVO.getTeacherHistoryNo(), "teacherApplyFiles");
         List<FilesDTO> filesDTOList = filesList.stream().map(files -> modelMapper.map(files, FilesDTO.class)).collect(Collectors.toList());
         teacherHistoryFilesVO.setFilesList(filesDTOList);
 
