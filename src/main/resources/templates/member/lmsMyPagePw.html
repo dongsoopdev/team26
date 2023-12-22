@@ -3,6 +3,13 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="testLayout/layoutLms">
     <th:block layout:fragment="content">
+        <script th:inline="javascript">
+            let result = [[${success}]];
+            if(result != null){
+                alert("정보 변경이 성공하였습니다.");
+                location.href="/myPage";
+            }
+        </script>
         <div class="container-fluid px-4">
             <h1 class="mt-4">마이페이지</h1>
             <ol class="breadcrumb mb-5">

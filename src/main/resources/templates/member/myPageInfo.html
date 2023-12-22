@@ -6,6 +6,13 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <title>EudTech LMS::마이페이지</title>
     <link rel="stylesheet" th:href="@{/css/sub.css}">
+    <script th:inline="javascript">
+        let result = [[${success}]];
+        if(result != null){
+            alert("정보 변경이 성공하였습니다.");
+            location.href="/user/myPage";
+        }
+    </script>
 </head>
 <body>
 <th:block th:insert="~{layout/header :: header}"></th:block>
@@ -17,7 +24,7 @@
                 <h2 class="text-center fw-bolder py-5 bg-primary text-white mb-2">마이페이지</h2>
                 <ul class="nav nav-pills flex-column mb-auto my_menu">
                     <th:block  sec:authorize="hasRole('USER')">
-                        <li class="border-bottom"><a th:href="@{/user/myPage}" class="nav-link link-dark">마이페이지</a></li>
+                        <li class="border-bottom active"><a th:href="@{/user/myPage}" class="nav-link link-dark">마이페이지</a></li>
                     </th:block>
                     <th:block  sec:authorize="!hasRole('STUDENT')">
                         <li class="border-bottom"><a th:href="@{/myPage/teacherApply}" class="nav-link link-dark">선생님신청</a></li>

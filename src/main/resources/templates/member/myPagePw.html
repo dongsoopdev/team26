@@ -9,6 +9,13 @@
     <style>
         .fieldError {color: #bd2130;}
     </style>
+    <script th:inline="javascript">
+        let result = [[${success}]];
+        if(result != null){
+            alert("비밀번호 변경이 성공하였습니다.");
+            location.href="/user/myPage";
+        }
+    </script>
 </head>
 <body>
 <th:block th:insert="~{layout/header :: header}"></th:block>
@@ -20,7 +27,7 @@
                 <h2 class="text-center fw-bolder py-5 bg-primary text-white mb-2">마이페이지</h2>
                 <ul class="nav nav-pills flex-column mb-auto my_menu">
                     <th:block  sec:authorize="hasRole('USER')">
-                        <li class="border-bottom"><a th:href="@{/user/myPage}" class="nav-link link-dark">마이페이지</a></li>
+                        <li class="border-bottom active"><a th:href="@{/user/myPage}" class="nav-link link-dark">마이페이지</a></li>
                     </th:block>
                     <th:block  sec:authorize="!hasRole('STUDENT')">
                         <li class="border-bottom"><a th:href="@{/myPage/teacherApply}" class="nav-link link-dark">선생님신청</a></li>
@@ -90,6 +97,12 @@
 
         if(pw == "") {
             alert("비밀번호를 입력해주세요.");
+            $("#password").focus();
+            return false;
+        }
+
+        if(pw == newPw) {
+            alert("입력하신 비밀번호와 새로운 비밀번호가 일치합니다.");
             $("#password").focus();
             return false;
         }
