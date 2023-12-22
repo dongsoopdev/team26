@@ -22,28 +22,35 @@
     <div id="layoutSidenav_content">
         <main>
         <div class="content">
+            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">[[${lecture_name}]]</a></li>
+                    <li class="breadcrumb-item"><a href="#">QNA</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">QNA 등록</li>
+                </ol>
+            </nav>
             <div class="row mt-3">
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            <h2 class="title">QNA 등록</h2>
+                            <h3 class="title">QNA 등록</h3>
                         </div>
                         <div class="card-body">
                             <form action="/student/insertQna" method="post">
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Title</span>
-                                    <input type="text" name="title" class="form-control" placeholder="Title" required>
+                                    <input type="text" name="title" maxlength="200" class="form-control" placeholder="Title" required>
                                     <input type="hidden" name="lecture_no" class="form-control" th:value="${lecture_no}">
                                 </div>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Content</span>
-                                    <textarea class="form-control col-sm-5" name="content" placeholder="Content" required></textarea>
+                                    <textarea maxlength="2000" class="form-control col-sm-5" name="content" placeholder="Content" required></textarea>
                                 </div>
                                 <div class="my-4">
                                     <div class="float-end">
                                         <button type="submit" class="btn btn-primary">등록</button>
                                         <button type="reset" class="btn btn-secondary">초기화</button>
-                                        <a th:href="|@{/student/qnaList(lecture_no=${lecture_no})}|" class="btn btn-info">목록으로</a>
+                                        <a th:href="|@{/student/qnaList(lecture_no=${lecture_no})}|" class="btn btn-info">QNA 목록</a>
                                     </div>
                                 </div>
                             </form>
@@ -57,16 +64,6 @@
     </div>
 </div>
 <script th:inline="javascript">
-    const errors = [[${errors}]]
-    console.log(errors)
-    let errorMsg = ''
-    if(errors){
-        for (let i = 0; i < errors.length; i++) {
-            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
-        }
-        alert(errorMsg)
-    }
-
 </script>
 </body>
 </html>
