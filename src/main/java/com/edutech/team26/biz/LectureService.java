@@ -3,6 +3,7 @@ package com.edutech.team26.biz;
 
 import com.edutech.team26.domain.VwLecture;
 import com.edutech.team26.dto.LectureDTO;
+import com.edutech.team26.dto.RequestDTO;
 import com.edutech.team26.dto.StudentDTO;
 
 import com.edutech.team26.dto.TeacherVO;
@@ -67,4 +68,11 @@ public interface LectureService {
     void addZoomUrl(String zoomUrl, long lectureNo, LocalDateTime zoomDate);
 
 
+    void addRequest(RequestDTO requestDTO);
+
+
+
+
+
+    boolean requestExistsForLecture(Long lectureNo);
 }

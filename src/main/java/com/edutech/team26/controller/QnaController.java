@@ -175,7 +175,8 @@ public class QnaController {
 
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Student> student =studentRepository.findByMnoAndLectureNo(member.getMno(), lecture_no);
-        model.addAttribute("student_no",student.get().getStudentNo());
+        if (!student.isPresent()) { student = studentRepository.findByMnoAndLectureNoAndStatus(member.getMno(),lecture_no, "REQ");}
+        model.addAttribute("student_no", student.get().getStudentNo());
 
         //강의 이름
         LectureDTO lectureDTO = lectureService.getById(lecture_no);
