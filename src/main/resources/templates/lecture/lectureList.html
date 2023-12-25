@@ -228,7 +228,7 @@
 
 
                         <!-- STORE-->
-                        <div id="store" class="col-md-9">
+                        <div id="store" class="col-md-12">
                             <!-- store top filter
                             <div class="store-filter clearfix">
                                 <div class="store-sort">
@@ -261,7 +261,7 @@
                             <div class="col-md-12">
                                 <div class="section-title">
                                     <h3 class="title"></h3>
-                                    <a th:href="@{/admin/lectureSave}" type="button" class="btn btn-primary">강의등록</a>
+                                   <!-- <a th:href="@{/admin/lectureSave}" type="button" class="btn btn-primary">강의등록</a>-->
                                     <div class="section-nav">
 
                                         <ul class="section-tab-nav tab-nav">
@@ -279,7 +279,7 @@
                             <!-- store products -->
                             <div class="row">
                                 <!-- product -->
-                                <div class="col-md-4 col-xs-6" th:each="lectureList: ${lectureList}" th:if="${lectureList.getLectureAct() != 5 }">
+                                <div class="col-md-3 col-xs-6" th:each="lectureList: ${lectureList}" th:if="${lectureList.getLectureAct() != 5 }">
                                     <!--  <a th:href="@{/product/productDetail(pno=${product.pno})}" >-->
                                     <a th:href="@{'/lecture/getlecture/' + ${lectureList.getLectureNo()}}">
 
@@ -357,7 +357,7 @@
                             </div>
 -->
 
-                            <div class="store-filter clearfix">
+                           <!-- <div class="store-filter clearfix">
 
                                 <ul class="store-pagination" style="margin-top: 70px;">
                                     <li><a href="#"> < </a></li>
@@ -367,7 +367,7 @@
                                     <li><a href="#">4</a></li>
                                     <li><a href="#"> > </a></li>
                                 </ul>
-                            </div>
+                            </div>-->
                             <!-- /store bottom filter -->
 
 

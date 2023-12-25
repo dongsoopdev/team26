@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="testLayout/layoutLecLms">
 <head>
-    <th:block th:insert="~{layout/head :: head}"></th:block>
-    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
     <title>LMS_선생님 페이지</title>
     <style>
         .name {
@@ -26,89 +25,85 @@
 
     </style>
 </head>
+<th:block layout:fragment="content">
+
+    <div id="layoutSidenav">
+
+        <div class="layout_contents" th:with="lecture=${lecture}">
+            <div class="content">
+
+                <div class="row mt-3">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="title">관리자 문의</h2>
+                            </div>
+                            <div class="card-body" style="text-align: center; margin: 100px 0px;">
 
 
-<body class="sb-nav-fixed">
-<th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
-<div id="layoutSidenav">
-    <!--<th:block th:insert="~{layout/lmsMenuAdmin :: lmsMenu}"></th:block>-->
-    <th:block th:replace="~{layout/lmsMenuTeaLec :: lmsMenu2(${lecture_no})}"></th:block>
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="layout_contents" th:with="lecture=${lecture}">
-                <div class="content">
-
-                    <div class="row mt-3">
-                        <div class="col">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h2 class="title">관리자 문의</h2>
-                                </div>
-                                <div class="card-body" style="text-align: center; margin: 100px 0px;">
+                                <div class="name" th:text="${lecture.getLectureName()}" style=" width: 700px;"></div>
+                                <br>
 
 
+                                <form th:action="@{/teacher/requestLecture}" id="submitForm" method="post"
+                                      onsubmit="return submitForm(event)">
+                                    <div style="width: 700px;margin: 0 auto;}">
 
-                                    <div class="name" th:text="${lecture.getLectureName()}" style=" width: 700px;"></div>
-                                    <br>
-
-
-                                    <form th:action="@{/teacher/requestLecture}" id="submitForm" method="post" onsubmit="return submitForm(event)">
-                                        <div style="width: 700px;margin: 0 auto;}">
-
-                                            <input type="hidden" name="lecture_no" th:value="${lecture.getLectureNo()}"/>
-                                            <div class="mb-3">
-                                             <!--   <label for="exampleFormControlInput1" class="form-label"> </label>-->
-                                                <input type="text" class="form-control" id="title" name="title"
-                                                       maxlength="100" placeholder="제목을 작성하세요 (EX. 강의 내용 수정 요청드립니다)">
-                                            </div>
-                                            <div class="mb-3">
-                                     <!--           <label for="exampleFormControlTextarea1" class="form-label"></label>-->
-                                                <textarea class="form-control" id="content" name="content"
-                                                          rows="10" maxlength="2000" placeholder="문의 내용을 자세히 작성하세요"></textarea>
-                                            </div>
-                                            <input type="reset" value="취소" class="btn btn-lg btn-danger" onclick="window.history.back();">
-                                            <input type="submit" value="강의등록" class="btn btn-lg btn-primary">
+                                       <!-- <input type="hidden" name="lecture_no" th:value="${lecture.getLectureNo()}"/>-->
+                                        <div class="mb-3">
+                                            <!--   <label for="exampleFormControlInput1" class="form-label"> </label>-->
+                                            <input type="text" class="form-control" id="title" name="title"
+                                                   maxlength="100" placeholder="제목을 작성하세요 (EX. 강의 내용 수정 요청드립니다)">
                                         </div>
-                                    </form>
+                                        <div class="mb-3">
+                                            <!--           <label for="exampleFormControlTextarea1" class="form-label"></label>-->
+                                            <textarea class="form-control" id="content" name="content"
+                                                      rows="10" maxlength="2000"
+                                                      placeholder="문의 내용을 자세히 작성하세요"></textarea>
+                                        </div>
+                                        <input type="reset" value="취소" class="btn btn-lg btn-danger"
+                                               onclick="window.history.back();">
+                                        <input type="submit" value="강의등록" class="btn btn-lg btn-primary">
+                                    </div>
+                                </form>
 
 
-                                    <script>
-                                        function submitForm(event) {
-                                            event.preventDefault(); // Prevent the default form submission behavior
-                                            let request_no = [[${lecture.getRequestNo()}]];
-                                            $.ajax({
-                                                type: "POST",
-                                                url: "/teacher/requestLecture",
-                                                data: $("#submitForm").serialize(),
-                                                success: function (data) {
-                                                    alert("문의가 성공적으로 등록되었습니다.");
-                                                    window.location.href = "/teacher/getlecture/" + request_no;
-                                                },
-                                                error: function (error) {
-                                                    console.error("Form submission error:", error);
-                                                }
-                                            });
+                                <script>
+                                    function submitForm(event) {
+                                        event.preventDefault(); // Prevent the default form submission behavior
+                                        let lecture_no = [[${lecture.getLectureNo()}]];
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/teacher/requestLecture",
+                                            data: $("#submitForm").serialize(),
+                                            success: function (data) {
+                                                alert("문의가 성공적으로 등록되었습니다.");
+                                                window.location.href = "/teacher/getlecture/" + lecture_no;
+                                            },
+                                            error: function (error) {
+                                                console.error("Form submission error:", error);
+                                            }
+                                        });
 
-                                            return false;
-                                        }
-                                    </script>
+                                        return false;
+                                    }
+                                </script>
 
 
-
-                                </div><!--end card body-->
-                            </div><!--end card-->
-                        </div><!-- end col-->
-                    </div><!-- end row-->
-                </div>
-
+                            </div><!--end card body-->
+                        </div><!--end card-->
+                    </div><!-- end col-->
+                </div><!-- end row-->
             </div>
-        </main>
+
+
+        </div>
+
     </div>
 
-</div>
-<th:block th:insert="~{layout/lmsFooter :: lmsFooter}"></th:block>
-</div>
-</body>
+
+</th:block>
+
 </html>
 
 
