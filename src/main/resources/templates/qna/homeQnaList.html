@@ -10,14 +10,25 @@
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
     <style>
         .content {
-            width: 80%;
-            margin: 10%;
+            width: 90%;
+            padding-top: 30px;
+            padding-bottom: 300px;
+            margin: 0 auto;
+        }
+        .float-end {
+            float: right !important;
+            margin: 20px;
         }
     </style>
 </head>
 <body>
 <th:block th:insert="~{layout/header :: header}"></th:block>
-<div class="content" >
+<div class="container-fluid px-4 content">
+    <h1 class="mt-4">QNA</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item">Home</li>
+        <li class="breadcrumb-item active">QNA</li>
+    </ol>
     <div class="row mt-3">
         <div class="col">
             <div class="card">
@@ -40,8 +51,16 @@
                         <tbody>
                         <tr th:each="qna:${qnaList}"  >
                             <td>[[${qna.qna_no}]]</td>
+<!--                            <td>-->
+<!--                                <a sec:authorize="hasAnyRole('ADMIN', 'TEACHER','STUDENT', 'USER')" th:href="|@{/qna/getQna(qna_no =${qna.qna_no})}|" class="text-decoration-none"> [[${qna.title}]] </a>-->
+<!--                            </td>-->
                             <td>
-                                <a th:href="|@{/qna/getQna(qna_no =${qna.qna_no})}|" class="text-decoration-none"> [[${qna.title}]] </a>
+                                <div th:if="${not #authorization.expression('isAuthenticated()')}">
+                                    <span class="text-decoration-none"> [[${qna.title}]] </span>
+                                </div>
+                                <div th:if="${#authorization.expression('isAuthenticated()')}">
+                                    <a th:href="@{/qna/getQna(qna_no=${qna.qna_no})}" class="text-decoration-none"> [[${qna.title}]] </a>
+                                </div>
                             </td>
                             <td>[[${#temporals.format(qna.regDate, 'yyyy-MM-dd')}]]</td>
                             <td>[[${qna.visited}]]</td>
@@ -51,8 +70,8 @@
                 </div><!--end card body-->
                 <div class="my-4">
                     <div class="float-end">
-                        <a sec:authorize="hasAnyRole('ADMIN', 'TEACHER','STUDENT', 'USER')" th:href="|@{/qna/insertQna}|" class="btn btn-secondary">
-                            작성하기
+                        <a th:if="${#authorization.expression('isAuthenticated() and not hasRole(''ADMIN'') ')}" th:href="|@{/qna/insertQna}|" class="btn btn-primary">
+                            등록
                         </a>
                     </div>
                 </div>
@@ -61,18 +80,5 @@
     </div><!-- end row-->
 </div>
 <th:block th:insert="~{layout/footer :: footer}"></th:block>
-
-<script th:inline="javascript">
-    const errors = [[${errors}]]
-    console.log(errors)
-    let errorMsg = ''
-    if(errors){
-        for (let i = 0; i < errors.length; i++) {
-            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
-        }
-        alert(errorMsg)
-    }
-
-</script>
 </body>
 </html>

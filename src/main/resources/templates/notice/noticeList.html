@@ -10,22 +10,32 @@
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
     <style>
         .content {
-            width: 80%;
-            margin: 10%;
+            width: 90%;
+            padding-top: 30px;
+            padding-bottom: 300px;
+            margin: 0 auto;
+        }
+        .float-end {
+            float: right !important;
+            margin: 20px;
         }
     </style>
 </head>
 <body>
 <th:block th:insert="~{layout/header :: header}"></th:block>
-<div class="content" >
+<div class="container-fluid px-4 content">
+    <h1 class="mt-4">공지사항</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item">Home</li>
+        <li class="breadcrumb-item active">공지사항</li>
+    </ol>
     <div class="row mt-3">
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="title">공지사항</h2>
+                    <i class="fas fa-book-open"></i> 공지사항 목록
                 </div>
                 <div class="card-body" >
-                    <h5 class="card-title">공지사항 목록</h5>
                     <table class="text-center" id="datatablesSimple">
                         <thead>
                         <tr>
@@ -50,8 +60,8 @@
                 </div><!--end card body-->
                 <div class="my-4">
                     <div class="float-end">
-                        <a sec:authorize="hasRole('ADMIN')" th:href="|@{/notice/insertNotice}|" class="btn btn-secondary">
-                            작성하기
+                        <a sec:authorize="hasRole('ADMIN')" th:href="|@{/notice/insertNotice}|" class="btn btn-primary">
+                            등록
                         </a>
                     </div>
                 </div>
