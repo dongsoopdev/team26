@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="testLayout/layoutLecLms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QNA 수정하기</title>
+    <style>
+        .content {
+            width: 90%;
+            padding-top: 30px;
+            padding-bottom: 300px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+    <th:block layout:fragment="content">
+        <div class="content">
+            <div class="position-relative ps-0 mb-5">
+                <h3 class="mb-0">[[${lecture_name}]]</h3>
+                <nav class="position-absolute align-middle breadcrumb_area mb-0 lh-1" aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">[[${lecture_name}]]</li>
+                        <li class="breadcrumb-item active" aria-current="page">QNA 수정</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="title">[QNA] [[${qna.title}]] 수정하기</h3>
+                        </div>
+                        <div class="card-body">
+                            <form sec:authorize="hasRole('STUDENT')" th:action="@{/student/updateQna}" method="post">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Title</span>
+                                    <input type="hidden" class="form-control" th:value="${qna.qna_no}" name="qna_no" readonly>
+                                    <input type="text" class="form-control" name="title" maxlength="200" th:value="${qna.title}" required>
+                                    <input type="hidden" name="lecture_no" class="form-control" th:value="${lecture_no}">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Content</span>
+                                    <textarea maxlength="2000" class="form-control col-sm-5" rows="5" name="content" required>[[${qna.content}]]</textarea>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"> 작성자 </span>
+                                    <input type="hidden" class="form-control" th:value="${qna.mno}" readonly required>
+                                    <input type="text" class="form-control" th:value="${userName}" readonly>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">RegDate</span>
+                                    <input type="text" class="form-control" th:value="${#temporals.format(qna.regDate, 'yyyy-MM-dd')}" readonly>
+                                </div>
+                                <div class="my-4">
+                                    <div class="float-end">
+                                        <a sec:authorize="hasRole('STUDENT')" th:href="@{/student/qnaList(lecture_no=${lecture_no})}" class="btn btn-secondary">QNA 목록</a>
+                                        <a sec:authorize="hasRole('TEACHER')" th:href="@{/teacher/qnaList(lecture_no=${lecture_no})}" class="btn btn-secondary">QNA 목록</a>
+                                        <button type="submit" class="btn btn-primary">수정</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <form sec:authorize="hasRole('TEACHER')" th:action="@{/teacher/updateQna}" method="post">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Title</span>
+                                    <input type="hidden" class="form-control" th:value="${qna.qna_no}" name="qna_no" readonly>
+                                    <input type="text" class="form-control" name="title" maxlength="200" th:value="${qna.title}" required>
+                                    <input type="hidden" name="lecture_no" class="form-control" th:value="${lecture_no}">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Content</span>
+                                    <textarea maxlength="2000" class="form-control col-sm-5" rows="5" name="content" required>[[${qna.content}]]</textarea>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"> 작성자 </span>
+                                    <input type="hidden" class="form-control" th:value="${qna.mno}" readonly required>
+                                    <input type="text" class="form-control" th:value="${userName}" readonly>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">RegDate</span>
+                                    <input type="text" class="form-control" th:value="${#temporals.format(qna.regDate, 'yyyy-MM-dd')}" readonly>
+                                </div>
+                                <div class="my-4">
+                                    <div class="float-end">
+                                        <a sec:authorize="hasRole('TEACHER')" th:href="@{/teacher/qnaList(lecture_no=${lecture_no})}" class="btn btn-secondary">QNA 목록</a>
+                                        <button type="submit" class="btn btn-primary">수정</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div><!--end card body-->
+                    </div><!--end card-->
+                </div><!-- end col-->
+            </div><!-- end row-->
+        </div>
+    </th:block>
+</html>

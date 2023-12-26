@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="testLayout/layoutLecLms">
+<head>
+    <title>공지사항 상세보기</title>
+    <style>
+        .content {
+            width: 90%;
+            padding-top: 30px;
+            padding-bottom: 300px;
+            margin: 0 auto;
+        }
+        .input-group .btn {
+            margin-left: 40px;
+            height: 62px;
+            width: 62px;
+        }
+        .rounded-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: #0d6efd;
+            font-size: 18px;
+            text-align: center;
+            line-height: 70px;
+            color: white;
+        }
+        .d-flex {
+            display: flex !important;
+            margin-bottom: 1rem;
+        }
+        .ms-3 p {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            display: inline-flex;
+        }
+    </style>
+</head>
+    <th:block layout:fragment="content">
+        <div class="content" >
+            <div class="position-relative ps-0 mb-5">
+                <h3 class="mb-0">[[${lecture_name}]]</h3>
+                <nav class="position-absolute align-middle breadcrumb_area mb-0 lh-1" aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">[[${lecture_name}]]</li>
+                        <li class="breadcrumb-item active" aria-current="page">공지사항 상세</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="title">[공지사항] [[${notice.title}]]</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">작성자</span>
+                                <input type="text" class="form-control" th:value="${userName}" readonly>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Content</span>
+                                <textarea class="form-control col-sm-5" rows="5" readonly>[[${notice.content}]]</textarea>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">RegDate</span>
+                                <input type="text" class="form-control" th:value="${#temporals.format(notice.regDate, 'yyyy-MM-dd')}" readonly>
+                            </div>
+                            <div class="my-4">
+                                <div class="float-end">
+                                    <a sec:authorize="hasAnyRole('TEACHER')" th:href="@{/teacher/noticeList(lecture_no=${lecture_no})}" class="btn btn-secondary">공지사항 목록</a>
+                                    <a sec:authorize="hasAnyRole('STUDENT')" th:href="@{/student/noticeList(lecture_no=${lecture_no})}" class="btn btn-secondary">공지사항 목록</a>
+                                    <a sec:authorize="hasAnyRole('TEACHER')" th:href="|@{/teacher/updateNotice(notice_no=${notice.notice_no})}|" class="btn btn-primary">수정</a>
+                                    <a sec:authorize="hasAnyRole('TEACHER')" th:href="|@{/teacher/deleteNotice(notice_no=${notice.notice_no})}|" class="btn btn-danger">삭제</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+</html>

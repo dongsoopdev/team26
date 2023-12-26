@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="testLayout/layoutLecLms">
+<head>
+    <title>공지사항 작성</title>
+    <style>
+        .content {
+            width: 90%;
+            padding-top: 30px;
+            padding-bottom: 300px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+    <th:block layout:fragment="content">
+        <div class="content">
+            <div class="position-relative ps-0 mb-5">
+                <h3 class="mb-0">[[${lecture_name}]]</h3>
+                <nav class="position-absolute align-middle breadcrumb_area mb-0 lh-1" aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">[[${lecture_name}]]</li>
+                        <li class="breadcrumb-item active" aria-current="page">공지사항 등록</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="title">공지사항 등록</h2>
+                        </div>
+                        <div class="card-body">
+                            <form action="/teacher/insertNotice" method="post">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Title</span>
+                                    <input type="text" name="title" maxlength="200" class="form-control" placeholder="Title" required>
+                                    <input type="hidden" name="lecture_no" class="form-control" th:value="${lecture_no}">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Content</span>
+                                    <textarea maxlength="2000" class="form-control col-sm-5" name="content" placeholder="Content" required></textarea>
+                                </div>
+                                <div class="my-4">
+                                    <div class="float-end">
+                                        <button type="submit" class="btn btn-primary">등록</button>
+                                        <button type="reset" class="btn btn-secondary">초기화</button>
+                                        <a th:href="|@{/teacher/noticeList(lecture_no=${lecture_no})}|" class="btn btn-info">공지사항 목록</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div><!--end card body-->
+                    </div><!--end card-->
+                </div><!-- end col-->
+            </div><!-- end row-->
+        </div>
+    </th:block>
+</html>

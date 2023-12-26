@@ -4,7 +4,11 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="testLayout/layoutLecLms">
 <head>
-    <title>QNA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항</title>
+    <th:block th:insert="~{layout/head :: head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
     <style>
         .content {
             width: 90%;
@@ -26,7 +30,7 @@
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item">Home</li>
                         <li class="breadcrumb-item">[[${lecture_name}]]</li>
-                        <li class="breadcrumb-item active" aria-current="page">QNA</li>
+                        <li class="breadcrumb-item active" aria-current="page">공지사항</li>
                     </ol>
                 </nav>
             </div>
@@ -34,7 +38,7 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="title">[QNA] [[${lecture_name}]]</h3>
+                            <h3 class="title">[공지사항] [[${lecture_name}]]</h3>
                         </div>
                         <div class="card-body" >
                             <table class="text-center" id="datatablesSimple">
@@ -47,29 +51,23 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="qna , status:${qnaList}"  >
+                                <tr th:each="notice, status:${noticeList}"  >
                                     <td th:text="${status.index + 1}"></td>
                                     <td>
-                                        <a sec:authorize="hasRole('STUDENT')" th:href="|@{/student/getQna(qna_no =${qna.qna_no})}|" class="text-decoration-none"> [[${qna.title}]] </a>
-                                        <a sec:authorize="hasRole('TEACHER')" th:href="|@{/teacher/getQna(qna_no =${qna.qna_no})}|" class="text-decoration-none"> [[${qna.title}]] </a>
+                                        <a sec:authorize="hasRole('STUDENT')" th:href="|@{/student/getNotice(notice_no =${notice.notice_no})}|" class="text-decoration-none"> [[${notice.title}]] </a>
+                                        <a sec:authorize="hasRole('TEACHER')" th:href="|@{/teacher/getNotice(notice_no =${notice.notice_no})}|" class="text-decoration-none"> [[${notice.title}]] </a>
                                     </td>
-                                    <td>[[${#temporals.format(qna.regDate, 'yyyy-MM-dd')}]]</td>
-                                    <td>[[${qna.visited}]]</td>
+                                    <td>[[${#temporals.format(notice.regDate, 'yyyy-MM-dd')}]]</td>
+                                    <td>[[${notice.visited}]]</td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div><!--end card body-->
                         <div class="my-4">
                             <div class="float-end">
-<!--                                <a sec:authorize="hasRole('STUDENT')" th:href="|@{/student/insertQna(lecture_no=${lecture_no})}|" class="btn btn-primary">-->
-<!--                                    등록-->
-<!--                                </a>-->
-                                <a sec:authorize="hasRole('STUDENT')" th:href="|@{/student/insertQna(lecture_no=${lecture_no})}|" class="btn btn-primary">
+                                <a sec:authorize="hasAnyRole('TEACHER')" th:href="|@{/teacher/insertNotice(lecture_no=${lecture_no})}|" class="btn btn-primary">
                                     등록
                                 </a>
-<!--                                <a sec:authorize="hasRole('TEACHER')" th:href="|@{/teacher/insertQna(lecture_no=${lecture_no})}|" class="btn btn-primary">-->
-<!--                                    등록-->
-<!--                                </a>-->
                             </div>
                         </div>
                     </div><!--end card-->
