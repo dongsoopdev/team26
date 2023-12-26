@@ -110,6 +110,10 @@ public class NoticeController {
         MemberDTO memberDTO = memberService.getMemberInfo(noticeDTO.getMno());
         String userName = memberDTO.getUserName();
         model.addAttribute("userName",userName);
+
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("login_mno",member.getMno());
+
         return "admin/notice/adminGetNotice";
     }
 
@@ -117,6 +121,11 @@ public class NoticeController {
     public String adminUpdateNotice(@RequestParam(name = "notice_no") Long notice_no, Model model) {
         NoticeDTO noticeDTO= noticeService.findByNno(notice_no);
         model.addAttribute("notice", noticeDTO);
+
+        MemberDTO memberDTO = memberService.getMemberInfo(noticeDTO.getMno());
+        String userName = memberDTO.getUserName();
+        model.addAttribute("userName",userName);
+
         return "admin/notice/adminUpdateNotice";
     }
 
