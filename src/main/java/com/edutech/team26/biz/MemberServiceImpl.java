@@ -339,28 +339,29 @@ public class MemberServiceImpl implements MemberService {
                 default -> "";
             };
             member.setUserStatus(memberStatus);
-            log.info("==========================");
             Optional<Member> optionalMember = memberRepository.getWithRoles(member.getEmail());
             Member mem = optionalMember.get();
             MemberDTO memberDTO = modelMapper.map(mem, MemberDTO.class);
             memberDTO.getRoleSet()
                     .stream().map(memberRole -> new SimpleGrantedAuthority("ROLE_" + memberRole.name()))
                     .collect(Collectors.toList());
-            memberDTO.setRoleSetStr(mem.getRoleSet().stream().map(memberRole -> new SimpleGrantedAuthority("ROLE_" + memberRole.name())).collect(Collectors.toList()).toString());
-            //log.info(memberDTO.getRoleSet());
-            //log.info("==========================");
 
-            String memberRole = switch (memberDTO.getRoleSetStr()) {
-                case "[ROLE_USER]" -> "회원";
-                case "[ROLE_STUDENT]" -> "학생";
-                case "[ROLE_TEACHER]" -> "선생님";
-                case "[ROLE_ADMIN]" -> "관리자";
-                default -> "";
-            };
+            String memberRole = getMemberGrade(memberDTO.getRoleSet().toString());
             member.setRoleSetStr(memberRole);
-            log.info(memberDTO.getRoleSetStr());
         }
         
         return memberDTOList;
     }
+
+    @Override
+    public String getMemberGrade(String type) {
+        return switch (type) {
+            case "[USER]" -> "회원";
+            case "[STUDENT]" -> "학생";
+            case "[TEACHER]" -> "선생님";
+            case "[ADMIN]" -> "관리자";
+            default -> "";
+        };
+    }
+
 }

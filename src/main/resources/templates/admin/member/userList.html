@@ -4,10 +4,10 @@
       layout:decorate="layout/lmsLayoutAdmin">
     <th:block layout:fragment="content">
         <div class="container-fluid px-4">
-            <h1 class="mt-4">선생님 신청</h1>
+            <h1 class="mt-4">회원 관리</h1>
             <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item active">회원 관리</li>
-                <li class="breadcrumb-item">선생님 신청</li>
+                <li class="breadcrumb-item">회원</li>
             </ol>
             <div class="card mb-4">
                 <div class="card-header"><i class="fas fa-table me-1"></i>회원 내역</div>
@@ -17,7 +17,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>이름(이메일)</th>
-                                <!--<th>등급</th>-->
+                                <th>등급</th>
                                 <th>가입일</th>
                                 <th>상태</th>
                             </tr>
@@ -26,7 +26,7 @@
                             <tr th:each="member, num : ${memberDTOList}">
                                 <th scope="row" th:text="${num.count}"></th>
                                 <td><a th:href="|@{/admin/userDetail/}${member.mno}|" th:text="|${member.userName} (${member.email})|"></a></td>
-                                <!--<td th:text="${member.roleSetName}"></td>-->
+                                <td th:text="${member.roleSetStr}"></td>
                                 <td th:text="${#temporals.format(member.regDate, 'yyyy-MM-dd')}"></td>
                                 <td th:text="${member.userStatus}"></td>
                             </tr>

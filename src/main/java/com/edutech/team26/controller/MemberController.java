@@ -366,13 +366,22 @@ public class MemberController {
     }
 
     // 관리자 페이지
-
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin/userList")
     public String adminUserList(Model model) throws Exception {
         List<MemberDTO> memberDTOList = memberService.getAllList();
         model.addAttribute("memberDTOList", memberDTOList);
         return "admin/member/userList";
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/admin/userDetail/{id}")
+    public String adminUserDetail(@PathVariable(required = false) Long id, Model model) throws Exception {
+        MemberDTO memberDTO = memberService.getMemberInfo(id);
+        String memberRole = memberService.getMemberGrade(memberDTO.getRoleSet().toString());
+        memberDTO.setRoleSetStr(memberRole);
+        model.addAttribute("memberDTO", memberDTO);
+        return "admin/member/userDetail";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
