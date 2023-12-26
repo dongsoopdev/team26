@@ -15,6 +15,8 @@
     </style>
 </head>
     <th:block layout:fragment="content">
+        <link rel="stylesheet" th:href="@{/clEditor/jquery.cleditor.css}">
+        <script type="text/javascript" th:src="@{/clEditor/jquery.cleditor.js}"></script>
         <div class="content">
             <div class="position-relative ps-0 mb-5">
                 <h3 class="mb-0">[[${lecture_name}]]</h3>
@@ -43,7 +45,7 @@
 
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Content</span>
-                                    <textarea maxlength="2000" class="form-control col-sm-5" rows="5" name="content" required>[[${notice.content}]]</textarea>
+                                    <textarea id="reason" maxlength="2000" class="form-control col-sm-5" rows="5" name="content" required th:utext="${notice.content}"></textarea>
                                 </div>
 
                                 <div class="input-group mb-3">
@@ -66,5 +68,10 @@
                 </div><!-- end col-->
             </div><!-- end row-->
         </div>
+        <script th:inline="javascript">
+            $(document).ready(function() {
+                $("#reason").cleditor();
+            });
+        </script>
     </th:block>
 </html>

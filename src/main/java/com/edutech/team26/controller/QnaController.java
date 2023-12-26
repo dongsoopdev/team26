@@ -132,6 +132,7 @@ public class QnaController {
         String userName = memberDTO.getUserName();
         model.addAttribute("userName",userName);
 
+
         //댓글 리스트
         Long lecture_no = qnaDTO.getLecture_no();
         List<QnaCommentDTO> commentList = qnaService.commentListByqnoAndLecno(qna_no,lecture_no);
@@ -143,6 +144,10 @@ public class QnaController {
     public String adminUpdateQna(@RequestParam(name = "qna_no") Long qna_no, Model model) {
         QnaDTO qnaDTO= qnaService.findByQno(qna_no);
         model.addAttribute("qna", qnaDTO);
+
+        MemberDTO memberDTO = memberService.getMemberInfo(qnaDTO.getMno());
+        String userName = memberDTO.getUserName();
+        model.addAttribute("userName",userName);
         return "admin/qna/adminUpdateQna";
     }
 

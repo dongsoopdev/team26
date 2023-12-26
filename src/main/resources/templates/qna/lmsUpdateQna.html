@@ -15,6 +15,8 @@
             margin: 0 auto;
         }
     </style>
+    <link rel="stylesheet" th:href="@{/clEditor/jquery.cleditor.css}">
+    <script type="text/javascript" th:src="@{/clEditor/jquery.cleditor.js}"></script>
 </head>
     <th:block layout:fragment="content">
         <div class="content">
@@ -44,7 +46,7 @@
                                 </div>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Content</span>
-                                    <textarea maxlength="2000" class="form-control col-sm-5" rows="5" name="content" required>[[${qna.content}]]</textarea>
+                                    <textarea id="reason" maxlength="2000" class="form-control col-sm-5" rows="5" name="content" required th:utext="${qna.content}"></textarea>
                                 </div>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text"> 작성자 </span>
@@ -72,7 +74,7 @@
                                 </div>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Content</span>
-                                    <textarea maxlength="2000" class="form-control col-sm-5" rows="5" name="content" required>[[${qna.content}]]</textarea>
+                                    <textarea id="reason2" maxlength="2000" class="form-control col-sm-5" rows="5" name="content" required th:utext="${qna.content}"></textarea>
                                 </div>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text"> 작성자 </span>
@@ -95,5 +97,11 @@
                 </div><!-- end col-->
             </div><!-- end row-->
         </div>
+        <script th:inline="javascript">
+            $(document).ready(function() {
+                $("#reason").cleditor();
+                $("#reason2").cleditor();
+            });
+        </script>
     </th:block>
 </html>

@@ -25,7 +25,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">Content</span>
-                    <textarea class="form-control col-sm-5" rows="5" readonly>[[${notice.content}]]</textarea>
+                    <div style="height:200px;" class="form-control col-sm-5" th:utext="${notice.content}"></div>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text"> 작성자 </span>
