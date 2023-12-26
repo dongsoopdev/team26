@@ -61,7 +61,7 @@ public class TeacherController {
        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
        System.out.println(member.getMno());
 
-        List<VwLecture> lectureList = vwLectureRepository.findByMno(member.getMno());
+        List<VwLecture> lectureList = vwLectureRepository.findByMnoOrderByLectureActAscLectureNoAsc(member.getMno());
 
         model.addAttribute("lectureList", lectureList);
 
