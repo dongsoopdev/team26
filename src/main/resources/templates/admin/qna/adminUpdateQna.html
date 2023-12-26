@@ -10,8 +10,10 @@
     <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
     <style>
         .content {
-            width: 80%;
-            margin: 10%;
+            width: 90%;
+            padding-top: 30px;
+            padding-bottom: 300px;
+            margin: 0 auto;
         }
     </style>
 </head>
@@ -26,7 +28,7 @@
                     <div class="col">
                         <div class="card">
                             <div class="card-header">
-                                QNA 수정하기
+                                QNA 수정
                             </div>
                             <div class="card-body">
                                 <form th:action="@{/admin/updateQna}" method="post">
@@ -59,7 +61,7 @@
                                     <div class="my-4">
                                         <div class="float-end">
                                             <a th:href="@{/admin/qnaList}" class="btn btn-secondary">QNA 목록</a>
-                                            <button type="submit" class="btn btn-primary">수정하기</button>
+                                            <button type="submit" class="btn btn-primary">수정</button>
                                         </div>
                                     </div>
                                 </form>

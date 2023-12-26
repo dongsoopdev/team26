@@ -64,6 +64,10 @@ public class NoticeController {
     public String updateNotice(@RequestParam(name = "notice_no") Long notice_no, Model model) {
         NoticeDTO noticeDTO= noticeService.findByNno(notice_no);
         model.addAttribute("notice", noticeDTO);
+
+        MemberDTO memberDTO = memberService.getMemberInfo(noticeDTO.getMno());
+        String userName = memberDTO.getUserName();
+        model.addAttribute("userName",userName);
         return "notice/updateNotice";
     }
 
@@ -86,8 +90,13 @@ public class NoticeController {
     public String adminNoticeList( Model model) {
         List<NoticeDTO> noticeList = noticeService.findNoticeAll();
         for (NoticeDTO notice : noticeList) {
-            LectureDTO lectureDTO = lectureService.getById(notice.getLecture_no());
-            notice.setLecture_name(lectureDTO.getLectureName());
+            if (notice.getLecture_no() == 0) {
+                notice.setLecture_name("전체 공지사항");
+            } else {
+                LectureDTO lectureDTO = lectureService.getById(notice.getLecture_no());
+                notice.setLecture_name(lectureDTO.getLectureName());
+            }
+
         }
         model.addAttribute("noticeList",noticeList);
         return "admin/notice/adminNoticeList";
@@ -101,6 +110,10 @@ public class NoticeController {
         MemberDTO memberDTO = memberService.getMemberInfo(noticeDTO.getMno());
         String userName = memberDTO.getUserName();
         model.addAttribute("userName",userName);
+
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("login_mno",member.getMno());
+
         return "admin/notice/adminGetNotice";
     }
 
@@ -108,6 +121,11 @@ public class NoticeController {
     public String adminUpdateNotice(@RequestParam(name = "notice_no") Long notice_no, Model model) {
         NoticeDTO noticeDTO= noticeService.findByNno(notice_no);
         model.addAttribute("notice", noticeDTO);
+
+        MemberDTO memberDTO = memberService.getMemberInfo(noticeDTO.getMno());
+        String userName = memberDTO.getUserName();
+        model.addAttribute("userName",userName);
+
         return "admin/notice/adminUpdateNotice";
     }
 
