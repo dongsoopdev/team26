@@ -3,6 +3,7 @@ package com.edutech.team26.controller;
 import com.edutech.team26.biz.LectureService;
 import com.edutech.team26.domain.Lecture;
 import com.edutech.team26.domain.Request;
+import com.edutech.team26.domain.VwCourse;
 import com.edutech.team26.domain.VwLecture;
 import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.dto.MemberSecurityDTO;
@@ -10,6 +11,7 @@ import com.edutech.team26.dto.NoticeDTO;
 import com.edutech.team26.dto.RequestDTO;
 import com.edutech.team26.model.LectureParam;
 import com.edutech.team26.repository.RequestRepository;
+import com.edutech.team26.repository.VwCourseRepository;
 import com.edutech.team26.repository.VwLectureRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
@@ -35,6 +37,9 @@ public class TeacherController {
 
     @Autowired
     private VwLectureRepository vwLectureRepository;
+
+    @Autowired
+    private VwCourseRepository vwCourseRepository;
 
     @Autowired
     private RequestRepository requestRepository;
@@ -98,11 +103,12 @@ public class TeacherController {
     //zoomurl추가
     @PostMapping("/addZoom")
     public String addZoomSubmit(Model model, @RequestParam("zoomUrl") String zoomUrl, @RequestParam("lecture_no") long lecture_no, @RequestParam("zoomDate")LocalDateTime zoomDate){
-        
+
         lectureService.addZoomUrl(zoomUrl, lecture_no, zoomDate);
         model.addAttribute("lecture_no",lecture_no);
 
-        return "teacher/lecture/entranceZoom";
+        return  "redirect:/teacher/entranceZoom?lecture_no="+lecture_no;
+
     }
 
     // zoom강의 입장
@@ -114,6 +120,7 @@ public class TeacherController {
 
         return "teacher/lecture/entranceZoom";
     }
+
 
 
     //관리자 문의 form
@@ -130,12 +137,12 @@ public class TeacherController {
     //관리자 문의
     @PostMapping(value = {"/requestLecture"})
     public String saveSubmit(Model model, RequestDTO requestDTO) throws IOException {
+        System.out.println(requestDTO.toString());
         Request request = requestRepository.findByLectureNo(requestDTO.getLecture_no());
         model.addAttribute("request",request);
 
 
         lectureService.addRequest(requestDTO);
-
         return "redirect:/teacher/getlecture/" + requestDTO.getLecture_no();
     }
 
@@ -146,11 +153,24 @@ public class TeacherController {
         Request viewRequest = requestRepository.findByLectureNo(lecture_no);
         model.addAttribute("request",viewRequest);
 
-        VwLecture vwLecture = vwLectureRepository.getBylectureNo(lecture_no);
+        VwLecture vwLecture = vwLectureRepository.getBylectureNo(viewRequest.getLecture().getLecture_no());
         String lectureName = vwLecture.getLectureName();
         model.addAttribute("lectureName",lectureName);
 
         return "teacher/lecture/viewRequest";
     }
 
+
+
+    // zoom강의 입장
+    @GetMapping("/studentList")
+    public String studentList(Model model, @RequestParam("lecture_no") long lecture_no) {
+        VwLecture vwLecture = vwLectureRepository.getBylectureNo(lecture_no);
+        List<VwCourse> vwCourse = vwCourseRepository.findAllByLectureNo(lecture_no);
+        model.addAttribute("studentList", vwCourse);
+        model.addAttribute("lecture", vwLecture);
+        model.addAttribute("lecture_no",lecture_no);
+
+        return "teacher/lecture/studentList";
+    }
 }

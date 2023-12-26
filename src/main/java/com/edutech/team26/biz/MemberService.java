@@ -38,4 +38,6 @@ public interface MemberService {
 
     boolean resetPwAuthPro(Long mno, String key, String Password);
 
+    String getMemberGrade(String type);
+
 }

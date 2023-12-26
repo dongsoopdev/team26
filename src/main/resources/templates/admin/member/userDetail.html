@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/lmsLayoutAdmin">
+    <th:block layout:fragment="content">
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">회원 관리</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">회원 관리</li>
+                <li class="breadcrumb-item">회원</li>
+            </ol>
+            <div class="card mb-4">
+                <div class="card-header"><i class="fas fa-table me-1"></i>회원 상세 내역</div>
+                <div class="card-body">
+                    <table class="table">
+                        <colgroup>
+                            <col>
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <!--<tr class="profile_img">
+                            <th class="text-center">프로필 사진</th>
+                            <td>
+                                <img th:src="@{/images/common/basic_profile.png}" alt="기본 이미지" />
+                                <button class="btn btn-sm btn-primary ms-5">이미지 변경</button>
+                            </td>
+                        </tr>-->
+                        <tr>
+                            <th class="text-center">등급</th>
+                            <td th:text="${memberDTO.roleSetStr}"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">이름</th>
+                            <td th:text="${memberDTO.userName}"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">이메일</th>
+                            <td th:text="${memberDTO.email}"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">전화번호</th>
+                            <td th:text="${memberDTO.phone}"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">주소</th>
+                            <td th:text="|[${memberDTO.zipcode}] ${memberDTO.addr}${memberDTO.addrDetail}|"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">가입 일자</th>
+                            <td th:text="${#temporals.format(memberDTO.regDate, 'yyyy-MM-dd')}"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">마지막 로그인 일자</th>
+                            <td th:text="${#temporals.format(memberDTO.lastLoginAt, 'yyyy-MM-dd HH:mm:SS')}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="text-end mt-5">
+                        <a th:href="@{/admin/userList}" class="btn btn-primary">목록</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+</html>

@@ -3,10 +3,7 @@ package com.edutech.team26.controller;
 import com.edutech.team26.biz.CategoryService;
 import com.edutech.team26.biz.LectureService;
 import com.edutech.team26.biz.TeacherService;
-import com.edutech.team26.domain.Lecture;
-import com.edutech.team26.domain.VwCourse;
-import com.edutech.team26.domain.VwLecture;
-import com.edutech.team26.domain.VwTeacher;
+import com.edutech.team26.domain.*;
 import com.edutech.team26.dto.LectureDTO;
 import com.edutech.team26.model.LectureParam;
 import com.edutech.team26.repository.*;
@@ -34,25 +31,20 @@ import java.util.Map;
 public class AdminController extends lecBaseController {
     @Autowired
     private ModelMapper mapper;
-
     @Autowired
     private LectureService lectureService;
-
     @Autowired
     private CategoryService categoryService;
-
     @Autowired
     private TeacherService teacherService;
-
     @Autowired
     private TeacherRepository teacherRepository;
-
     @Autowired
     private LectureRepository lectureRepository;
-
+    @Autowired
+    private RequestRepository requestRepository;
     @Autowired
     private VwTeacherRepository vwTeacherRepository;
-
     @Autowired
     private VwCourseRepository vwCourseRepository;
     @Autowired
@@ -68,28 +60,6 @@ public class AdminController extends lecBaseController {
 
     // ===========================================   [강의 관련 시작]  ============================================================
 
-
-
-    /*//셀렉트박스 AJAX
-    @GetMapping("/filteredLectureList")
-    public String filteredLectureList(Model model, @RequestParam(name = "status", defaultValue = "0") int status) {
-        System.out.println("Status: " + status);
-        List<VwLecture> filteredList;
-
-        if (status == 0) {
-            // Return all lectures if status is 0 or not provided
-            filteredList = vwLectureRepository.findAllByOrderByLecRegDateDesc();
-        } else {
-            // Otherwise, filter by status
-            filteredList = vwLectureRepository.findByLectureAct(status);
-        }
-        System.out.println("상태별 >>>>>>>>>> " + filteredList);
-        model.addAttribute("lectureList", filteredList);
-
-        // Return only the fragment (table)
-        return "admin/lecture/lectureList :: #lectureTableFragment";
-    }
-*/
 
     // 강의 ajax
     @GetMapping("/filteredLectureList")
@@ -133,38 +103,9 @@ public class AdminController extends lecBaseController {
     }
 
 
-
     // 개설 강좌 전체 리스트
     @GetMapping("/lectureList")
     public String lecturelist(Model model, @RequestParam(name = "status", defaultValue = "0") int status, LectureParam lectureParam) {
-
-//        lectureParam.init();
-//        List<lectureDTO> lectureList = lectureService.list(lectureParam);
-
-//        long totalCount = 0;
-//        if (!CollectionUtils.isEmpty(lectureList)) {
-//            totalCount = lectureList.get(0).getTotalCount();
-//        }
-//
-//        String queryString = lectureParam.getQueryString();
-//        String pageHtml  = getPaperHtml(totalCount,
-//                lectureParam.getPageSize(),
-//                lectureParam.getPageIndex(),
-//                queryString);
-//        model.addAttribute("totalCount", totalCount);
-//        model.addAttribute("pager", pageHtml);
-
-//        Lecture lecture = new Lecture();
-//        lecture.setStartStudyDate(lecture.getStartStudyDate());
-//        lecture.setEndStudyDate(lecture.getEndStudyDate());
-//        lecture.updateLectureAct();
-/*
-        List<Lecture> lecList =  lectureRepository.findAll();
-        System.out.println("강의 >>>>>" + lecList);
-
-       */
-
-
 
         List<VwLecture> lectureList = vwLectureRepository.findAllByOrderByLecRegDateDesc();
         //List<VwLecture> lectureList = vwLectureRepository.findAll();
@@ -173,9 +114,6 @@ public class AdminController extends lecBaseController {
 
         return "admin/lecture/lectureList";
     }
-
-
-
 
 
     // 선택한 강의 상세보기
@@ -195,23 +133,6 @@ public class AdminController extends lecBaseController {
     // add form
     @GetMapping("/lectureSave")
     public String addForm(Model model) {
-
-//        List<Vwlecture> Vwlectures = new ArrayList<>();
-
-
-//        List<String> memberNames = new ArrayList<>();
-//        for (Teacher teacher : teacherList) {
-//            Long mno = teacher.getMno();
-//            Member member = memberRepository.findByMno(mno);
-//            if (member != null) {
-//                String memberName = member.getUserName();
-//                memberNames.add(memberName);
-//            } else {
-//                memberNames.add("Unknown Member");
-//            }
-//        }
-        /*List<Teacher> teacherList = teacherRepository.findAll();
-        System.out.println("강사리스트 : " + teacherList);*/
 
         List<VwLecture> lectureList = vwLectureRepository.findAllByOrderByLecRegDateDesc(); //최신등록순
         //List<VwLecture> lectureList = vwLectureRepository.findAll();
@@ -318,13 +239,44 @@ public class AdminController extends lecBaseController {
     //강의 철회 취소하기
     @GetMapping("/deleteCancleLecture/{lecture_no}")
     public String deleteCancleLecture(@PathVariable("lecture_no") long lecture_no, Model model) {
-
         lectureService.deleteCancleLecture(lecture_no);
-
         return "redirect:/admin/lectureList";
-
     }
 
+    // 강의 문의 리스트
+    @GetMapping("/requestLecture")
+    public String requestLecture(Model model) {
+        List<Request> requestList = requestRepository.findAll();
+        Map<Request, VwLecture> requestVwLectureMap = new HashMap<>();
+
+        for (Request request : requestList) {
+            Long lectureNo = request.getLecture().getLecture_no();
+            VwLecture vwLecture = vwLectureRepository.getBylectureNo(lectureNo);
+            requestVwLectureMap.put(request, vwLecture);  //왼쪽이 키 , 오른쪽이 밸류
+        }
+
+        model.addAttribute("requestVwLectureMap", requestVwLectureMap);
+        return "admin/lecture/requestLecture";
+    }
+
+    // 강의 문의 상세
+    @GetMapping("/viewRequest/{request_no}")
+    public String viewRequest(@PathVariable(name = "request_no") Long request_no, Model model) {
+        System.out.println("3333333333333 : " + request_no);
+        Request viewRequest = requestRepository.getById(request_no);
+        System.out.println("44444444444 : " + viewRequest.toString());
+        model.addAttribute("request",viewRequest);
+
+        VwLecture vwLecture = vwLectureRepository.getBylectureNo(viewRequest.getLecture().getLecture_no());
+        String lectureName = vwLecture.getLectureName();
+        long lectureNo = vwLecture.getLectureNo();
+        model.addAttribute("lectureName",lectureName);
+        model.addAttribute("lectureNo",lectureNo);
+
+
+
+        return "admin/lecture/viewRequest";
+    }
 
     // ===========================================   [강의 관련 끝]  ============================================================
 
