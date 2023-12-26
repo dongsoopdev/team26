@@ -44,6 +44,14 @@ public class QnaController {
         MemberDTO memberDTO = memberService.getMemberInfo(qnaDTO.getMno());
         String userName = memberDTO.getUserName();
         model.addAttribute("userName",userName);
+
+        MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("login_mno",member.getMno());
+
+        //댓글 리스트
+        Long lecture_no = qnaDTO.getLecture_no();
+        List<QnaCommentDTO> commentList = qnaService.commentListByqnoAndLecno(qna_no,lecture_no);
+        model.addAttribute("commentList",commentList);
         return "qna/homeGetQna";
     }
 
@@ -83,13 +91,33 @@ public class QnaController {
         return "redirect:/qna/qnaList?lecture_no="+ lecNo;
     }
 
+    //전체 qna의 댓글
+    @PostMapping("/qna/insertComment")
+    public String qnaInsertCommentPro (QnaCommentDTO qnaCommentDTO) {
+        qnaService.insertQnaComment(qnaCommentDTO);
+        return "redirect:/qna/getQna?qna_no="+ qnaCommentDTO.getQna_no();
+    }
+    @GetMapping("/qna/deleteComment")
+    public String qnaDeleteComment(@RequestParam(name = "comment_no") Long comment_no, @RequestParam(name = "qna_no") Long qna_no, Model model) {
+        qnaService.deleteQnaComment(comment_no);
+
+        QnaDTO qnaDTO= qnaService.findByQno(qna_no);
+        Long lecture_no = qnaDTO.getLecture_no();
+        model.addAttribute("lecture_no",lecture_no);
+        return "redirect:/qna/getQna?qna_no="+ qna_no;
+    }
+
     //관리자의 Qna
     @GetMapping("/admin/qnaList")
     public String adminQnaList( Model model) {
         List<QnaDTO> qnaList = qnaService.findQnaAll();
         for (QnaDTO qna : qnaList) {
-            LectureDTO lectureDTO = lectureService.getById(qna.getLecture_no());
-            qna.setLecture_name(lectureDTO.getLectureName());
+            if (qna.getLecture_no() ==0) {
+                qna.setLecture_name("전체 QNA");
+            } else {
+                LectureDTO lectureDTO = lectureService.getById(qna.getLecture_no());
+                qna.setLecture_name(lectureDTO.getLectureName());
+            }
         }
         model.addAttribute("qnaList",qnaList);
         return "admin/qna/adminQnaList";
@@ -103,6 +131,11 @@ public class QnaController {
         MemberDTO memberDTO = memberService.getMemberInfo(qnaDTO.getMno());
         String userName = memberDTO.getUserName();
         model.addAttribute("userName",userName);
+
+        //댓글 리스트
+        Long lecture_no = qnaDTO.getLecture_no();
+        List<QnaCommentDTO> commentList = qnaService.commentListByqnoAndLecno(qna_no,lecture_no);
+        model.addAttribute("commentList",commentList);
         return "admin/qna/adminGetQna";
     }
 
@@ -123,6 +156,22 @@ public class QnaController {
     public String adminDelete(@RequestParam(name = "qna_no") Long qna_no) {
         qnaService.deleteQna(qna_no);
         return "redirect:/admin/qnaList";
+    }
+
+    //관리자의 댓글
+    @PostMapping("/admin/insertComment")
+    public String adminInsertCommentPro (QnaCommentDTO qnaCommentDTO) {
+        qnaService.insertQnaComment(qnaCommentDTO);
+        return "redirect:/admin/getQna?qna_no="+ qnaCommentDTO.getQna_no();
+    }
+    @GetMapping("/admin/deleteComment")
+    public String adminDeleteComment(@RequestParam(name = "comment_no") Long comment_no, @RequestParam(name = "qna_no") Long qna_no, Model model) {
+        qnaService.deleteQnaComment(comment_no);
+
+        QnaDTO qnaDTO= qnaService.findByQno(qna_no);
+        Long lecture_no = qnaDTO.getLecture_no();
+        model.addAttribute("lecture_no",lecture_no);
+        return "redirect:/admin/getQna?qna_no="+ qna_no;
     }
 
     //teacher의 Qna
@@ -154,7 +203,6 @@ public class QnaController {
         //댓글 리스트
         List<QnaCommentDTO> commentList = qnaService.commentListByqnoAndLecno(qna_no,lecture_no);
         model.addAttribute("commentList",commentList);
-        System.out.println(commentList);
 
         //강의 이름
         LectureDTO lectureDTO = lectureService.getById(lecture_no);
@@ -267,7 +315,6 @@ public class QnaController {
         //댓글 리스트
         List<QnaCommentDTO> commentList = qnaService.commentListByqnoAndLecno(qna_no,lecture_no);
         model.addAttribute("commentList",commentList);
-        System.out.println(commentList);
 
         //강의 이름
         LectureDTO lectureDTO = lectureService.getById(lecture_no);

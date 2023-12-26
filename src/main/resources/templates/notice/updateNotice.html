@@ -4,59 +4,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>공지사항 수정하기</title>
+    <title>공지사항 수정</title>
     <th:block th:insert="~{layout/head :: head}"></th:block>
    <style>
        .content {
-           width: 80%;
-           margin: 10%;
+           width: 90%;
+           padding-top: 30px;
+           padding-bottom: 300px;
+           margin: 0 auto;
        }
     </style>
 </head>
 <body>
 <th:block th:insert="~{layout/header :: header}"></th:block>
-<div class="content">
+<div class="container-fluid px-4 content">
+    <h1 class="mt-4">공지사항</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item">Home</li>
+        <li class="breadcrumb-item">공지사항</li>
+        <li class="breadcrumb-item active">공지사항 수정</li>
+    </ol>
     <div class="row mt-3">
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    공지사항 수정하기
+                    <i class="fas fa-book-open"></i> 공지사항 수정
                 </div>
                 <div class="card-body">
                     <form th:action="@{/notice/updateNotice}" method="post">
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Nno</span>
-                            <input type="text" class="form-control" th:value="${notice.notice_no}" name="notice_no" readonly>
-                            <input type="hidden" name="lecture_no" class="form-control" th:value="${0}">
-                        </div>
-                        <div class="input-group mb-3">
                             <span class="input-group-text">Title</span>
-                            <input type="text" class="form-control" name="title" th:value="${notice.title}" required>
+                            <input type="hidden" class="form-control" th:value="${notice.notice_no}" name="notice_no" readonly>
+                            <input type="hidden" name="lecture_no" class="form-control" th:value="${0}">
+                            <input type="text" class="form-control" maxlength="200" name="title" th:value="${notice.title}" required>
                         </div>
-
                         <div class="input-group mb-3">
                             <span class="input-group-text">Content</span>
-                            <textarea class="form-control col-sm-5" rows="5" name="content" required>[[${notice.content}]]</textarea>
+                            <textarea class="form-control col-sm-5" maxlength="2000" rows="5" name="content" required>[[${notice.content}]]</textarea>
                         </div>
-
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Writer</span>
-                            <input type="number" class="form-control" th:value="${notice.mno}" readonly required>
+                            <span class="input-group-text">작성자</span>
+                            <input type="text" class="form-control" th:value="${userName}" readonly>
                         </div>
-
                         <div class="input-group mb-3">
                             <span class="input-group-text">RegDate</span>
                             <input type="text" class="form-control" th:value="${#temporals.format(notice.regDate, 'yyyy-MM-dd')}" readonly>
                         </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">ModDate</span>
-                            <input type="text" class="form-control" th:value="${#temporals.format(notice.modDate, 'yyyy-MM-dd')}" readonly>
-                        </div>
-
                         <div class="my-4">
                             <div class="float-end">
                                 <a th:href="@{/notice/noticeList(lecture_no =0)}" class="btn btn-secondary">목록으로</a>
-                                <button type="submit" class="btn btn-primary">수정하기</button>
+                                <button type="submit" class="btn btn-primary">수정</button>
                             </div>
                         </div>
                     </form>
