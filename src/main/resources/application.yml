@@ -18,13 +18,13 @@ spring:
           enabled: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/edutech   #개발
-    #url: jdbc:mariadb://10.41.1.127:3306/team26 #운영
+    #url: jdbc:mariadb://localhost:3306/edutech   #개발
+    url: jdbc:mariadb://10.41.1.127:3306/team26 #운영
     #url: jdbc:mariadb://localhost:3308/edutech  #예진집
-    username: root      #개발
-    #username: team26   #운영
-    password: 1234      #개발
-    #password: team26   #운영
+    #username: root      #개발
+    username: team26   #운영
+    #password: 1234      #개발
+    password: team26   #운영
   jpa:
     properties:
       hibernate:

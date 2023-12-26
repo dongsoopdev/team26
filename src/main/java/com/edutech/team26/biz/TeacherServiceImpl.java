@@ -174,13 +174,14 @@ public class TeacherServiceImpl implements TeacherService {
         TeacherHistory teacherHistory = modelMapper.map(teacherHistoryDTO, TeacherHistory.class);
         Long teacherHistoryNo = teacherHistoryRepository.save(teacherHistory).getTeacherHistoryNo();
 
-        ServletContext application = request.getSession().getServletContext();
-        String realPath = application.getRealPath("/teacher/" + teacherNo);
+        /*ServletContext application = request.getSession().getServletContext();
+        String realPath = application.getRealPath("/teacher/" + teacherNo);*/
 
         if(uploadFiles != null) {
 
             for(MultipartFile multipartFile : uploadFiles) {
-                File uploadPath = new File(realPath);
+                String uploadPathStr = "C:/upload/teacher/" + teacherNo;
+                File uploadPath = new File(uploadPathStr);
                 if(!uploadPath.exists()) {uploadPath.mkdirs();}
 
                 String originalName = multipartFile.getOriginalFilename();
@@ -197,7 +198,7 @@ public class TeacherServiceImpl implements TeacherService {
                 filesDTO.setToUse("teacherApplyFiles");
                 filesDTO.setFileOriginNm(fileOriginNm);
                 filesDTO.setFileSaveNm(fileUploadNm);
-                filesDTO.setFileSaveFolder(realPath);
+                filesDTO.setFileSaveFolder(uploadPathStr);
                 Files files = modelMapper.map(filesDTO, Files.class);
                 filesRepository.save(files);
             }
