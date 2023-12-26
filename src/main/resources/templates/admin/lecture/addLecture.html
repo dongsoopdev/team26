@@ -6,6 +6,8 @@
     <title>LMS_관리자 페이지</title>
 </head>
 <th:block layout:fragment="content">
+    <link rel="stylesheet" th:href="@{/clEditor/jquery.cleditor.css}">
+    <script type="text/javascript" th:src="@{/clEditor/jquery.cleditor.js}"></script>
     <div id="layoutSidenav">
 
         <div class="layout_contents">
@@ -94,16 +96,25 @@
 
                                             <tr>
                                                 <th>강좌 설명</th>
-                                                <td colspan="2"><textarea name="lectureContent" id="lectureContent"
+                                                <td colspan="2">
+                                                    <textarea name="lectureContent" id="reason"
                                                                           cols="50"
-                                                                          class="textarea" rows="8" maxlength="2000"
+                                                              class="form-control" rows="8" maxlength="2000"
                                                                           style="width: 100%"
-                                                                          placeholder="강좌 설명 입력" required></textarea>
+                                                                          placeholder="강좌 설명 입력" required>
+
+                                                    </textarea>
                                                 </td>
                                             </tr>
+                                            <script>
+                                                $(document).ready(function() {
+                                                    $("#reason").cleditor(); });
 
 
-                                            <tr>
+
+                                            </script>
+
+                                                <tr>
                                                 <th>모집 수강 인원</th>
                                                 <td colspan="2"><input type="number" name="lectureMaxnum"
                                                                        id="lectureMaxnum"
