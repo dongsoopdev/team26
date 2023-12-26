@@ -27,10 +27,6 @@
 <!--                </div>-->
                 <div class="card-body">
                     <div class="input-group mb-3">
-                        <span class="input-group-text">Qno</span>
-                        <input type="text" id="qna_no" class="form-control" th:value="${qna.qna_no}" readonly>
-                    </div>
-                    <div class="input-group mb-3">
                         <span class="input-group-text">Content</span>
                         <textarea class="form-control col-sm-5" rows="5" readonly>[[${qna.content}]]</textarea>
                     </div>
@@ -42,11 +38,6 @@
                         <span class="input-group-text">RegDate</span>
                         <input type="text" class="form-control" th:value="${#temporals.format(qna.regDate, 'yyyy-MM-dd')}" readonly>
                     </div>
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">ModDate</span>
-                        <input type="text" class="form-control" th:value="${#temporals.format(qna.modDate, 'yyyy-MM-dd')}" readonly>
-                    </div>
-
                     <div class="my-4">
                         <div class="float-end">
                             <a th:href="@{/qna/qnaList(lecture_no =0)}" class="btn btn-secondary">QNA 목록</a>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="testLayout/layoutLecLms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>QNA 상세보기</title>
+    <style>
+        .content {
+            width: 90%;
+            padding-top: 30px;
+            padding-bottom: 300px;
+            margin: 0 auto;
+        }
+        .input-group .btn {
+            margin-left: 40px;
+            height: 62px;
+            width: 62px;
+        }
+        .rounded-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: #0d6efd;
+            font-size: 18px;
+            text-align: center;
+            line-height: 70px;
+            color: white;
+        }
+        .d-flex {
+            display: flex !important;
+            margin-bottom: 1rem;
+        }
+        .ms-3 p {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            display: inline-flex;
+        }
+    </style>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+    <th:block layout:fragment="content">
+        <div class="content" >
+            <div class="position-relative ps-0 mb-5">
+                <h3 class="mb-0">[[${lecture_name}]]</h3>
+                <nav class="position-absolute align-middle breadcrumb_area mb-0 lh-1" aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">[[${lecture_name}]]</li>
+                        <li class="breadcrumb-item active" aria-current="page">QNA 상세</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="title">[QNA] [[${qna.title}]]</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"> 작성자 </span>
+                                <input type="text" class="form-control" th:value="${userName}" readonly>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Content</span>
+                                <textarea class="form-control col-sm-5" rows="5" readonly>[[${qna.content}]]</textarea>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">RegDate</span>
+                                <input type="text" class="form-control" th:value="${#temporals.format(qna.regDate, 'yyyy-MM-dd')}" readonly>
+                            </div>
+                            <div class="my-4">
+                                <div class="float-end">
+                                    <a sec:authorize="hasRole('STUDENT')" th:href="@{/student/qnaList(lecture_no=${lecture_no})}" class="btn btn-secondary">QNA 목록</a>
+                                    <a sec:authorize="hasRole('TEACHER')" th:href="@{/teacher/qnaList(lecture_no=${lecture_no})}" class="btn btn-secondary">QNA 목록</a>
+                                    <a th:if="${qna.mno == login_mno}" sec:authorize="hasRole('STUDENT')" th:href="|@{/student/updateQna(qna_no=${qna.qna_no})}|" class="btn btn-primary">수정</a>
+                                    <a th:if="${qna.mno == login_mno}" sec:authorize="hasRole('STUDENT')" th:href="|@{/student/deleteQna(qna_no=${qna.qna_no})}|" class="btn btn-danger">삭제</a>
+                                    <a sec:authorize="hasRole('TEACHER')" th:href="|@{/teacher/deleteQna(qna_no=${qna.qna_no})}|" class="btn btn-danger">삭제</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <section class="mb-5" style="margin-top: 100px;">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <!-- Comment form-->
+                                <form sec:authorize="hasRole('STUDENT')" action="/student/insertComment" method="post" role="form" class="mb-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">댓글</span>
+                                        <input type="hidden" name="lecture_no" th:value="${qna.lecture_no}">
+                                        <input type="hidden" name="qna_no" th:value="${qna.qna_no}">
+                                        <textarea class="form-control" rows="3"  name="content" placeholder="댓글 내용을 입력하세요" required></textarea>
+                                        <div class="text-center"><button type="submit" class="btn btn-primary">등록</button></div>
+                                    </div>
+                                </form><!--End Contact Form -->
+                                <form sec:authorize="hasRole('TEACHER')" action="/teacher/insertComment" method="post" role="form" class="mb-4">
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">댓글</span>
+                                        <input type="hidden" name="lecture_no" th:value="${qna.lecture_no}">
+                                        <input type="hidden" name="qna_no" th:value="${qna.qna_no}">
+                                        <textarea class="form-control" rows="3"  name="content" placeholder="댓글 내용을 입력하세요" required></textarea>
+                                        <div class="text-center"><button type="submit" class="btn btn-primary">등록</button></div>
+                                    </div>
+                                </form><!--End Contact Form -->
+                                <div class="d-flex" th:each="comment:${commentList}">
+                                    <div class="flex-shrink-0">
+                                        <div class="rounded-circle"><p>[[${comment.userName}]]</p></div>
+                                    </div>
+                                    <div class="ms-3">
+                                        <p>[[${comment.content}]]</p>
+                                        <a th:if="${comment.mno == login_mno}" sec:authorize="hasRole('STUDENT')" th:href="|@{/student/deleteComment(comment_no=${comment.comment_no}, qna_no=${comment.qna_no})}|"><p><i class="fa fa-times-circle"></i></p></a>
+                                        <a sec:authorize="hasRole('TEACHER')" th:href="|@{/teacher/deleteComment(comment_no=${comment.comment_no}, qna_no=${comment.qna_no})}|"><p><i class="fa fa-times-circle"></i></p></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </th:block>
+</html>

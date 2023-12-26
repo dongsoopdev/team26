@@ -23,11 +23,19 @@
     <div id="layoutSidenav_content">
         <main>
         <div class="content" >
+            <div class="position-relative ps-0 mb-5">
+                <nav class="position-absolute align-middle breadcrumb_area mb-0 lh-1" aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item active" aria-current="page">QNA 관리</li>
+                    </ol>
+                </nav>
+            </div>
             <div class="row mt-3">
             <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="title">QNA 관리</h2>
+                    <h3 class="title">QNA 관리</h3>
                 </div>
                 <div class="card-body" >
                     <h5 class="card-title">QNA 목록</h5>
@@ -40,7 +48,6 @@
                             <th scope="col">제목</th>
                             <th scope="col">등록일</th>
                             <th scope="col">조회수</th>
-                            <th scope="col">수정</th>
                             <th scope="col">삭제</th>
                         </tr>
                         </thead>
@@ -48,13 +55,12 @@
                         <tbody>
                         <tr th:each="qna:${qnaList}"  >
                             <td>[[${qna.qna_no}]]</td>
-                            <td>강좌명</td>
+                            <td>[[${qna.lecture_name}]]</td>
                             <td>
                                 <a th:href="|@{/admin/getQna(qna_no =${qna.qna_no})}|" class="text-decoration-none"> [[${qna.title}]] </a>
                             </td>
                             <td>[[${#temporals.format(qna.regDate, 'yyyy-MM-dd')}]]</td>
                             <td>[[${qna.visited}]]</td>
-                            <td><a sec:authorize="hasRole('ADMIN')" th:href="|@{/admin/updateQna(qna_no=${qna.qna_no})}|" class="btn btn-primary">수정</a></td>
                             <td><a sec:authorize="hasRole('ADMIN')" th:href="|@{/admin/deleteQna(qna_no=${qna.qna_no})}|" class="btn btn-danger">삭제</a></td>
                         </tr>
                         </tbody>

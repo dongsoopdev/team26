@@ -1,13 +1,12 @@
 package com.edutech.team26.controller;
 
+import com.edutech.team26.biz.LectureService;
 import com.edutech.team26.biz.MemberService;
 import com.edutech.team26.biz.NoticeService;
 import com.edutech.team26.biz.StudentService;
 import com.edutech.team26.domain.Member;
 import com.edutech.team26.domain.Student;
-import com.edutech.team26.dto.MemberDTO;
-import com.edutech.team26.dto.MemberSecurityDTO;
-import com.edutech.team26.dto.NoticeDTO;
+import com.edutech.team26.dto.*;
 import com.edutech.team26.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,6 +28,7 @@ public class NoticeController {
     private final NoticeService noticeService;
     private final MemberService memberService;
     private final StudentRepository studentRepository;
+    private final LectureService lectureService;
 
     @GetMapping("/notice/noticeList")
     public String noticeList(@RequestParam(name = "lecture_no") Long lecture_no, Model model) {
@@ -42,6 +42,10 @@ public class NoticeController {
         NoticeDTO noticeDTO= noticeService.findByNno(notice_no);
         noticeService.updateVisited(notice_no);
         model.addAttribute("notice", noticeDTO);
+
+        MemberDTO memberDTO = memberService.getMemberInfo(noticeDTO.getMno());
+        String userName = memberDTO.getUserName();
+        model.addAttribute("userName",userName);
         return "notice/getNotice";
     }
 
@@ -81,6 +85,10 @@ public class NoticeController {
     @GetMapping("/admin/noticeList")
     public String adminNoticeList( Model model) {
         List<NoticeDTO> noticeList = noticeService.findNoticeAll();
+        for (NoticeDTO notice : noticeList) {
+            LectureDTO lectureDTO = lectureService.getById(notice.getLecture_no());
+            notice.setLecture_name(lectureDTO.getLectureName());
+        }
         model.addAttribute("noticeList",noticeList);
         return "admin/notice/adminNoticeList";
     }
@@ -89,6 +97,10 @@ public class NoticeController {
     public String adminGetNotice( @RequestParam(name = "notice_no") Long notice_no, Model model) {
         NoticeDTO noticeDTO= noticeService.findByNno(notice_no);
         model.addAttribute("notice",noticeDTO);
+
+        MemberDTO memberDTO = memberService.getMemberInfo(noticeDTO.getMno());
+        String userName = memberDTO.getUserName();
+        model.addAttribute("userName",userName);
         return "admin/notice/adminGetNotice";
     }
 
@@ -117,7 +129,11 @@ public class NoticeController {
         List<NoticeDTO> noticeList = noticeService.noticeList(lecture_no);
         model.addAttribute("noticeList",noticeList);
         model.addAttribute("lecture_no",lecture_no);
-        return "teacher/notice/teacherNoticeList";
+
+        //강의 이름
+        LectureDTO lectureDTO = lectureService.getById(lecture_no);
+        model.addAttribute("lecture_name",lectureDTO.getLectureName());
+        return "notice/lmsNoticeList";
     }
 
     @GetMapping("/teacher/getNotice")
@@ -129,13 +145,22 @@ public class NoticeController {
         model.addAttribute("lecture_no",lecture_no);
         model.addAttribute("notice",noticeDTO);
         model.addAttribute("userName",userName);
-        return "teacher/notice/teacherGetNotice";
+
+        //강의 이름
+        LectureDTO lectureDTO = lectureService.getById(lecture_no);
+        model.addAttribute("lecture_name",lectureDTO.getLectureName());
+
+        return "notice/lmsGetNotice";
     }
 
     @GetMapping("/teacher/insertNotice")
     public String teacherInsertNotice(@RequestParam(name = "lecture_no") Long lecture_no,Model model) {
         model.addAttribute("lecture_no",lecture_no);
-        return "teacher/notice/teacherInsertNotice";
+
+        //강의 이름
+        LectureDTO lectureDTO = lectureService.getById(lecture_no);
+        model.addAttribute("lecture_name",lectureDTO.getLectureName());
+        return "notice/lmsInsertNotice";
     }
 
     @PostMapping("/teacher/insertNotice")
@@ -150,7 +175,15 @@ public class NoticeController {
         Long lecture_no = noticeDTO.getLecture_no();
         model.addAttribute("lecture_no",lecture_no);
         model.addAttribute("notice", noticeDTO);
-        return "teacher/notice/teacherUpdateNotice";
+
+        MemberDTO memberDTO = memberService.getMemberInfo(noticeDTO.getMno());
+        String userName = memberDTO.getUserName();
+        model.addAttribute("userName",userName);
+
+        //강의 이름
+        LectureDTO lectureDTO = lectureService.getById(lecture_no);
+        model.addAttribute("lecture_name",lectureDTO.getLectureName());
+        return "notice/lmsUpdateNotice";
     }
 
     @PostMapping("/teacher/updateNotice")
@@ -181,7 +214,12 @@ public class NoticeController {
 
         model.addAttribute("noticeList",noticeList);
         model.addAttribute("lecture_no",lecture_no);
-        return "student/notice/studentNoticeList";
+
+        //강의 이름
+        LectureDTO lectureDTO = lectureService.getById(lecture_no);
+        model.addAttribute("lecture_name",lectureDTO.getLectureName());
+
+        return "notice/lmsNoticeList";
     }
     @GetMapping("/student/getNotice")
     public String studentGetNotice( @RequestParam(name = "notice_no") Long notice_no, Model model) {
@@ -199,6 +237,10 @@ public class NoticeController {
         model.addAttribute("userName",userName);
         model.addAttribute("lecture_no",lecture_no);
         model.addAttribute("notice",noticeDTO);
-        return "student/notice/studentGetNotice";
+
+        //강의 이름
+        LectureDTO lectureDTO = lectureService.getById(lecture_no);
+        model.addAttribute("lecture_name",lectureDTO.getLectureName());
+        return "notice/lmsGetNotice";
     }
 }
