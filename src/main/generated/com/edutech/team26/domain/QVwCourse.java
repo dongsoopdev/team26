@@ -27,7 +27,7 @@ public class QVwCourse extends EntityPathBase<VwCourse> {
 
     public final DateTimePath<java.time.LocalDateTime> endStudyDate = createDateTime("endStudyDate", java.time.LocalDateTime.class);
 
-    public final BooleanPath entranceYn = createBoolean("entranceYn");
+    public final NumberPath<Integer> entranceYn = createNumber("entranceYn", Integer.class);
 
     public final StringPath intro = createString("intro");
 

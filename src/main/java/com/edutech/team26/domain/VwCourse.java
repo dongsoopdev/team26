@@ -20,7 +20,7 @@ public class VwCourse {
     @Id
     private Long studentNo;
     private Long studentMno;
-    private Boolean entranceYn;
+    private int entranceYn;
     private String studentStatus;  // 상태(REQ-수강신청완료, COMPLETE- 수강 중, CANCEL- 수강 취소)
     private LocalDateTime studentRegDate;
 

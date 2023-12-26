@@ -138,11 +138,11 @@ public class TeacherController {
     @PostMapping(value = {"/requestLecture"})
     public String saveSubmit(Model model, RequestDTO requestDTO) throws IOException {
         System.out.println(requestDTO.toString());
+        lectureService.addRequest(requestDTO);
+
+
         Request request = requestRepository.findByLectureNo(requestDTO.getLecture_no());
         model.addAttribute("request",request);
-
-
-        lectureService.addRequest(requestDTO);
         return "redirect:/teacher/getlecture/" + requestDTO.getLecture_no();
     }
 
@@ -162,7 +162,7 @@ public class TeacherController {
 
 
 
-    // zoom강의 입장
+    // 수강생 리스트
     @GetMapping("/studentList")
     public String studentList(Model model, @RequestParam("lecture_no") long lecture_no) {
         VwLecture vwLecture = vwLectureRepository.getBylectureNo(lecture_no);

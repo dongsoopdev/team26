@@ -19,11 +19,13 @@ public class QStudent extends EntityPathBase<Student> {
 
     public static final QStudent student = new QStudent("student");
 
-    public final BooleanPath entranceYn = createBoolean("entranceYn");
+    public final NumberPath<Integer> entranceYn = createNumber("entranceYn", Integer.class);
 
     public final NumberPath<Long> lectureNo = createNumber("lectureNo", Long.class);
 
     public final NumberPath<Long> mno = createNumber("mno", Long.class);
+
+    public final DateTimePath<java.time.LocalDateTime> modDate = createDateTime("modDate", java.time.LocalDateTime.class);
 
     public final DateTimePath<java.time.LocalDateTime> regDate = createDateTime("regDate", java.time.LocalDateTime.class);
 

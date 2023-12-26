@@ -74,9 +74,15 @@
                                 </div>
 
 
-                                <div class="date" th:if="${lecture.getLectureAct() eq 2}"
+                                <div class="date"
+                                     th:if="${lecture.getLectureAct() eq 2 && lecture.getZoomDate() != null}"
                                      th:text="${#temporals.format(lecture.getZoomDate(), 'MM월 dd일 HH시 mm분') + ' 강의 시작'}"
                                      style="width: 50%;">
+                                </div>
+
+                                <div class="date"
+                                     th:if="${lecture.getLectureAct() eq 2 && lecture.getZoomDate() == null}"
+                                     style="width: 50%;"> URL이 입력되지 않은 상태입니다
                                 </div>
 
                                 <div class="date" th:if="${lecture.getLectureAct() eq 3}"
@@ -92,38 +98,45 @@
                                     강의 입장하기
                                 </button>
 
-                                <script th:inline="javascript">
+
+                              <script th:inline="javascript">
                                     function load() {
                                         var zoomUrl = [[${lecture.getZoomUrl()}]];
+
+                                        if (!zoomUrl || zoomUrl.trim() === '') {
+                                            alert('Zoom URL이 없습니다. 먼저 URL을 등록해주세요.');
+                                            return;
+                                        }
+
                                         var zoomDate = new Date([[${#temporals.format(lecture.getZoomDate(), "yyyy-MM-dd'T'HH:mm:ss")}]]);
                                         var currentTime = new Date();
-
-                                        // Calculate the time difference in minutes
                                         var timeDifference = (zoomDate.getTime() - currentTime.getTime()) / (1000 * 60);
 
-                                        // Check if the current time is after the lecture start and before the lecture ends
-                                        if (timeDifference < 0 || timeDifference > 30) {
+                                        if (timeDifference > 30) {
                                             alert('강의 시작 30분 전부터 입장 가능합니다');
                                         } else {
-                                            if (zoomUrl && zoomUrl.trim() !== '') {
-                                                if (!zoomUrl.startsWith('http://') && !zoomUrl.startsWith('https://')) {
-                                                    zoomUrl = 'http://' + zoomUrl; // Add the protocol if missing
+                                            var student_no = [[${lecture.getStudentNo()}]];
+                                            var url = '/student/entranceLecture?student_no=' + student_no;
+                                            $.ajax({
+                                                url: url,
+                                                method: 'GET',
+                                                success: function (data) {
+                                                    console.log('Success:', data);
+                                                },
+                                                error: function (error) {
+                                                    console.error('Error:', error);
                                                 }
-                                                window.open(zoomUrl, '_blank');
+                                            });
 
-                                                var student_no = [[${lecture.getStudentNo()}]];
-                                                if (student_no) {
-                                                    fetch('/student/entranceLecture?StudentNo=' + student_no)
-                                                        .then(response => response.text())
-                                                        .then(data => console.log(data))
-                                                        .catch(error => console.error('Error:', error));
-                                                }
-                                            } else {
-                                                alert('Zoom URL이 없습니다.');
+                                            if (!zoomUrl.startsWith('http://') && !zoomUrl.startsWith('https://')) {
+                                                zoomUrl = 'http://' + zoomUrl;
                                             }
+                                            window.open(zoomUrl, '_blank');
                                         }
                                     }
                                 </script>
+
+
 
 
                             </div><!--end card body-->
