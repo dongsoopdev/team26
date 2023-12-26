@@ -75,7 +75,8 @@ FROM Lecture l
 
 
 
--- 수강신청한 강의view (예진 view)   수정.231219
+-- 수강신청한 강의view (예진 view)   수정.231226 (student_mod_date 추가)
+DESC courselist;
 drop VIEW courselist;
 CREATE VIEW courselist AS
 SELECT
@@ -84,6 +85,7 @@ SELECT
     s.entrance_yn AS entrance_yn,
     s.status AS student_status,
     s.reg_date AS student_reg_date,
+    s.mod_date AS student_mod_date,
 
     l.lecture_no AS lecture_no,
     l.lecture_name AS lecture_name,
@@ -101,6 +103,7 @@ SELECT
     l.lecture_act AS lecture_act,
     l.zoom_url AS zoom_url,
     l.zoom_date AS zoom_date,
+
 
     t.teacher_no AS teacher_no,
     t.mno AS teacher_mno,
