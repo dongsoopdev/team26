@@ -14,6 +14,8 @@
            margin: 0 auto;
        }
     </style>
+    <link rel="stylesheet" th:href="@{/clEditor/jquery.cleditor.css}">
+    <script type="text/javascript" th:src="@{/clEditor/jquery.cleditor.js}"></script>
 </head>
 <body>
 <th:block th:insert="~{layout/header :: header}"></th:block>
@@ -41,7 +43,7 @@
 
                         <div class="input-group mb-3">
                             <span class="input-group-text">Content</span>
-                            <textarea class="form-control col-sm-5" maxlength="2000" rows="5" name="content" required>[[${qna.content}]]</textarea>
+                            <textarea id="reason" class="form-control col-sm-5" maxlength="2000" rows="5" name="content" required th:utext="${qna.content}"></textarea>
                         </div>
 
                         <div class="input-group mb-3">
@@ -71,16 +73,9 @@
     </div><!-- end row-->
 </div>
 <script th:inline="javascript">
-    const errors = [[${errors}]]
-    console.log(errors)
-    let errorMsg = ''
-    if(errors){
-        for (let i = 0; i < errors.length; i++) {
-            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
-        }
-        history.replaceState({}, null, null)
-        alert(errorMsg)
-    }
+    $(document).ready(function() {
+        $("#reason").cleditor();
+    });
 </script>
 </body>
 </html>

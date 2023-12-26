@@ -17,6 +17,8 @@
 </head>
 <body>
 <th:block th:insert="~{layout/header :: header}"></th:block>
+<link rel="stylesheet" th:href="@{/clEditor/jquery.cleditor.css}">
+<script type="text/javascript" th:src="@{/clEditor/jquery.cleditor.js}"></script>
 <div class="container-fluid px-4 content">
     <h1 class="mt-4">공지사항</h1>
     <ol class="breadcrumb mb-4">
@@ -38,8 +40,8 @@
                             <input type="hidden" name="lecture_no" class="form-control" th:value="${0}">
                         </div>
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Content</span>
-                            <textarea class="form-control col-sm-5" maxlength="2000" rows="5" name="content" placeholder="Content" required></textarea>
+                            <span class="input-group-text" style="width: 86px;">Content</span>
+                            <div id="reason" class="form-control col-sm-5" maxlength="2000" name="content" placeholder="Content" style="width: calc(100% - 91px); height: 200px;"></div>
                         </div>
                         <div class="my-4">
                             <div class="float-end">
@@ -55,16 +57,9 @@
     </div><!-- end row-->
 </div>
 <script th:inline="javascript">
-    const errors = [[${errors}]]
-    console.log(errors)
-    let errorMsg = ''
-    if(errors){
-        for (let i = 0; i < errors.length; i++) {
-            errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
-        }
-        alert(errorMsg)
-    }
-
+    $(document).ready(function() {
+        $("#reason").cleditor();
+    });
 </script>
 <th:block th:insert="~{layout/footer :: footer}"></th:block>
 </body>

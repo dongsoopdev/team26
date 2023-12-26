@@ -64,7 +64,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">Content</span>
-                        <textarea class="form-control col-sm-5" rows="5" readonly>[[${qna.content}]]</textarea>
+                        <div style="height:200px;" class="form-control col-sm-5" rows="5" readonly th:utext="${qna.content}"></div>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">RegDate</span>
@@ -74,7 +74,8 @@
                         <div class="float-end">
                             <a th:href="@{/qna/qnaList(lecture_no =0)}" class="btn btn-secondary">QNA 목록</a>
                             <a th:if="${qna.mno == login_mno}" th:href="|@{/qna/updateQna(qna_no=${qna.qna_no})}|" class="btn btn-primary">수정</a>
-                            <a th:if="${#authorization.expression('hasRole(''ADMIN'') or qna.mno == login_mno')}" th:href="|@{/qna/deleteQna(qna_no=${qna.qna_no})}|" class="btn btn-danger">삭제</a>
+                            <a sec:authorize="hasRole('ADMIN')" th:href="|@{/qna/deleteQna(qna_no=${qna.qna_no})}|" class="btn btn-danger">삭제</a>
+                            <a th:if="${qna.mno == login_mno}" th:href="|@{/qna/deleteQna(qna_no=${qna.qna_no})}|" class="btn btn-danger">삭제</a>
                         </div>
                     </div>
                 </div>

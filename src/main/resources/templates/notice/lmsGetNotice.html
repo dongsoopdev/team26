@@ -44,7 +44,7 @@
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Content</span>
-                                <textarea class="form-control col-sm-5" rows="5" readonly>[[${notice.content}]]</textarea>
+                                <div class="form-control col-sm-5" style="height:200px;" th:utext="${notice.content}"></div>
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">RegDate</span>
