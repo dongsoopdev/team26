@@ -20,4 +20,5 @@ public class NoticeDTO {
     private LocalDateTime modDate;
     private int visited;
     private Long mno;
+    private String lecture_name;
 }

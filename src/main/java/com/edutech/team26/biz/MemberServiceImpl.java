@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -338,17 +339,29 @@ public class MemberServiceImpl implements MemberService {
                 default -> "";
             };
             member.setUserStatus(memberStatus);
+            Optional<Member> optionalMember = memberRepository.getWithRoles(member.getEmail());
+            Member mem = optionalMember.get();
+            MemberDTO memberDTO = modelMapper.map(mem, MemberDTO.class);
+            memberDTO.getRoleSet()
+                    .stream().map(memberRole -> new SimpleGrantedAuthority("ROLE_" + memberRole.name()))
+                    .collect(Collectors.toList());
 
-            /*String memberRole = switch (member.getRole_set()) {
-                case 0 -> "회원";
-                case 1 -> "학생";
-                case 2 -> "선생님";
-                case 3 -> "관리자";
-                default -> "";
-            };
-            member.setRoleSetName(memberRole);*/
+            String memberRole = getMemberGrade(memberDTO.getRoleSet().toString());
+            member.setRoleSetStr(memberRole);
         }
         
         return memberDTOList;
     }
+
+    @Override
+    public String getMemberGrade(String type) {
+        return switch (type) {
+            case "[USER]" -> "회원";
+            case "[STUDENT]" -> "학생";
+            case "[TEACHER]" -> "선생님";
+            case "[ADMIN]" -> "관리자";
+            default -> "";
+        };
+    }
+
 }

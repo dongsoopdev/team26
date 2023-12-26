@@ -3,10 +3,7 @@ package com.edutech.team26.biz;
 import com.edutech.team26.domain.Notice;
 import com.edutech.team26.domain.Qna;
 import com.edutech.team26.domain.QnaComment;
-import com.edutech.team26.dto.MemberSecurityDTO;
-import com.edutech.team26.dto.NoticeDTO;
-import com.edutech.team26.dto.QnaCommentDTO;
-import com.edutech.team26.dto.QnaDTO;
+import com.edutech.team26.dto.*;
 import com.edutech.team26.repository.MemberRepository;
 import com.edutech.team26.repository.QnaCommentRepository;
 import com.edutech.team26.repository.QnaRepository;
@@ -29,6 +26,7 @@ public class QnaServiceImpl implements QnaService{
     private final QnaCommentRepository qnaCommentRepository;
     private final ModelMapper modelMapper;
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
 
     //특정 강의 qna 리스트
     @Override
@@ -94,8 +92,9 @@ public class QnaServiceImpl implements QnaService{
         List<QnaCommentDTO> commentList = list.stream()
                 .filter(comment -> comment.getQna_no().equals(qna_no) && comment.getLecture_no().equals(lecture_no))
                 .map(comment -> {
+                    MemberDTO memberDTO = memberService.getMemberInfo(comment.getMno());
                     QnaCommentDTO dto = new QnaCommentDTO();
-                    dto.setUserName(member.getUserName());
+                    dto.setUserName(memberDTO.getUserName());
                     modelMapper.map(comment, dto);
                     return dto;
                 })

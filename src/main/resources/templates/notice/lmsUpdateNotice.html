@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="testLayout/layoutLecLms">
+<head>
+    <title>공지사항 수정</title>
+    <style>
+        .content {
+            width: 90%;
+            padding-top: 30px;
+            padding-bottom: 300px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+    <th:block layout:fragment="content">
+        <div class="content">
+            <div class="position-relative ps-0 mb-5">
+                <h3 class="mb-0">[[${lecture_name}]]</h3>
+                <nav class="position-absolute align-middle breadcrumb_area mb-0 lh-1" aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">[[${lecture_name}]]</li>
+                        <li class="breadcrumb-item active" aria-current="page">공지사항 수정</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            공지사항 수정
+                        </div>
+                        <div class="card-body">
+                            <form th:action="@{/teacher/updateNotice}" method="post">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Title</span>
+                                    <input type="hidden" class="form-control" th:value="${notice.notice_no}" name="notice_no" readonly>
+                                    <input type="hidden" name="lecture_no" class="form-control" th:value="${lecture_no}">
+                                    <input type="text" maxlength="200" class="form-control" name="title" th:value="${notice.title}" required>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Content</span>
+                                    <textarea maxlength="2000" class="form-control col-sm-5" rows="5" name="content" required>[[${notice.content}]]</textarea>
+                                </div>
+
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text"> 작성자 </span>
+                                    <input type="text" class="form-control" th:value="${userName}" readonly>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">RegDate</span>
+                                    <input type="text" class="form-control" th:value="${#temporals.format(notice.regDate, 'yyyy-MM-dd')}" readonly>
+                                </div>
+                                <div class="my-4">
+                                    <div class="float-end">
+                                        <a th:href="@{/teacher/noticeList(lecture_no=${lecture_no})}" class="btn btn-secondary">공지사항 목록</a>
+                                        <button type="submit" class="btn btn-primary">수정</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div><!--end card body-->
+                    </div><!--end card-->
+                </div><!-- end col-->
+            </div><!-- end row-->
+        </div>
+    </th:block>
+</html>

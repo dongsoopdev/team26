@@ -13,7 +13,7 @@ public interface TeacherHistoryRepository extends JpaRepository<TeacherHistory, 
 
     TeacherHistory findByTeacherHistoryNo(Long teacherHistoryNo);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM teacher_history WHERE teacher_history_no IN (SELECT MAX(teacher_history_no) FROM teacher_history GROUP BY mno)")
+    @Query(nativeQuery = true, value = "SELECT * FROM teacher_history WHERE teacher_history_no IN (SELECT MAX(teacher_history_no) FROM teacher_history GROUP BY mno) order by teacher_history_no desc")
     List<TeacherHistory> findAllTeacherHistory();
 
 }
