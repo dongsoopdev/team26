@@ -2,21 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/lmsLayoutAdmin">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공지사항</title>
-    <th:block th:insert="~{layout/head :: head}"></th:block>
-    <link rel="stylesheet" th:href="@{/css/stylesLms.css}">
-    <style>
-        .content {
-            width: 90%;
-            padding-top: 30px;
-            padding-bottom: 300px;
-            margin: 0 auto;
-        }
-    </style>
 </head>
 <body>
 <th:block th:insert="~{layout/lmsTop :: lmsTop}"></th:block>
