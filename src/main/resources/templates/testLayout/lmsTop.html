@@ -6,13 +6,13 @@
             <!-- Navbar Brand-->
             <p class="mb-0">
                 <th:block sec:authorize="hasRole('ADMIN')">
-                    <a class="navbar-brand ps-3" th:href="@{/admin/home}">LMS</a><span class="text-white">관리자</span>
+                    <a class="navbar-brand ps-3" th:href="@{/admin/userList}">LMS</a><span class="text-white">관리자</span>
                 </th:block>
                 <th:block sec:authorize="hasRole('TEACHER')">
-                    <a class="navbar-brand ps-3" th:href="@{/teacher/home}">LMS</a><span class="text-white">선생님</span>
+                    <a class="navbar-brand ps-3" th:href="@{/myPage}">LMS</a><span class="text-white">선생님</span>
                 </th:block>
                 <th:block sec:authorize="hasRole('STUDENT')">
-                    <a class="navbar-brand ps-3" th:href="@{/student/home}">LMS</a><span class="text-white">학생</span>
+                    <a class="navbar-brand ps-3" th:href="@{/myPage}">LMS</a><span class="text-white">학생</span>
                 </th:block>
             </p>
             <!-- Sidebar Toggle-->

@@ -4,6 +4,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="testLayout/layoutLecLms">
 <head>
+    <link rel="stylesheet" th:href="@{/css/lecture/detail/video.css}"/>
     <title>LMS_수강생 페이지</title>
 </head>
 
@@ -76,7 +77,7 @@
 
                                     <tr>
                                         <th>강좌 설명</th>
-                                        <td th:text="${course.getLectureContent()}"></td>
+                                        <td th:utext="${course.getLectureContent()}"></td>
                                     </tr>
 
                                     <tr>

@@ -258,7 +258,7 @@
 <!--================Product Description Area =================-->
 <section class="product_description_area">
     <div class="container">
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <ul class="nav nav-tabs" id="myTab" role="tablist" style="padding: 0px;">
           <!-- <li class="nav-item" >
                 <a
                         class="nav-link "
@@ -667,7 +667,7 @@
 
                             <tr>
                                 <th style="width: 22%;">강좌 설명</th>
-                                <td th:text="${lecture.getLectureContent()}"></td>
+                                <td th:utext="${lecture.lectureContent}"></td>
                             </tr>
 
                             <tr>

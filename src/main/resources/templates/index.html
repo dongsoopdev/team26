@@ -49,8 +49,8 @@
                         <a th:href="@{lecture/lectureList}" class="btn btn-primary w-100">수강 신청</a>
                         <a th:href="@{/myPage/teacherApply}" class="btn mt-4 w-100 text-white" style="background-color: #658fbf;">선생님 신청</a>
                     </th:block>
-                    <a sec:authorize="hasRole('ADMIN')" th:href="@{admin/home}" class="btn btn-primary w-100">관리자 LMS 이동</a>
-                    <a sec:authorize="hasRole('TEACHER')" th:href="@{teacher/home}" class="btn btn-primary w-100">선생님 LMS 이동</a>
+                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/userList}" class="btn btn-primary w-100">관리자 LMS 이동</a>
+                    <a sec:authorize="hasRole('TEACHER')" th:href="@{/myPage}" class="btn btn-primary w-100">선생님 LMS 이동</a>
                     <a sec:authorize="hasRole('STUDENT')"  th:href="@{/student/courseList}" class="btn btn-primary w-100">수강생 LMS 이동</a>
 
 
