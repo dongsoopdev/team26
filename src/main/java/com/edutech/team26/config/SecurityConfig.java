@@ -12,8 +12,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import javax.sql.DataSource;
+import java.util.stream.Stream;
 
 @Log4j2
 @Configuration
@@ -31,16 +35,45 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /*private static final String[] PERMIT_ALL_PATTERNS = new String[] {
+            "/js/**",
+            "/fonts/**",
+            "/css/**",
+            "/assets/**",
+            "/clEditor/**",
+            "/images/**",
+    };*/
+
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return (web) -> web.ignoring().
+                requestMatchers(new AntPathRequestMatcher("/js/**"))
+                .requestMatchers(new AntPathRequestMatcher( "/fonts/**"))
+                .requestMatchers(new AntPathRequestMatcher( "/css/**"))
+                .requestMatchers(new AntPathRequestMatcher( "/assets/**"))
+                .requestMatchers(new AntPathRequestMatcher( "/clEditor/**"))
+                .requestMatchers(new AntPathRequestMatcher( "/images/**"));
+        /*return (web) -> web.ignoring().requestMatchers(
+                PathRequest.toStaticResources().atCommonLocations());*/
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
 
         http
             .authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
-                    .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                    .requestMatchers(new MvcRequestMatcher(introspector,"/")).permitAll()
+                    /*.requestMatchers("/admin/**").hasAnyRole("ADMIN")
                     .requestMatchers("/teacher/**").hasAnyRole("TEACHER")
                     .requestMatchers("/student/**").hasAnyRole("STUDENT")
-                    .requestMatchers("/", "/**","/login","/join_frm", "join_frm_u", "join_frm_t").permitAll()
+                    .requestMatchers("/", "/**","/login","/join_frm", "join_frm_u", "join_frm_t").permitAll()*/
+                    .requestMatchers(new AntPathRequestMatcher("classpath:/static/js/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("classpath:/static/fonts/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("classpath:/static/css/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("classpath:/static/assets/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("classpath:/static/clEditor/**")).permitAll()
+                    .requestMatchers(new AntPathRequestMatcher("classpath:/static/images/**")).permitAll()
                     .anyRequest().authenticated());
 
         http
@@ -69,12 +102,6 @@ public class SecurityConfig {
             );
 
         return http.build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
-        return (web) -> web.ignoring().requestMatchers(
-                PathRequest.toStaticResources().atCommonLocations());
     }
 
 }
