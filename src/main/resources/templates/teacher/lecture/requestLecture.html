@@ -49,9 +49,9 @@
                                       onsubmit="return submitForm(event)">
                                     <div style="width: 700px;margin: 0 auto;}">
 
-                                       <!-- <input type="hidden" name="lecture_no" th:value="${lecture.getLectureNo()}"/>-->
+                                        <input type="hidden" name="lecture_no" th:value="${lecture.getLectureNo()}"/>
                                         <div class="mb-3">
-                                            <!--   <label for="exampleFormControlInput1" class="form-label"> </label>-->
+
                                             <input type="text" class="form-control" id="title" name="title"
                                                    maxlength="100" placeholder="제목을 작성하세요 (EX. 강의 내용 수정 요청드립니다)">
                                         </div>
@@ -68,10 +68,11 @@
                                 </form>
 
 
-                                <script>
+                        <!--        <script>
                                     function submitForm(event) {
                                         event.preventDefault(); // Prevent the default form submission behavior
                                         let lecture_no = [[${lecture.getLectureNo()}]];
+                                        alert(lecture_no);
                                         $.ajax({
                                             type: "POST",
                                             url: "/teacher/requestLecture",
@@ -87,7 +88,7 @@
 
                                         return false;
                                     }
-                                </script>
+                                </script>-->
 
 
                             </div><!--end card body-->

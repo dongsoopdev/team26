@@ -137,6 +137,7 @@ public class TeacherController {
     //관리자 문의
     @PostMapping(value = {"/requestLecture"})
     public String saveSubmit(Model model, RequestDTO requestDTO) throws IOException {
+        System.out.println(requestDTO.toString());
         Request request = requestRepository.findByLectureNo(requestDTO.getLecture_no());
         model.addAttribute("request",request);
 
