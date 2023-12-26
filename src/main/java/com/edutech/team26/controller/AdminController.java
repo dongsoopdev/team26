@@ -126,7 +126,7 @@ public class AdminController extends lecBaseController {
 
 
         model.addAttribute("lecture", lecture);
-        return "admin/lecture/getlecture";
+        return "admin/lecture/getLecture";
     }
 
 
@@ -143,7 +143,7 @@ public class AdminController extends lecBaseController {
 
         model.addAttribute("teacherList", teacherList); //선생님 이름 담은 객체
         model.addAttribute("category", categoryService.list());
-        return "admin/lecture/addlecture";
+        return "admin/lecture/addLecture";
     }
 
 
@@ -213,7 +213,7 @@ public class AdminController extends lecBaseController {
         System.out.println("강사리스트 : " + teacherList);
         model.addAttribute("teacherList", teacherList); //선생님 이름 담은 객체
 
-        return "admin/lecture/updatelecture";
+        return "admin/lecture/updateLecture";
     }
 
     // 강의 수정 처리
