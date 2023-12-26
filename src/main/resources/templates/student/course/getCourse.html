@@ -30,8 +30,8 @@
                                        style=" width: 70%; margin: 0 auto;vertical-align: middle; }">
 
 
-                                    <tr>
-                                        <th> 수강 철회</th>
+                                    <tr  th:if="${course.getStudentStatus() eq 'REQ'}">
+                                        <th > 수강 철회</th>
                                         <td>
                                             <button class="btn btn-danger" style="width: 150px;"
                                                     th:onclick="'confirmWithdraw(' + ${course.getStudentNo()} + ')'">
