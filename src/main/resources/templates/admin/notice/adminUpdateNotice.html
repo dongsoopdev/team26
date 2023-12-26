@@ -5,6 +5,8 @@
       layout:decorate="layout/lmsLayoutAdmin">
 <head>
     <title>공지사항 수정하기</title>
+    <link rel="stylesheet" th:href="@{/clEditor/jquery.cleditor.css}">
+    <script type="text/javascript" th:src="@{/clEditor/jquery.cleditor.js}"></script>
 </head>
 <th:block layout:fragment="content">
     <div class="container-fluid px-4">
@@ -31,7 +33,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">Content</span>
-                        <textarea class="form-control col-sm-5" maxlength="2000" rows="5" name="content" required>[[${notice.content}]]</textarea>
+                        <textarea rows="5" id="reason" class="form-control col-sm-5" maxlength="2000" name="content" th:utext="${notice.content}"></textarea>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">작성자</span>
@@ -52,5 +54,10 @@
             </div><!--end card body-->
         </div><!--end card-->
         </div>
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            $("#reason").cleditor();
+        });
+    </script>
 </th:block>
 </html>
