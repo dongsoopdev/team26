@@ -63,7 +63,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
-                    .requestMatchers(new MvcRequestMatcher(introspector,"/")).permitAll()
+                    .requestMatchers(new MvcRequestMatcher(introspector,"/**")).permitAll()
                     /*.requestMatchers("/admin/**").hasAnyRole("ADMIN")
                     .requestMatchers("/teacher/**").hasAnyRole("TEACHER")
                     .requestMatchers("/student/**").hasAnyRole("STUDENT")
