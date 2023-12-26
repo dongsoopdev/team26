@@ -69,9 +69,14 @@
 
                                         </td>
 
+
                                         <td>
-                                            <p2 th:text="${studentList.getStudentStatus()}"></p2>
+                                            <p2 th:if="${studentList.getEntranceYn()} == 0" th:text="'입장 전'"></p2>
+                                            <p2 th:if="${studentList.getEntranceYn()} == 1" th:text="'입장 완료'"></p2>
+                                            <p2 th:if="${studentList.getEntranceYn()} == 2" th:text="'지각'"></p2>
+                                            <p2 th:if="${studentList.getEntranceYn()} == 3" th:text="'결석'"></p2>
                                         </td>
+
 
 
                                     </tr>

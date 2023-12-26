@@ -133,13 +133,12 @@ public class StudentController {
     }
 
 
-    // This method handles the entry action
     @GetMapping("/entranceLecture")
     @ResponseBody
     public String enterLecture(@RequestParam Long student_no) {
+        System.out.println("엔트랜스");
 
         studentService.updateEntranceStatus(student_no);
-
         return "Success";
     }
 

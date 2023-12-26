@@ -4,9 +4,12 @@ import com.edutech.team26.constant.MemberRole;
 import com.edutech.team26.domain.Lecture;
 import com.edutech.team26.domain.Member;
 import com.edutech.team26.domain.Student;
+import com.edutech.team26.domain.VwCourse;
 import com.edutech.team26.dto.StudentDTO;
 import com.edutech.team26.repository.MemberRepository;
 import com.edutech.team26.repository.StudentRepository;
+import com.edutech.team26.repository.VwCourseRepository;
+import com.edutech.team26.repository.VwLectureRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -35,6 +38,8 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
 
+    private final VwLectureRepository vwLectureRepository;
+    private final VwCourseRepository vwCourseRepository;
 /*    @Override
     public boolean applyStudent(Long mno, Long lectureNo) throws Exception {
 
@@ -126,10 +131,25 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void updateEntranceStatus(Long studentNo) {
         Student student = studentRepository.getById(studentNo);
-        System.out.println("여기야!!!!!!!"+student.getEntranceYn());
-        student.updateEntranceYn(1);
-        System.out.println("여기야222222222222!!!!!!!"+student.getEntranceYn());
+        //System.out.println("여기야!!!!!!!"+student.getEntranceYn());
+       // student.updateEntranceYn(1);
+
+        VwCourse stu=  vwCourseRepository.getById(studentNo);
+
+                // Check if the student is late
+        LocalDateTime zoomDate = stu.getZoomDate();
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        if (currentTime.isAfter(zoomDate)) {
+            student.updateEntranceYn(2); // 지각
+        } else {
+            student.updateEntranceYn(1); // 입장완료
+        }
+
+
         studentRepository.save(student);
+        System.out.println("여기야222222222222!!!!!!!"+student.getEntranceYn());
+
     }
 
 }

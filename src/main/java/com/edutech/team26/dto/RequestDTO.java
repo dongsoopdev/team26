@@ -16,7 +16,7 @@ public class RequestDTO {
     private Long lecture_no;
     private String title;
     private String content;
-    private LocalDateTime regDate;
-    private LocalDateTime modDate;
+    //private LocalDateTime regDate;
+    //private LocalDateTime modDate;
     private Long mno;
 }
