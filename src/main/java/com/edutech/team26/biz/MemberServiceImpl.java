@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -338,15 +339,26 @@ public class MemberServiceImpl implements MemberService {
                 default -> "";
             };
             member.setUserStatus(memberStatus);
+            log.info("==========================");
+            Optional<Member> optionalMember = memberRepository.getWithRoles(member.getEmail());
+            Member mem = optionalMember.get();
+            MemberDTO memberDTO = modelMapper.map(mem, MemberDTO.class);
+            memberDTO.getRoleSet()
+                    .stream().map(memberRole -> new SimpleGrantedAuthority("ROLE_" + memberRole.name()))
+                    .collect(Collectors.toList());
+            memberDTO.setRoleSetStr(mem.getRoleSet().stream().map(memberRole -> new SimpleGrantedAuthority("ROLE_" + memberRole.name())).collect(Collectors.toList()).toString());
+            //log.info(memberDTO.getRoleSet());
+            //log.info("==========================");
 
-            /*String memberRole = switch (member.getRole_set()) {
-                case 0 -> "회원";
-                case 1 -> "학생";
-                case 2 -> "선생님";
-                case 3 -> "관리자";
+            String memberRole = switch (memberDTO.getRoleSetStr()) {
+                case "[ROLE_USER]" -> "회원";
+                case "[ROLE_STUDENT]" -> "학생";
+                case "[ROLE_TEACHER]" -> "선생님";
+                case "[ROLE_ADMIN]" -> "관리자";
                 default -> "";
             };
-            member.setRoleSetName(memberRole);*/
+            member.setRoleSetStr(memberRole);
+            log.info(memberDTO.getRoleSetStr());
         }
         
         return memberDTOList;
