@@ -1,5 +1,7 @@
 package com.edutech.team26.config;
 
+import com.edutech.team26.domain.Teacher;
+import com.edutech.team26.dto.RequestDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
@@ -18,5 +20,4 @@ public class RootConfig {
 
         return modelMapper;
     }
-
 }

@@ -333,7 +333,7 @@ public class LectureServiceImpl implements LectureService {
         Student takeLecture = Student.builder()
                 .lectureNo(lecture.getLecture_no())
                 .mno(studentDTO.getMno())
-                .entranceYn(false)
+                .entranceYn(0)
                 .status(Student.STATUS_REQ)
                 .regDate(LocalDateTime.now())
 
@@ -396,7 +396,11 @@ public class LectureServiceImpl implements LectureService {
     @Override
     public void addRequest(RequestDTO requestDTO) {
         MemberSecurityDTO member = (MemberSecurityDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        requestDTO.setMno(member.getMno());
+        log.info("이거 돌아가노 ? " + member);
+       requestDTO.setMno(member.getMno());
+        log.info("언제고?" + requestDTO);
+
+        System.out.println("aaaaaa >>> " + requestDTO);
         Request request = modelMapper.map(requestDTO, Request.class);
         requestRepository.save(request);
     }
