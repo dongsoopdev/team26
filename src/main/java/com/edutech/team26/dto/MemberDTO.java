@@ -1,8 +1,11 @@
 package com.edutech.team26.dto;
 
+import com.edutech.team26.constant.MemberRole;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class MemberDTO {
@@ -20,5 +23,7 @@ public class MemberDTO {
     private LocalDateTime lastLoginAt;
     private LocalDateTime regDate;
     private String userStatus;
+    private Set<MemberRole> roleSet = new HashSet<>();
+    private String roleSetStr = "";
 
 }
