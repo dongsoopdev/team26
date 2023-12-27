@@ -56,6 +56,8 @@
 <br/>
 
 ## 1️⃣ 요구사항 분석
+![image](https://github.com/dongsoopdev/team26/assets/65212187/f9459fb5-76e7-48d7-8071-3d5d2412a1fb)
+![image](https://github.com/dongsoopdev/team26/assets/65212187/a753375e-f019-4d57-8989-fdfce05b980b)
 
 ## 2️⃣ DB테이블
 🔹studentlist_view🔹<br/>
